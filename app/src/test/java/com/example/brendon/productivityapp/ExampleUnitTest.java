@@ -14,4 +14,14 @@ public class ExampleUnitTest {
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
     }
+
+    @Test public void planShouldSave() throws Exception {
+        String plan = "1. Wake up\n2. Shower\n3. Eat Breakfast\n";
+
+        Goal testGoal = new Goal();
+        testGoal.setPlan(plan);
+        testGoal.savePlan();
+        assertEquals(plan, testGoal.getPlan());
+    }
 }
+
