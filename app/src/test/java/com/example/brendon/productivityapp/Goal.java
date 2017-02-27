@@ -6,9 +6,7 @@ package com.example.brendon.productivityapp;
 
 public class Goal {
     String plan;
-    int hours;
-    int minutes;
-    int seconds;
+    Time time;
 
     public String getPlan() {
         return plan;
