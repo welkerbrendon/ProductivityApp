@@ -1,29 +1,48 @@
 package com.example.brendon.productivityapp;
 
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.util.Calendar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "savedSettings";
-    SharedPreferences settingsPref = getSharedPreferences(PREFS_NAME, 0);
+    //public static final String USAGE_STATS_SERVICE = "usagestats";
+    //SharedPreferences settingsPref = getSharedPreferences(PREFS_NAME, 0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        Gson gson = new Gson();
+
+        //Loading settings, commented out because doesn't work yet
+        /*Gson gson = new Gson();
         String json = settingsPref.getString("Settings", "");
-        Settings settings = gson.fromJson(json, Settings.class);
+        Settings settings = gson.fromJson(json, Settings.class);*/
+
+        //Time tracking
+
+        ListView listView = (ListView)findViewById(R.id.listView);
+        CustomUsageStats usageStats = new CustomUsageStats();
+        usageStats.printOnListView(this, listView);
     }
 
     protected void onPause() {
         super.onPause();
 
+        //Saving settings, commented out because doesn't work yet
+        /*
         Settings settings = new Settings();
 
         SharedPreferences.Editor settingEditor = settingsPref.edit();
@@ -31,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         String json = gson.toJson(settings);
         settingEditor.putString("Settings", json);
 
-        settingEditor.commit();
+        settingEditor.commit();*/
     }
+
 }
