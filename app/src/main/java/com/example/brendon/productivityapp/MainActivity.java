@@ -1,19 +1,8 @@
 package com.example.brendon.productivityapp;
 
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.icu.util.Calendar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
