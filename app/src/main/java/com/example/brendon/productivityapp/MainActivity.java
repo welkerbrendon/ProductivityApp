@@ -3,18 +3,19 @@ package com.example.brendon.productivityapp;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "savedSettings";
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 100;
-    //public static final String USAGE_STATS_SERVICE = "usagestats";
-    //SharedPreferences settingsPref = getSharedPreferences(PREFS_NAME, 0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +26,13 @@ public class MainActivity extends AppCompatActivity {
         if (!hasPermission())
             requestPermission();
 
-        //Loading settings, commented out because doesn't work yet
-        /*Gson gson = new Gson();
-        String json = settingsPref.getString("Settings", "");
-        Settings settings = gson.fromJson(json, Settings.class);*/
+        //Loading settings
+        SharedPreferences settingsPref = getSharedPreferences(PREFS_NAME, 0);
 
-        //Time tracking
+        //Deserializing
+        Gson gson = new Gson();
+        String json = settingsPref.getString("Settings", "");
+        Settings settings = gson.fromJson(json, Settings.class);
 
         ListView listView = (ListView)findViewById(R.id.listView);
         CustomUsageStats usageStats = new CustomUsageStats();
@@ -40,16 +42,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        //Saving settings, commented out because doesn't work yet
-        /*
+        //Serializing settings
         Settings settings = new Settings();
-
-        SharedPreferences.Editor settingEditor = settingsPref.edit();
         Gson gson = new Gson();
         String json = gson.toJson(settings);
+
+        //Saving settings in shared preferences
+        SharedPreferences settingsPref = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor settingEditor = settingsPref.edit();
         settingEditor.putString("Settings", json);
 
-        settingEditor.commit();*/
+        //Commit edits
+        settingEditor.commit();
     }
 
     // Checks if the user has granted permission to the app
