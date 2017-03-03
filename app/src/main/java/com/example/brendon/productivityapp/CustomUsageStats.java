@@ -56,4 +56,6 @@ public class CustomUsageStats {
                 new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, appNames);
         listView.setAdapter(itemsAdapter);
     }
+
+
 }
