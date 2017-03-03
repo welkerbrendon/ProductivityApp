@@ -48,7 +48,8 @@ public class CustomUsageStats {
 
         for (int i = 0; i < statsList.size(); i++) {
             System.out.println(statsList.get(i).getPackageName());
-            appNames.add(statsList.get(i).getPackageName());
+            appNames.add(statsList.get(i).getPackageName() + " TIME SPENT: "
+            + statsList.get(i).getTotalTimeInForeground() / 100 + "s");
         }
 
         ArrayAdapter<String> itemsAdapter =
