@@ -3,6 +3,8 @@ package com.example.brendon.productivityapp;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -48,9 +50,24 @@ public class CustomUsageStats {
 
         for (int i = 0; i < statsList.size(); i++) {
             if (statsList.get(i).getTotalTimeInForeground() != 0) {
-                System.out.println(statsList.get(i).getPackageName());
-                appNames.add(statsList.get(i).getPackageName() + " TIME SPENT: "
-                        + statsList.get(i).getTotalTimeInForeground() / 100 + "s");
+
+                String packageName = statsList.get(i).getPackageName();
+                PackageManager packageManager = context.getPackageManager();
+                ApplicationInfo ai;
+                try {
+                    ai = packageManager.getApplicationInfo(packageName, 0);
+                }
+                catch(final PackageManager.NameNotFoundException e) {
+                    ai = null;
+                }
+
+                if (ai != null) {
+                    String appName = (String) packageManager.getApplicationLabel(ai);
+
+                    System.out.println(appName);
+                    appNames.add(appName + " TIME SPENT: "
+                            + statsList.get(i).getTotalTimeInForeground() / 100 + "s");
+                }
             }
         }
 
