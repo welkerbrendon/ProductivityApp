@@ -47,9 +47,11 @@ public class CustomUsageStats {
         System.out.println("SIZE: " + statsList.size());
 
         for (int i = 0; i < statsList.size(); i++) {
-            System.out.println(statsList.get(i).getPackageName());
-            appNames.add(statsList.get(i).getPackageName() + " TIME SPENT: "
-            + statsList.get(i).getTotalTimeInForeground() / 100 + "s");
+            if (statsList.get(i).getTotalTimeInForeground() != 0) {
+                System.out.println(statsList.get(i).getPackageName());
+                appNames.add(statsList.get(i).getPackageName() + " TIME SPENT: "
+                        + statsList.get(i).getTotalTimeInForeground() / 100 + "s");
+            }
         }
 
         ArrayAdapter<String> itemsAdapter =
