@@ -5,7 +5,133 @@ package com.example.brendon.productivityapp;
  */
 
 public class Settings {
-    boolean notifications;
+    private boolean notifications;
+    private boolean weeklyGoalReminder;
+    private boolean dailyPlanReminder;
+    private boolean weeklyPlanReminder;
+    private boolean lockOut;
+    private boolean autoDataSending;
+    private boolean takeBreak;
+    private int timeUntilBreak;
+    private int breakLength;
+    private int hourForGoalReminder;
+    private int minutesForGoalReminder;
+    private int hourForDailyPlan;
+    private int minutesForDailyPlan;
+    private int hourForWeeklyPlan;
+    private int minutesForWeeklyPlan;
+
+    public boolean isWeeklyGoalReminder() {
+        return weeklyGoalReminder;
+    }
+
+    public void setWeeklyGoalReminder(boolean weeklyGoalReminder) {
+        this.weeklyGoalReminder = weeklyGoalReminder;
+    }
+
+    public boolean isDailyPlanReminder() {
+        return dailyPlanReminder;
+    }
+
+    public void setDailyPlanReminder(boolean dailyPlanReminder) {
+        this.dailyPlanReminder = dailyPlanReminder;
+    }
+
+    public boolean isWeeklyPlanReminder() {
+        return weeklyPlanReminder;
+    }
+
+    public void setWeeklyPlanReminder(boolean weeklyPlanReminder) {
+        this.weeklyPlanReminder = weeklyPlanReminder;
+    }
+
+    public boolean isLockOut() {
+        return lockOut;
+    }
+
+    public void setLockOut(boolean lockOut) {
+        this.lockOut = lockOut;
+    }
+
+    public boolean isAutoDataSending() {
+        return autoDataSending;
+    }
+
+    public void setAutoDataSending(boolean autoDataSending) {
+        this.autoDataSending = autoDataSending;
+    }
+
+    public boolean isTakeBreak() {
+        return takeBreak;
+    }
+
+    public void setTakeBreak(boolean takeBreak) {
+        this.takeBreak = takeBreak;
+    }
+
+    public int getTimeUntilBreak() {
+        return timeUntilBreak;
+    }
+
+    public void setTimeUntilBreak(int timeUntilBreak) {
+        this.timeUntilBreak = timeUntilBreak;
+    }
+
+    public int getBreakLength() {
+        return breakLength;
+    }
+
+    public void setBreakLength(int breakLength) {
+        this.breakLength = breakLength;
+    }
+
+    public int getHourForGoalReminder() {
+        return hourForGoalReminder;
+    }
+
+    public void setHourForGoalReminder(int hourForGoalReminder) {
+        this.hourForGoalReminder = hourForGoalReminder;
+    }
+
+    public int getMinutesForGoalReminder() {
+        return minutesForGoalReminder;
+    }
+
+    public void setMinutesForGoalReminder(int minutesForGoalReminder) {
+        this.minutesForGoalReminder = minutesForGoalReminder;
+    }
+
+    public int getHourForDailyPlan() {
+        return hourForDailyPlan;
+    }
+
+    public void setHourForDailyPlan(int hourForDailyPlan) {
+        this.hourForDailyPlan = hourForDailyPlan;
+    }
+
+    public int getMinutesForDailyPlan() {
+        return minutesForDailyPlan;
+    }
+
+    public void setMinutesForDailyPlan(int minutesForDailyPlan) {
+        this.minutesForDailyPlan = minutesForDailyPlan;
+    }
+
+    public int getHourForWeeklyPlan() {
+        return hourForWeeklyPlan;
+    }
+
+    public void setHourForWeeklyPlan(int hourForWeeklyPlan) {
+        this.hourForWeeklyPlan = hourForWeeklyPlan;
+    }
+
+    public int getMinutesForWeeklyPlan() {
+        return minutesForWeeklyPlan;
+    }
+
+    public void setMinutesForWeeklyPlan(int minutesForWeeklyPlan) {
+        this.minutesForWeeklyPlan = minutesForWeeklyPlan;
+    }
 
     public boolean isNotifications() {
         return notifications;
