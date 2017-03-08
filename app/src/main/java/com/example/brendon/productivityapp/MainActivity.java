@@ -55,10 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "JSON saved: " + json);
         String toGetJson = "";
-        Log.d(TAG, settingsPref.getString("Settings", toGetJson));
+
 
         //Commit edits
         settingEditor.commit();
+
+        Log.d(TAG, settingsPref.getString("Settings", toGetJson));
     }
 
     // Checks if the user has granted permission to the app
