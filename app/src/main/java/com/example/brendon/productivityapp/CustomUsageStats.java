@@ -5,6 +5,7 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -17,6 +18,7 @@ import java.util.List;
  */
 
 public class CustomUsageStats {
+    private static final String TAG = "CustomUsageStats";
 
     @SuppressWarnings("ResourceType")
     //Creating the userstats manager
@@ -35,7 +37,15 @@ public class CustomUsageStats {
         calendar.add(Calendar.YEAR, -1);
         long startTime = calendar.getTimeInMillis();
 
-        List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,startTime,endTime);
+        // For testing purposes
+        List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+        if (usageStatsList.isEmpty()) {
+            Log.d(TAG, "Nothing in usageStatsList");
+        }
+        else {
+            Log.d(TAG, "Loaded queryUsageStats correctly");
+        }
+
         return usageStatsList;
     }
 

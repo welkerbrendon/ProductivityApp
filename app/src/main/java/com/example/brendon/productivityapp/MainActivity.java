@@ -7,13 +7,14 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static final String TAG = "MainActivity";
     public static final String PREFS_NAME = "savedSettings";
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 100;
 
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences settingsPref = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor settingEditor = settingsPref.edit();
         settingEditor.putString("Settings", json);
+
+        Log.d(TAG, "JSON saved: " + json);
 
         //Commit edits
         settingEditor.commit();
