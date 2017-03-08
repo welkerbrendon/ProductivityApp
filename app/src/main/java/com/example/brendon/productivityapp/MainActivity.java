@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         settingEditor.putString("Settings", json);
 
         Log.d(TAG, "JSON saved: " + json);
+        String toGetJson = "";
+        Log.d(TAG, settingsPref.getString("Settings", toGetJson));
 
         //Commit edits
         settingEditor.commit();
