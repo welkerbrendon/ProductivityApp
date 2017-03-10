@@ -38,7 +38,7 @@ public class CustomUsageStats {
         long startTime = calendar.getTimeInMillis();
 
         // For testing purposes
-        List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+        List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
         if (usageStatsList.isEmpty()) {
             Log.d(TAG, "Nothing in usageStatsList");
         }
