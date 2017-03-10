@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ProductivityApp</string>
+    <string name="activity_messaging_name">Messaging</string>
 </resources>

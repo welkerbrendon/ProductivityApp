@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     public static final String PREFS_NAME = "savedSettings";
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 100;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,5 +84,13 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(
                 new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
                 MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
+    }
+
+    public void startMessageActivity(View view) {
+        // We delcare an intent to start a new Activity
+        Intent intent = new Intent(this, MessagingActivity.class);
+
+        // Now, we start a new Activity
+        startActivity(intent);
     }
 }
