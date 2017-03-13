@@ -26,6 +26,10 @@
         <activity android:name=".MessagingActivity"
             android:label="@string/activity_messaging_name">
         </activity>
+
+        <service
+            android:name=".TimeTrackingService"
+            android:exported="false" />
     </application>
 
 </manifest>
