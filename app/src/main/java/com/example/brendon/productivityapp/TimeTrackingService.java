@@ -47,6 +47,17 @@ public class TimeTrackingService extends IntentService {
     public void calculateUnproductiveTimeSpent(ArrayList<UsageStats> unproductiveAppsList) {
         Time checkTime;
         checkTime = unprouctiveTime;
+        // Update unproductiveTime
+
+        // Create CustomUsageStats Object
+        // Call getUsageStatsList
+        // Compare the NAMES (or PackageNames) to SharedPreferences List of Unproductive Apps
+        // For all apps that match the name, get their timeInMilli and += to unproductiveTime.
+
+        // With the new unproductiveTime variable, it is now ready to be checked against
+        //  notifications(checkTime);
+
+
 
         notifications(checkTime);
     }
@@ -61,6 +72,7 @@ public class TimeTrackingService extends IntentService {
             intent.putExtra("Unproductive Hours", unprouctiveTime.convertMilliToHours(unprouctiveTime.getMilliseconds()));
             intent.putExtra("Unproductive Minutes", unprouctiveTime.convertMilliToMinutes(unprouctiveTime.getMilliseconds()));
             intent.putExtra("Unproductive Seconds", unprouctiveTime.convertMilliToSeconds(unprouctiveTime.getMilliseconds()));
+            displayed25 = true;
             startActivity(intent);
         }
         else if(!displayed50 && theGoal.getTime().getMilliseconds()*.5 <= unprouctiveTime.getMilliseconds()){
