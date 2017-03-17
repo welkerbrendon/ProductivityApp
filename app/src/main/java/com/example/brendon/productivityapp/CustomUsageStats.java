@@ -29,7 +29,7 @@ public class CustomUsageStats {
     }
 
     //Getting data usage
-    private static List<UsageStats> getUsageStatsList(Context context){
+    public static List<UsageStats> getUsageStatsList(Context context){
         UsageStatsManager usm = getUsageStatsManager(context);
 
         Calendar calendar = Calendar.getInstance();
