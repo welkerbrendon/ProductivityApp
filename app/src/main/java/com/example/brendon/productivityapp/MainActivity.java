@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         /* This is the code that you need to use to save settings.
            I am not sure where you want me to put it, so I'll just
            leave it here */
-        
+
         //Serializing settings
         Settings settings = new Settings();
         Gson gson = new Gson();

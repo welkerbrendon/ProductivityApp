@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,35 +33,9 @@ public class StatsActivity extends AppCompatActivity {
 
         date = Calendar.getInstance();
 
-        CustomUsageStats usageStats = new CustomUsageStats();
-        List<UsageStats> usageStatsList = usageStats.getUsageStatsListByDate(this, date.getTime());
+        updatePieChart(date);
 
-        float unproductive = 4;
-        float productive = 6;
-
-        PieChart chart = (PieChart) findViewById(R.id.chart);
-        List<PieEntry> entries = new ArrayList<>();
-
-        chart.setUsePercentValues(true);
-
-        for (int i = 0; i < usageStatsList.size(); i++) {
-            if (usageStatsList.get(i).getTotalTimeInForeground() != 0) {
-                entries.add(new PieEntry(usageStatsList.get(i).getTotalTimeInForeground(),
-                        usageStatsList.get(i).getPackageName()));
-            }
-
-        }
-
-        PieDataSet set = new PieDataSet(entries, "Productivity");
-
-        //Setting colors
-
-        set.setColors(new int[] {R.color.colorPrimaryDark, R.color.colorAccent}, this);
-        PieData data = new PieData(set);
-        chart.setData(data);
-        chart.invalidate();
-
-        Spinner spinner = (Spinner) findViewById(R.id.intervals_spinner);
+        final Spinner spinner = (Spinner) findViewById(R.id.intervals_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.interval_array, android.R.layout.simple_spinner_item);
@@ -67,6 +43,25 @@ public class StatsActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+                String imc_met = spinner.getSelectedItem().toString();
+
+                if (imc_met.equals("Day View")) {
+
+                };
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
 
 
     }
@@ -82,30 +77,7 @@ public class StatsActivity extends AppCompatActivity {
         tv1.setText(formattedDate);
         Log.d("I DON'T NEED A TAG", formattedDate);
 
-        CustomUsageStats usageStats = new CustomUsageStats();
-        List<UsageStats> usageStatsList = usageStats.getUsageStatsListByDate(this, date.getTime());
-
-        PieChart chart = (PieChart) findViewById(R.id.chart);
-        List<PieEntry> entries = new ArrayList<>();
-
-        chart.setUsePercentValues(true);
-
-        for (int i = 0; i < usageStatsList.size(); i++) {
-            if (usageStatsList.get(i).getTotalTimeInForeground() != 0) {
-                entries.add(new PieEntry(usageStatsList.get(i).getTotalTimeInForeground(),
-                        usageStatsList.get(i).getPackageName()));
-            }
-
-        }
-
-        PieDataSet set = new PieDataSet(entries, "Productivity");
-
-        //Setting colors
-
-        set.setColors(new int[] {R.color.colorPrimaryDark, R.color.colorAccent}, this);
-        PieData data = new PieData(set);
-        chart.setData(data);
-        chart.invalidate();
+        updatePieChart(date);
     }
 
     public void decreaseDate(View view) {
@@ -119,6 +91,16 @@ public class StatsActivity extends AppCompatActivity {
         tv1.setText(formattedDate);
         Log.d("I DON'T NEED A TAG", formattedDate);
 
+        updatePieChart(date);
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+    }
+
+    private void updatePieChart(Calendar date) {
         CustomUsageStats usageStats = new CustomUsageStats();
         List<UsageStats> usageStatsList = usageStats.getUsageStatsListByDate(this, date.getTime());
 
