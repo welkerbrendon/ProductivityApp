@@ -50,6 +50,7 @@ public class TimeTrackingService extends IntentService {
     private boolean displayed75;
     private Goal theGoal;
     private Time unprouctiveTime;
+    private Settings settings;
 
     public TimeTrackingService(Goal userGoal) {
         super("TimeTrackingService");
@@ -135,7 +136,7 @@ public class TimeTrackingService extends IntentService {
             displayed25 = true;
             startActivity(intent);
         }
-        else if(!displayed50 && theGoal.getTime().getMilliseconds()*.5 <= unprouctiveTime.getMilliseconds()){
+        else if(settings.isNotifications() && !displayed50 && theGoal.getTime().getMilliseconds()*.5 <= unprouctiveTime.getMilliseconds()){
             Intent intent = new Intent(this, NotificationActivity.class);
             intent.putExtra("Message", "You have used up at least 50% of your goal time on unproductive apps.");
             intent.putExtra("Goal Hours", theGoal.getTime().getHours());
@@ -147,7 +148,7 @@ public class TimeTrackingService extends IntentService {
             displayed50 = true;
             startActivity(intent);
         }
-        else if(!displayed75 && theGoal.getTime().getMilliseconds()*.75 <= unprouctiveTime.getMilliseconds()){
+        else if(settings.isNotifications() && !displayed75 && theGoal.getTime().getMilliseconds()*.75 <= unprouctiveTime.getMilliseconds()){
             Intent intent = new Intent(this, NotificationActivity.class);
             intent.putExtra("Message", "You have used up at least 75% of your goal time on unproductive apps!");
             intent.putExtra("Goal Hours", theGoal.getTime().getHours());
@@ -159,7 +160,7 @@ public class TimeTrackingService extends IntentService {
             displayed75 = true;
             startActivity(intent);
         }
-        else if(theGoal.getTime().getMilliseconds() <= unprouctiveTime.getMilliseconds() &&
+        else if(settings.isNotifications() && theGoal.getTime().getMilliseconds() <= unprouctiveTime.getMilliseconds() &&
                 checkTime.getMilliseconds() != unprouctiveTime.getMilliseconds()){
             Intent intent = new Intent(this, NotificationActivity.class);
             intent.putExtra("Message", "You have used up all of your goal time on unproductive apps!");
