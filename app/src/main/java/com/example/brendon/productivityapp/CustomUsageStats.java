@@ -15,7 +15,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Frank on 3/1/2017.
+ * This class enables the app to gather UsageStats from
+ * apps being used on the phone.
+ *
+ * @author Frank
  */
 
 public class CustomUsageStats {

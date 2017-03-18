@@ -1,7 +1,9 @@
 package com.example.brendon.productivityapp;
 
 /**
- * Created by Scott on 2/22/2017.
+ * This class is a collection of the different
+ * options a user may select to help with
+ * accomplishing the goal.
  */
 
 public class Settings {

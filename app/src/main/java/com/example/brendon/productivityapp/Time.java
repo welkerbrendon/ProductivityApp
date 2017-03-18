@@ -1,7 +1,8 @@
 package com.example.brendon.productivityapp;
 
 /**
- * Created by Scott on 2/22/2017.
+ * This class allows the app to convert between human-readable
+ * time and app-readable time.
  */
 
 public class Time {

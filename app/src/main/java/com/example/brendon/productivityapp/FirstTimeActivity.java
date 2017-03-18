@@ -18,10 +18,25 @@ import android.app.Activity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This Activity represents the First Time a user opens the App.
+ * <p>
+ *     In this Activity, the User will learn how to use the App
+ *     and choose which apps are deemed "unproductive"
+ * </p>
+ */
 public class FirstTimeActivity extends Activity {
     List<String> appNames = new ArrayList<>();
     List<Drawable> appLogos = new ArrayList<>();
 
+    /**
+     * This function is instantiated when the Activity is created.
+     * <p>
+     *     This function makes a list of the apps with their icons installed on the phone
+     *     and displays them to the screen.
+     * </p>
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +70,7 @@ public class FirstTimeActivity extends Activity {
             }
         }
 
-        CustomList adapter = new
-                CustomList(FirstTimeActivity.this, appNames, appLogos);
+        CustomList adapter = new CustomList(FirstTimeActivity.this, appNames, appLogos);
         ListView list=(ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
     }

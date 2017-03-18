@@ -16,12 +16,29 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+/**
+ * Essentially the "Home Screen" of the app.
+ * The user will be able to access their different Goals
+ * The user will be able to access a changeSettings activity.
+ * This activity will show a graphic charting the times that
+ * the user has achieved their goal.
+ */
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     public static final String PREFS_NAME = "savedSettings";
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 100;
 
-
+    /**
+     * This function will be instantiated when the activity is created.
+     * <p>
+     *     Will check if UsageStats permissions are enabled.  If they
+     *     are not enabled, it will request the permission to be enabled.
+     * </p>
+     * <p>
+     *     Will load the settings for the app.
+     * </p>
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
