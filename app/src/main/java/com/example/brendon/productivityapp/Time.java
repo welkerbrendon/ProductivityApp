@@ -11,6 +11,8 @@ public class Time {
     int seconds;
     long milliseconds;
 
+    Time() {hours = 0; minutes = 0; seconds = 0; milliseconds = 0;}
+
     // Getters and Setters
     public int getHours() {
         return hours;
@@ -53,7 +55,16 @@ public class Time {
         return 60000 * minutes;
     }
 
-    public long convertSecondsToMilli(int seconds) {
-        return 60 * seconds;
+    public long convertSecondsToMilli(int seconds) { return 1000 * seconds; }
+
+    public int convertMilliToHours(long milliseconds) { return (int) milliseconds/3600000;}
+
+    public int convertMilliToMinutes(long milliseconds) {
+        return (int) ((milliseconds - convertMilliToHours(milliseconds))/60000);
+    }
+
+    public int convertMilliToSeconds(long milliseconds) {
+        return (int) ((milliseconds - convertMilliToHours(milliseconds) -
+                convertMilliToMinutes(milliseconds))/60);
     }
 }

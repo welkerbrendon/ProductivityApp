@@ -30,8 +30,18 @@ public class TimeTrackingService extends IntentService {
 
      */
 
-    public TimeTrackingService() {
+    private boolean displayed25;
+    private boolean displayed50;
+    private boolean displayed75;
+    private Goal theGoal;
+    private Time unprouctiveTime;
+
+    public TimeTrackingService(Goal userGoal) {
         super("TimeTrackingService");
+        displayed25 = false;
+        displayed50 = false;
+        displayed75 = false;
+        theGoal = userGoal;
     }
 
     @Override
@@ -41,7 +51,70 @@ public class TimeTrackingService extends IntentService {
     }
 
     public void calculateUnproductiveTimeSpent(ArrayList<UsageStats> unproductiveAppsList) {
+        Time checkTime;
+        checkTime = unprouctiveTime;
+        // Update unproductiveTime
 
+        // Create CustomUsageStats Object
+        // Call getUsageStatsList
+        // Compare the NAMES (or PackageNames) to SharedPreferences List of Unproductive Apps
+        // For all apps that match the name, get their timeInMilli and += to unproductiveTime.
+
+        // With the new unproductiveTime variable, it is now ready to be checked against
+        //  notifications(checkTime);
+
+
+
+        notifications(checkTime);
+    }
+
+    public void notifications(Time checkTime){
+        if(!displayed25 && theGoal.getTime().getMilliseconds()*.25 <= unprouctiveTime.getMilliseconds()) {
+            Intent intent = new Intent(this, NotificationActivity.class);
+            intent.putExtra("Message", "You have used up at least 25% of your goal time on unproductive apps.");
+            intent.putExtra("Goal Hours", theGoal.getTime().getHours());
+            intent.putExtra("Goal Minutes", theGoal.getTime().getMinutes());
+            intent.putExtra("Goal Seconds", theGoal.getTime().getSeconds());
+            intent.putExtra("Unproductive Hours", unprouctiveTime.convertMilliToHours(unprouctiveTime.getMilliseconds()));
+            intent.putExtra("Unproductive Minutes", unprouctiveTime.convertMilliToMinutes(unprouctiveTime.getMilliseconds()));
+            intent.putExtra("Unproductive Seconds", unprouctiveTime.convertMilliToSeconds(unprouctiveTime.getMilliseconds()));
+            displayed25 = true;
+            startActivity(intent);
+        }
+        else if(!displayed50 && theGoal.getTime().getMilliseconds()*.5 <= unprouctiveTime.getMilliseconds()){
+            Intent intent = new Intent(this, NotificationActivity.class);
+            intent.putExtra("Message", "You have used up at least 50% of your goal time on unproductive apps.");
+            intent.putExtra("Goal Hours", theGoal.getTime().getHours());
+            intent.putExtra("Goal Minutes", theGoal.getTime().getMinutes());
+            intent.putExtra("Goal Seconds", theGoal.getTime().getSeconds());
+            intent.putExtra("Unproductive Hours", unprouctiveTime.convertMilliToHours(unprouctiveTime.getMilliseconds()));
+            intent.putExtra("Unproductive Minutes", unprouctiveTime.convertMilliToMinutes(unprouctiveTime.getMilliseconds()));
+            intent.putExtra("Unproductive Seconds", unprouctiveTime.convertMilliToSeconds(unprouctiveTime.getMilliseconds()));
+            startActivity(intent);
+        }
+        else if(!displayed75 && theGoal.getTime().getMilliseconds()*.75 <= unprouctiveTime.getMilliseconds()){
+            Intent intent = new Intent(this, NotificationActivity.class);
+            intent.putExtra("Message", "You have used up at least 75% of your goal time on unproductive apps!");
+            intent.putExtra("Goal Hours", theGoal.getTime().getHours());
+            intent.putExtra("Goal Minutes", theGoal.getTime().getMinutes());
+            intent.putExtra("Goal Seconds", theGoal.getTime().getSeconds());
+            intent.putExtra("Unproductive Hours", unprouctiveTime.convertMilliToHours(unprouctiveTime.getMilliseconds()));
+            intent.putExtra("Unproductive Minutes", unprouctiveTime.convertMilliToMinutes(unprouctiveTime.getMilliseconds()));
+            intent.putExtra("Unproductive Seconds", unprouctiveTime.convertMilliToSeconds(unprouctiveTime.getMilliseconds()));
+            startActivity(intent);
+        }
+        else if(theGoal.getTime().getMilliseconds() <= unprouctiveTime.getMilliseconds() &&
+                checkTime.getMilliseconds() != unprouctiveTime.getMilliseconds()){
+            Intent intent = new Intent(this, NotificationActivity.class);
+            intent.putExtra("Message", "You have used up all of your goal time on unproductive apps!");
+            intent.putExtra("Goal Hours", theGoal.getTime().getHours());
+            intent.putExtra("Goal Minutes", theGoal.getTime().getMinutes());
+            intent.putExtra("Goal Seconds", theGoal.getTime().getSeconds());
+            intent.putExtra("Unproductive Hours", unprouctiveTime.convertMilliToHours(unprouctiveTime.getMilliseconds()));
+            intent.putExtra("Unproductive Minutes", unprouctiveTime.convertMilliToMinutes(unprouctiveTime.getMilliseconds()));
+            intent.putExtra("Unproductive Seconds", unprouctiveTime.convertMilliToSeconds(unprouctiveTime.getMilliseconds()));
+            startActivity(intent);
+        }
     }
 
 }

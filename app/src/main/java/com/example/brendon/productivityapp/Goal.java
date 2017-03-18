@@ -45,4 +45,12 @@ public class Goal {
     public void setUnproductiveApps(ArrayList<UsageStats> unproductiveApps) {
         this.unproductiveApps = unproductiveApps;
     }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
+    }
 }

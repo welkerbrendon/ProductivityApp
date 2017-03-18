@@ -14,6 +14,7 @@ public class Settings {
     private boolean lockOut;
     private boolean autoDataSending;
     private boolean takeBreak;
+    private boolean firstTime;
     private int timeUntilBreak;
     private int breakLength;
     private int hourForGoalReminder;
@@ -22,6 +23,25 @@ public class Settings {
     private int minutesForDailyPlan;
     private int hourForWeeklyPlan;
     private int minutesForWeeklyPlan;
+
+    Settings() {
+        notifications = false;
+        weeklyGoalReminder = false;
+        dailyPlanReminder = false;
+        weeklyPlanReminder = false;
+        lockOut = false;
+        autoDataSending = false;
+        takeBreak = false;
+        firstTime = false;
+        timeUntilBreak = 0;
+        breakLength = 0;
+        hourForGoalReminder = 0;
+        minutesForGoalReminder = 0;
+        hourForDailyPlan = 0;
+        minutesForDailyPlan = 0;
+        hourForWeeklyPlan = 0;
+        minutesForWeeklyPlan = 0;
+    }
 
     public boolean isWeeklyGoalReminder() {
         return weeklyGoalReminder;
@@ -141,5 +161,13 @@ public class Settings {
 
     public void setNotifications(boolean notifications) {
         this.notifications = notifications;
+    }
+
+    public boolean isFirstTime() {
+        return firstTime;
+    }
+
+    public void setFirstTime(boolean firstTime) {
+        this.firstTime = firstTime;
     }
 }

@@ -110,4 +110,17 @@ public class MainActivity extends AppCompatActivity {
         // Now, we start a new Activity
         startActivity(intent);
     }
+
+    public void startFirstTimeActivity(View view) {
+        Intent intent = new Intent(this, FirstTimeActivity.class);
+
+        startActivity(intent);
+    }
+
+    public void startStatsActivity(View view) {
+        Intent intent = new Intent(this, StatsActivity.class);
+
+        startActivity(intent);
+    }
+
 }

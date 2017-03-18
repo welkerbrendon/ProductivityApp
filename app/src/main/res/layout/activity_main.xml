@@ -14,15 +14,24 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/buttonStartMessaging" />
+        android:layout_centerHorizontal="true" />
 
     <Button
-        android:id="@+id/buttonStartMessaging"
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:hint="Send Message"
-        android:onClick="startMessageActivity"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="440dp"
+        android:onClick="startFirstTimeActivity"
+        android:text="first time" />
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:text="Stats"
+        android:onClick="startStatsActivity"/>
 </RelativeLayout>

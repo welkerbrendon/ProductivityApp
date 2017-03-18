@@ -1,5 +1,8 @@
 package com.example.brendon.productivityapp;
 
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -41,14 +44,31 @@ public class FirstTimeActivity extends Activity {
 
         // Get list of all installed apps
         final PackageManager pm = getPackageManager();
-        List<ApplicationInfo> apps = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+        // List<ApplicationInfo> apps = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+
+        Context context = getApplicationContext();
+        UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+
+        List<UsageStats> statsList = CustomUsageStats.getUsageStatsList(context);
 
         // Populate lists of app names and logos
-        for (int i = 0; i < apps.size(); i++) {
-            appNames.add((String) pm.getApplicationLabel(apps.get(i)));
-            appLogos.add(apps.get(i).loadIcon(pm));
-        }
+        for (int i = 0; i < statsList.size(); i++) {
+            if(statsList.get(i).getTotalTimeInForeground() > 0) {
+                ApplicationInfo ai;
+                String packageName = statsList.get(i).getPackageName();
 
+                try {
+                    ai = pm.getApplicationInfo(packageName, 0);
+                }
+                catch(final PackageManager.NameNotFoundException e) {
+                    ai = null;
+                    continue;
+                }
+
+                appNames.add((String) pm.getApplicationLabel(ai));
+                appLogos.add(ai.loadIcon(pm));
+            }
+        }
 
         CustomList adapter = new CustomList(FirstTimeActivity.this, appNames, appLogos);
         ListView list=(ListView)findViewById(R.id.list);

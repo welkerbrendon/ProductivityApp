@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,7 +33,7 @@ public class CustomUsageStats {
     }
 
     //Getting data usage
-    private static List<UsageStats> getUsageStatsList(Context context){
+    public static List<UsageStats> getUsageStatsList(Context context){
         UsageStatsManager usm = getUsageStatsManager(context);
 
         Calendar calendar = Calendar.getInstance();
@@ -42,6 +43,28 @@ public class CustomUsageStats {
 
         // For testing purposes
         List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
+        if (usageStatsList.isEmpty()) {
+            Log.d(TAG, "Nothing in usageStatsList");
+        }
+        else {
+            Log.d(TAG, "Loaded queryUsageStats correctly");
+        }
+
+        return usageStatsList;
+    }
+
+    //Getting data usage
+    public static List<UsageStats> getUsageStatsListByDate(Context context, Date date){
+        UsageStatsManager usm = getUsageStatsManager(context);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        long endTime = calendar.getTimeInMillis();
+        calendar.add(Calendar.DAY_OF_YEAR, -1);
+        long startTime = calendar.getTimeInMillis();
+
+        // For testing purposes
+        List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
         if (usageStatsList.isEmpty()) {
             Log.d(TAG, "Nothing in usageStatsList");
         }
@@ -86,6 +109,7 @@ public class CustomUsageStats {
 
         ArrayAdapter<String> itemsAdapter =
                 new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, appNames);
+
         listView.setAdapter(itemsAdapter);
     }
 
