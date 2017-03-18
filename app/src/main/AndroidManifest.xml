@@ -34,7 +34,7 @@
             android:name=".TimeTrackingService"
             android:exported="false" />
 
-        <activity android:name=".Stats"></activity>
+        <activity android:name=".StatsActivity" />
     </application>
 
 </manifest>

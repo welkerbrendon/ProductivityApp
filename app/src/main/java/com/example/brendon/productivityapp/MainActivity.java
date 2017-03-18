@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startStatsActivity(View view) {
-        Intent intent = new Intent(this, Stats.class);
+        Intent intent = new Intent(this, StatsActivity.class);
 
         startActivity(intent);
     }

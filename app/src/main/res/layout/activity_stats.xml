@@ -1,17 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.brendon.productivityapp.Stats">
+    tools:context="com.example.brendon.productivityapp.StatsActivity">
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:text="&lt;"
+        android:layout_marginLeft="10dp"
+        android:onClick="decreaseDate"/>
+
+    <Spinner
+        android:id="@+id/intervals_spinner"
+        android:layout_width="130dp"
+        android:layout_height="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:text="&gt;"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:onClick="advanceDate"/>
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/chart"
-        android:layout_width="312dp"
-        android:layout_height="303dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_below="@+id/intervals_spinner"
         android:layout_centerHorizontal="true"
-        tools:layout_editor_absoluteY="156dp"
-        tools:layout_editor_absoluteX="36dp" />
+        android:layout_marginTop="70dp"/>
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:text="Today"
+        android:textSize="22dp"
+        android:textColor="@color/colorPrimaryDark"/>
+
+
+</RelativeLayout>
