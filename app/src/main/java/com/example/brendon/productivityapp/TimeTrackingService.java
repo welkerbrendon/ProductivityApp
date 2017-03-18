@@ -16,6 +16,8 @@ import java.util.List;
 
 /**
  * This service will run in the background when started.
+ * @author Scott Nicholes
+ *
  * <p>
  *     This service calculates the amount of time
  *     from the time it was last called to the
