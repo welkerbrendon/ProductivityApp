@@ -55,10 +55,6 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = settingsPref.getString("Settings", "");
         Settings settings = gson.fromJson(json, Settings.class);
-
-        ListView listView = (ListView)findViewById(R.id.listView);
-        CustomUsageStats usageStats = new CustomUsageStats();
-        usageStats.printOnListView(this, listView);
     }
 
     protected void onPause() {
