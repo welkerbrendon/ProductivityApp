@@ -1,5 +1,6 @@
 package com.example.brendon.productivityapp;
 
+import android.app.usage.UsageStats;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,9 @@ public class StatsActivity extends AppCompatActivity {
 
         date = Calendar.getInstance();
 
+        CustomUsageStats usageStats = new CustomUsageStats();
+        List<UsageStats> usageStatsList = usageStats.getUsageStatsListByDate(this, date.getTime());
+
         float unproductive = 4;
         float productive = 6;
 
@@ -38,8 +42,13 @@ public class StatsActivity extends AppCompatActivity {
 
         chart.setUsePercentValues(true);
 
-        entries.add(new PieEntry(unproductive, "Unproductive"));
-        entries.add(new PieEntry(productive, "Productive"));
+        for (int i = 0; i < usageStatsList.size(); i++) {
+            if (usageStatsList.get(i).getTotalTimeInForeground() != 0) {
+                entries.add(new PieEntry(usageStatsList.get(i).getTotalTimeInForeground(),
+                        usageStatsList.get(i).getPackageName()));
+            }
+
+        }
 
         PieDataSet set = new PieDataSet(entries, "Productivity");
 
@@ -72,6 +81,31 @@ public class StatsActivity extends AppCompatActivity {
 
         tv1.setText(formattedDate);
         Log.d("I DON'T NEED A TAG", formattedDate);
+
+        CustomUsageStats usageStats = new CustomUsageStats();
+        List<UsageStats> usageStatsList = usageStats.getUsageStatsListByDate(this, date.getTime());
+
+        PieChart chart = (PieChart) findViewById(R.id.chart);
+        List<PieEntry> entries = new ArrayList<>();
+
+        chart.setUsePercentValues(true);
+
+        for (int i = 0; i < usageStatsList.size(); i++) {
+            if (usageStatsList.get(i).getTotalTimeInForeground() != 0) {
+                entries.add(new PieEntry(usageStatsList.get(i).getTotalTimeInForeground(),
+                        usageStatsList.get(i).getPackageName()));
+            }
+
+        }
+
+        PieDataSet set = new PieDataSet(entries, "Productivity");
+
+        //Setting colors
+
+        set.setColors(new int[] {R.color.colorPrimaryDark, R.color.colorAccent}, this);
+        PieData data = new PieData(set);
+        chart.setData(data);
+        chart.invalidate();
     }
 
     public void decreaseDate(View view) {
@@ -84,5 +118,30 @@ public class StatsActivity extends AppCompatActivity {
 
         tv1.setText(formattedDate);
         Log.d("I DON'T NEED A TAG", formattedDate);
+
+        CustomUsageStats usageStats = new CustomUsageStats();
+        List<UsageStats> usageStatsList = usageStats.getUsageStatsListByDate(this, date.getTime());
+
+        PieChart chart = (PieChart) findViewById(R.id.chart);
+        List<PieEntry> entries = new ArrayList<>();
+
+        chart.setUsePercentValues(true);
+
+        for (int i = 0; i < usageStatsList.size(); i++) {
+            if (usageStatsList.get(i).getTotalTimeInForeground() != 0) {
+                entries.add(new PieEntry(usageStatsList.get(i).getTotalTimeInForeground(),
+                        usageStatsList.get(i).getPackageName()));
+            }
+
+        }
+
+        PieDataSet set = new PieDataSet(entries, "Productivity");
+
+        //Setting colors
+
+        set.setColors(new int[] {R.color.colorPrimaryDark, R.color.colorAccent}, this);
+        PieData data = new PieData(set);
+        chart.setData(data);
+        chart.invalidate();
     }
 }
