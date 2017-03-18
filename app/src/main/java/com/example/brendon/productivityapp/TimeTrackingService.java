@@ -3,8 +3,13 @@ package com.example.brendon.productivityapp;
 import android.app.IntentService;
 import android.app.usage.UsageStats;
 import android.content.Intent;
+import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This service will run in the background when started.
@@ -17,6 +22,8 @@ import java.util.ArrayList;
  */
 
 public class TimeTrackingService extends IntentService {
+    private static final String PREFS_NAME = "UnproductiveAppsFile";
+    private static final String JSON_LIST_KEY = "key";
 
     /*
     Note:  For this service to work, I will need someone to:
@@ -50,15 +57,28 @@ public class TimeTrackingService extends IntentService {
         //calculateUnproductiveTimeSpent(workIntent.getParcelableArrayListExtra());
     }
 
-    public void calculateUnproductiveTimeSpent(ArrayList<UsageStats> unproductiveAppsList) {
+    public void calculateUnproductiveTimeSpent() {
         Time checkTime;
         checkTime = unprouctiveTime;
         // Update unproductiveTime
 
         // Create CustomUsageStats Object
+        CustomUsageStats usageStatsAccessor = new CustomUsageStats();
+
         // Call getUsageStatsList
+        List<UsageStats> allAppsList = usageStatsAccessor.getUsageStatsList(this);
+
         // Compare the NAMES (or PackageNames) to SharedPreferences List of Unproductive Apps
+        SharedPreferences appsPreferences = getSharedPreferences(PREFS_NAME, 0);
+
+        // We will retrieve the unproductiveAppsList by JSON
+        String jsonList = appsPreferences.getString(JSON_LIST_KEY, null);
+        List<UsageStats> unproductiveAppsList = new Gson().fromJson(jsonList,
+                new TypeToken<List<UsageStats>>() {
+                }.getType());
+
         // For all apps that match the name, get their timeInMilli and += to unproductiveTime.
+
 
         // With the new unproductiveTime variable, it is now ready to be checked against
         //  notifications(checkTime);
