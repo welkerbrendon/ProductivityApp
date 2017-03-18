@@ -7,7 +7,13 @@ import android.content.Intent;
 import java.util.ArrayList;
 
 /**
- * Created by Scott on 3/13/2017.
+ * This service will run in the background when started.
+ * <p>
+ *     This service calculates the amount of time
+ *     from the time it was last called to the
+ *     time it is re-instantiated that apps
+ *     have been in the foreground.
+ * </p>
  */
 
 public class TimeTrackingService extends IntentService {

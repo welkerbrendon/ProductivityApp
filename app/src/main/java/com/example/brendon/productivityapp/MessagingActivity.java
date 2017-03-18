@@ -12,6 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * This activity enables the user to send a text
+ * message full of the usage statistics and
+ * the goal that the user is engaged in.
+ * It will allow the user to decide which goal they
+ * would like to send, along with a message to
+ * someone they are accounting to.
+ */
 public class MessagingActivity extends AppCompatActivity {
     public static final String TAG = "MessagingActivity";
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0;
@@ -23,6 +31,14 @@ public class MessagingActivity extends AppCompatActivity {
     String phoneNumber;
     String textMessage;
 
+    /**
+     * This function is called when the activity is created.
+     * <p>
+     *     Initializes the Button and EditText fields.
+     *     Enables the class to use data sent to these components.
+     * </p>
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +60,9 @@ public class MessagingActivity extends AppCompatActivity {
         phoneNumber = phoneNumberField.getText().toString();
         textMessage = textMessageField.getText().toString();
 
+        /*
+        Makes sure that the proper permissions are enabled.
+         */
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -58,6 +77,14 @@ public class MessagingActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This function actually sends the SMS Message.  After
+     * checking that the correct permissions are in place,
+     * this function will send the SMS Message.
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
         switch (requestCode) {
