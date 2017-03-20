@@ -48,7 +48,9 @@
         android:fontFamily="serif"
         android:text="Set Apps"
         android:textAlignment="center"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:paddingLeft="5px"
+        android:paddingRight="5px"/>
 
     <Button
         android:id="@+id/Settings"
