@@ -13,81 +13,84 @@
     <Button
         android:id="@+id/SendData"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="85dp"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_marginStart="48dp"
         android:background="@color/colorPrimary"
+        android:textAllCaps="false"
         android:text="Send Data"
-        android:textSize="24sp" />
+        android:textSize="20sp"
+        android:layout_below="@+id/SetApps"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="70dp" />
 
     <Button
         android:id="@+id/Plan"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/SendData"
         android:layout_marginEnd="43dp"
         android:background="@color/colorPrimary"
+        android:textAllCaps="false"
         android:fontFamily="sans-serif"
         android:text="My Plan"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/SetApps"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_alignStart="@+id/SendData"
         android:layout_centerVertical="true"
         android:background="@color/colorPrimary"
+        android:textAllCaps="false"
         android:fontFamily="serif"
         android:text="Set Apps"
         android:textAlignment="center"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/Settings"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_alignStart="@+id/Plan"
         android:layout_alignTop="@+id/SetApps"
         android:background="@color/colorPrimary"
+        android:textAllCaps="false"
         android:text="Settings"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/Goal"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_above="@+id/SetApps"
         android:layout_alignStart="@+id/SetApps"
         android:layout_marginBottom="71dp"
         android:background="@color/colorPrimary"
-        android:elevation="0dp"
         android:fontFamily="sans-serif"
         android:text="My Goal"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:visibility="visible" />
 
     <Button
         android:id="@+id/UsageStats"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        android:textAllCaps="false"
         android:fontFamily="sans-serif"
         android:text="Usage Stats"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:layout_alignBottom="@+id/Goal"
-        android:layout_toEndOf="@+id/SetApps"
-        android:layout_marginStart="20dp"
+        android:layout_alignLeft="@id/Settings"
         android:onClick="startStatsActivity"/>
 </RelativeLayout>
