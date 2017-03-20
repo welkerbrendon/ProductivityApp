@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         if (!hasPermission())
             requestPermission();
 
+        /* This is the code that you need to use to load settings.
+           I am not sure where you want me to put it, so I'll just
+           leave it here */
         //Loading settings
         SharedPreferences settingsPref = getSharedPreferences(PREFS_NAME, 0);
 
@@ -55,14 +58,14 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = settingsPref.getString("Settings", "");
         Settings settings = gson.fromJson(json, Settings.class);
-
-        ListView listView = (ListView)findViewById(R.id.listView);
-        CustomUsageStats usageStats = new CustomUsageStats();
-        usageStats.printOnListView(this, listView);
     }
 
     protected void onPause() {
         super.onPause();
+
+        /* This is the code that you need to use to save settings.
+           I am not sure where you want me to put it, so I'll just
+           leave it here */
 
         //Serializing settings
         Settings settings = new Settings();

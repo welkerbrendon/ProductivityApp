@@ -54,7 +54,7 @@ public class CustomUsageStats {
     }
 
     //Getting data usage
-    public static List<UsageStats> getUsageStatsListByDate(Context context, Date date){
+    public List<UsageStats> getUsageStatsListByDate(Context context, Date date){
         UsageStatsManager usm = getUsageStatsManager(context);
 
         Calendar calendar = Calendar.getInstance();
