@@ -75,4 +75,16 @@ public class FirstTimeActivity extends Activity {
         list.setAdapter(adapter);
     }
 
+    public List<String> getUnproductiveAppsList() {
+        return null;
+    }
+
+    public void onButtonClick(View view) {
+
+        // DO THE STUFF
+
+
+        Intent intent = new Intent(this, MainActivity.class);
+    }
+
 }
