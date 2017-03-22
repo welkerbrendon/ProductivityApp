@@ -92,5 +92,5 @@
         android:textSize="20sp"
         android:layout_alignBottom="@+id/Goal"
         android:layout_alignLeft="@id/Settings"
-        android:onClick="startStatsActivity"/>
+        android:onClick="startUsageStatsActivity"/>
 </RelativeLayout>
