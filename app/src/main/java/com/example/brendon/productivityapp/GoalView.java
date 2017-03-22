@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 public class GoalView extends AppCompatActivity {
     // !! Replace "goal" with actual filename set in FirstTimeActivity !!
     public final static String GOAL_PREFS_FILE = "goal";
+    public final static String GOAL_EXTRA = "goal";
 
     private ProgressBar unproductiveProgressBar;
     private TextView viewUnproductiveMessage;
@@ -57,6 +58,14 @@ public class GoalView extends AppCompatActivity {
     }
 
     public void startEditGoalActivity(View view) {
-        Intent intent;
+        Intent intent = new Intent(this, EditGoalActivity.class);
+
+        // Serialize Goal
+        Gson gson = new Gson();
+        String jsonGoal = gson.toJson(userGoal, Goal.class);
+
+        intent.putExtra(GOAL_EXTRA, jsonGoal);
+
+        startActivity(intent);
     }
 }

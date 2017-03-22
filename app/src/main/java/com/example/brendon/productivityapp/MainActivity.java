@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startUsageStatsActivity(View view) {
+    public void startStatsActivity(View view) {
         Intent intent = new Intent(this, StatsActivity.class);
 
         startActivity(intent);
