@@ -36,7 +36,8 @@
 
         <activity android:name=".StatsActivity" />
         <activity android:name=".GoalView" />
-        <activity android:name=".EditGoalActivity"></activity>
+        <activity android:name=".EditGoalActivity" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>

@@ -60,8 +60,9 @@
         android:layout_alignStart="@+id/Plan"
         android:layout_alignTop="@+id/SetApps"
         android:background="@color/colorPrimary"
-        android:textAllCaps="false"
+        android:onClick="startSettingsActivity"
         android:text="Settings"
+        android:textAllCaps="false"
         android:textSize="20sp" />
 
     <Button
