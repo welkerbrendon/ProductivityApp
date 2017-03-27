@@ -5,39 +5,95 @@ package com.example.brendon.productivityapp;
  */
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.view.ViewGroupCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class CustomList extends ArrayAdapter<String>{
-
-    private final Activity context;
-    private final List<String> appNames;
-    private final List<Drawable> appLogos;
-    public CustomList(Activity context,
-                      List<String> appNames, List<Drawable> appLogos) {
-        super(context, R.layout.list_single, appNames);
-        this.context = context;
-        this.appNames = appNames;
-        this.appLogos = appLogos;
+class AppSelection {
+    public String getPackageName() {
+        return packageName;
     }
 
-    @Override
-    public View getView(int position, View view, ViewGroup parent) {
-        LayoutInflater inflater = context.getLayoutInflater();
-        View rowView= inflater.inflate(R.layout.list_single, null, true);
-        TextView txtTitle = (TextView) rowView.findViewById(R.id.txt);
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
 
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
-        txtTitle.setText(appNames.get(position));
+    public boolean isChecked() {
+        return checked;
+    }
 
-        imageView.setImageDrawable(appLogos.get(position));
-        return rowView;
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    String packageName;
+    boolean checked = false;
+
+    public Drawable getAppIcon() {
+        return appIcon;
+    }
+
+    public void setAppIcon(Drawable appIcon) {
+        this.appIcon = appIcon;
+    }
+
+    Drawable appIcon;
+
+}
+
+public class CustomList extends ArrayAdapter<AppSelection>{
+
+
+    private List<AppSelection> appSelectionList;
+    private Context context;
+
+    public CustomList(List<AppSelection> appSelectionList, Context context) {
+        super(context, R.layout.list_single, appSelectionList);
+        this.appSelectionList = appSelectionList;
+        this.context = context;
+    }
+
+    private static class AppSelectionHolder {
+        public TextView packageName;
+        public ImageView appIcon;
+        public CheckBox chkBox;
+    }
+
+    public View getView(int position, View convertView, ViewGroupCompat parent) {
+        View v = convertView;
+
+        AppSelectionHolder holder = new AppSelectionHolder();
+
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            v = inflater.inflate(R.layout.list_single, null);
+
+            holder.packageName = (TextView) v.findViewById(R.id.txt);
+            holder.appIcon = (ImageView) v.findViewById(R.id.img);
+            holder.chkBox = (CheckBox) v.findViewById(R.id.checkBox);
+
+            holder.chkBox.setOnCheckedChangeListener((FirstTimeActivity) context);
+        }
+        else {
+            holder = (AppSelectionHolder) v.getTag();
+        }
+
+        AppSelection a = appSelectionList.get(position);
+        holder.packageName.setText(a.getPackageName());
+        holder.appIcon.setImageDrawable(a.getAppIcon());
+        holder.chkBox.setChecked(a.isChecked());
+        holder.chkBox.setTag(a);
+
+        return v;
     }
 }
+
