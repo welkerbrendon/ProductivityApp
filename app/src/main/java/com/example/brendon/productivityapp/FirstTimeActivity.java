@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,7 +26,12 @@ import java.util.List;
  *     and choose which apps are deemed "unproductive"
  * </p>
  */
-public class FirstTimeActivity extends Activity {
+public class FirstTimeActivity extends ActionBarActivity {
+
+    ListView lv;
+    ArrayList<AppSelection> appSelectionList;
+    CustomList appSelectionAdapter;
+
     List<String> appNames = new ArrayList<>();
     List<Drawable> appLogos = new ArrayList<>();
 
@@ -40,7 +46,9 @@ public class FirstTimeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_time);
+        setContentView(R.layout.list_single);
+
+        lv = (ListView) findViewById(R.id.list);
 
         // Get list of all installed apps
         final PackageManager pm = getPackageManager();
