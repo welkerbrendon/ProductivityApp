@@ -8,13 +8,15 @@
             android:id="@+id/checkBox"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_margin="12dp" />
+            android:layout_margin="12dp"
+            android:focusable="false"/>
 
         <TextView
             android:id="@+id/txt"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:layout_marginTop="14dp"/>
 
     </TableRow>
 </TableLayout>

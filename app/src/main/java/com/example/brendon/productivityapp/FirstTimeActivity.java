@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.app.Activity;
@@ -26,29 +27,17 @@ import java.util.List;
  *     and choose which apps are deemed "unproductive"
  * </p>
  */
-public class FirstTimeActivity extends ActionBarActivity {
+public class FirstTimeActivity extends ActionBarActivity implements
+        android.widget.CompoundButton.OnCheckedChangeListener{
 
     ListView lv;
     ArrayList<AppSelection> appSelectionList;
     CustomList appSelectionAdapter;
 
-    List<String> appNames = new ArrayList<>();
-    List<Drawable> appLogos = new ArrayList<>();
-
-    /**
-     * This function is instantiated when the Activity is created.
-     * <p>
-     *     This function makes a list of the apps with their icons installed on the phone
-     *     and displays them to the screen.
-     * </p>
-     * @param savedInstanceState
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_single);
-
-        lv = (ListView) findViewById(R.id.list);
 
         // Get list of all installed apps
         final PackageManager pm = getPackageManager();
@@ -73,14 +62,19 @@ public class FirstTimeActivity extends ActionBarActivity {
                     continue;
                 }
 
-                appNames.add((String) pm.getApplicationLabel(ai));
-                appLogos.add(ai.loadIcon(pm));
+                AppSelection appSelection = new AppSelection();
+
+                appSelection.setAppIcon(ai.loadIcon(pm));
+                appSelection.setPackageName((String) pm.getApplicationLabel(ai));
+
+                appSelectionList.add(appSelection);
             }
         }
 
-        CustomList adapter = new CustomList(FirstTimeActivity.this, appNames, appLogos);
-        ListView list=(ListView)findViewById(R.id.list);
-        list.setAdapter(adapter);
+        lv = (ListView) findViewById(R.id.list);
+        appSelectionAdapter = new CustomList(appSelectionList, this);
+        lv.setAdapter(appSelectionAdapter);
+
     }
 
     public List<String> getUnproductiveAppsList() {
@@ -93,4 +87,17 @@ public class FirstTimeActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        int pos = lv.getPositionForView(compoundButton);
+        if (pos != ListView.INVALID_POSITION) {
+            AppSelection a = appSelectionList.get(pos);
+            a.setChecked(b);
+
+            Toast.makeText(
+                    this,
+                    "Clicked on Planet: " + a.getPackageName() + ". State: is "
+                            + b, Toast.LENGTH_SHORT).show();
+        }
+    }
 }
