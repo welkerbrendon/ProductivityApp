@@ -68,4 +68,11 @@ public class GoalView extends AppCompatActivity {
 
         startActivity(intent);
     }
+
+
+    public void startSettingsActivity(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+
+        startActivity(intent);
+    }
 }

@@ -37,6 +37,8 @@ public class EditGoalActivity extends AppCompatActivity {
     }
 
     public void startGoalView(View view) {
-        Intent intent = new Intent();
+        Intent intent = new Intent(this, GoalView.class);
+
+        startActivity(intent);
     }
 }
