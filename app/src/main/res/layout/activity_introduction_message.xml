@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.brendon.productivityapp.IntroductionMessageActivity">
+
+    <TextView
+        android:textStyle="bold"
+        android:id="@+id/viewWelcomeFirstLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textAlignment="center"
+        android:text="Welcome to the Productivity App!"/>
+
+    <TextView
+        android:id="@+id/viewWelcomeMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewWelcomeFirstLine"
+        android:layout_marginTop="50dp"
+        android:textAllCaps="false"
+        android:lines="5"
+        android:text="@string/introduction_message"/>
+
+    <Button
+        android:id="@+id/buttonAdvanceToFirstTimeActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:onClick=""/>
+
+</RelativeLayout>
