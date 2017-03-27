@@ -20,9 +20,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onButtonClick"
-        android:text="OK"
+        android:onClick="startEditGoalActivity"
+        android:text="Next"
         android:visibility="visible"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="70dp" />
+        android:layout_alignParentStart="true" />
 </android.support.constraint.ConstraintLayout>

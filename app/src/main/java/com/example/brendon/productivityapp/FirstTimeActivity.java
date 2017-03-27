@@ -79,12 +79,10 @@ public class FirstTimeActivity extends Activity {
         return null;
     }
 
-    public void onButtonClick(View view) {
+    public void startEditGoalActivity(View view) {
+        Intent intent = new Intent(this, EditGoalActivity.class);
 
-        // DO THE STUFF
-
-
-        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 }

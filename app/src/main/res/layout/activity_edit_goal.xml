@@ -1,35 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context="com.example.brendon.productivityapp.EditGoalActivity">
 
-    <TextView
-        android:id="@+id/textViewPromptGoal"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="Please enter new goal:" />
+        tools:context="com.example.brendon.productivityapp.EditGoalActivity"
+        android:id="@+id/linearLayout">
 
-    <EditText
-        android:id="@+id/editHours"
+        <TextView
+            android:id="@+id/textViewPromptGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Please enter new goal:" />
+
+        <EditText
+            android:id="@+id/editHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:layout_below="@+id/textViewPromptGoal"
+            android:layout_centerHorizontal="true"
+            android:hint="Hours" />
+
+        <EditText
+            android:id="@+id/editMinutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:layout_toRightOf="@+id/editHours"
+            android:layout_centerHorizontal="true"
+            android:hint="Minutes" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonAdvanceToGoalView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:layout_below="@+id/textViewPromptGoal"
-        android:layout_centerHorizontal="true"
-        android:hint="Hours" />
+        android:onClick="startGoalView"
+        android:textAllCaps="false"
+        android:text="Back to Goal View"
+        android:layout_below="@+id/linearLayout" />
 
-    <EditText
-        android:id="@+id/editMinutes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:layout_toRightOf="@+id/editHours"
-        android:layout_centerHorizontal="true"
-        android:hint="Minutes" />
+</RelativeLayout>
 
-</LinearLayout>
+
+
+
+
+
+
