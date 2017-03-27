@@ -6,9 +6,10 @@
         <item>Week View</item>
         <item>Change Date</item>
     </string-array>
-    <string name="introduction_message">"We will help you:
+    <string name="introduction_message">We will help you:
 Indicate which apps you would like to spend less time on
 Set a goal for how much maximum time you want to spend on all of those apps
 Edit settings related to your goal
-And set a plan for you to achieve your goal."</string>
+And set a plan for you to achieve your goal.</string>
+    <string name="plan_explanation_message">Enter your plan of how you will accomplish your goal</string>
 </resources>

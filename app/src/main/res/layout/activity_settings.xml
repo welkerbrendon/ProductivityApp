@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context="com.example.brendon.productivityapp.SettingsActivity">
 
+    <Button
+        android:id="@+id/buttonAdvanceToEditPlan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="Edit Plan"/>
+
     <ListView
         android:id="@+id/list"
         style="@style/Widget.AppCompat.ListView.DropDown"

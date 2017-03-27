@@ -38,7 +38,8 @@
         <activity android:name=".GoalView" />
         <activity android:name=".EditGoalActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".IntroductionMessageActivity"></activity>
+        <activity android:name=".IntroductionMessageActivity" />
+        <activity android:name=".EditPlan"></activity>
     </application>
 
 </manifest>
