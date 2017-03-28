@@ -12,7 +12,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
     <EditText
-        android:id="@+id/YourGoal"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -27,7 +26,6 @@
         android:inputType="time" />
 
     <EditText
-        android:id="@+id/editText3"
         android:layout_width="171dp"
         android:layout_height="wrap_content"
         android:ems="10"

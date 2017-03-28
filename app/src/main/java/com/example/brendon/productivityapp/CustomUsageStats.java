@@ -9,10 +9,12 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This class enables the app to gather UsageStats from
@@ -23,6 +25,7 @@ import java.util.List;
 
 public class CustomUsageStats {
     private static final String TAG = "CustomUsageStats";
+    static SimpleDateFormat complete = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.US);
 
     @SuppressWarnings("ResourceType")
     //Creating the userstats manager
@@ -54,17 +57,16 @@ public class CustomUsageStats {
     }
 
     //Getting data usage
-    public List<UsageStats> getUsageStatsListByDate(Context context, Date date){
+    public static List<UsageStats> getUsageStatsListByDate(Context context, Calendar date, int intervalType){
         UsageStatsManager usm = getUsageStatsManager(context);
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        long endTime = calendar.getTimeInMillis();
-        calendar.add(Calendar.DAY_OF_YEAR, -1);
-        long startTime = calendar.getTimeInMillis();
+        long endTime = date.getTimeInMillis();
+
+        long startTime = date.getTimeInMillis() - 1800000;
 
         // For testing purposes
-        List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+        List<UsageStats> usageStatsList = usm.queryUsageStats(intervalType,
+                startTime, endTime);
         if (usageStatsList.isEmpty()) {
             Log.d(TAG, "Nothing in usageStatsList");
         }
@@ -72,13 +74,15 @@ public class CustomUsageStats {
             Log.d(TAG, "Loaded queryUsageStats correctly");
         }
 
+        Log.d("Range time", complete.format(startTime) + " - " + complete.format(endTime));
         return usageStatsList;
     }
 
     //Displaying the apps used on list view
-    public void printOnListView(Context context, ListView listView){
+    public static void printOnListView(Context context, ListView listView, Calendar date,
+                                       int intervalType){
 
-        List<UsageStats> statsList = getUsageStatsList(context);
+        List<UsageStats> statsList = getUsageStatsListByDate(context, date, intervalType);
 
         List<String> appNames = new ArrayList<String>();
 
@@ -102,7 +106,7 @@ public class CustomUsageStats {
 
                     System.out.println(appName);
                     appNames.add(appName + " TIME SPENT: "
-                            + statsList.get(i).getTotalTimeInForeground() / 100 + "s");
+                            + statsList.get(i).getTotalTimeInForeground() / 1000 + "s");
                 }
             }
         }
