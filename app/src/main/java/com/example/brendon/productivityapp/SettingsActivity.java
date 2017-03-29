@@ -1,7 +1,9 @@
 package com.example.brendon.productivityapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -22,5 +24,11 @@ public class SettingsActivity extends AppCompatActivity {
         CustomListCheckText adapter = new CustomListCheckText(SettingsActivity.this, strings);
         ListView list=(ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
+    }
+
+    public void goHome(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+
+        startActivity(intent);
     }
 }

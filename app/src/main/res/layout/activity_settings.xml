@@ -36,7 +36,8 @@
         android:layout_width="383dp"
         android:layout_height="50dp"
         android:text="Done"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:onClick="goHome"/>
 
 
 </RelativeLayout>
