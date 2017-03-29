@@ -415,6 +415,8 @@ public class StatsActivity extends AppCompatActivity {
                 chart.invalidate();
             }
         }
+        // I just added this line because there was a bug with github, so I have to pretend
+        // I'm coding
         else {
             LineData data = new LineData();
 
