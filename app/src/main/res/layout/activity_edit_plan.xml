@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textEditorPlan"
         android:textAllCaps="false"
-        android:text="Home Screen"
+        android:text="Done"
         android:onClick="startMainActivity"/>
 
 </RelativeLayout>

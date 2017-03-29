@@ -31,14 +31,4 @@
         android:text="Update Goal"
         android:textAllCaps="false"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:layout_below="@+id/buttonChangeGoal"
-        android:layout_centerHorizontal="true"
-        android:text="Edit Settings"
-        android:onClick="startSettingsActivity"
-        android:id="@+id/button3" />
-
 </RelativeLayout>

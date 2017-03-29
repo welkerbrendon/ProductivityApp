@@ -29,4 +29,12 @@
         android:layout_below="@+id/textFieldMessage"
         android:text="Send SMS"/>
 
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/buttonSendSMS"
+        android:layout_below="@+id/buttonSendSMS"
+        android:text="Back" />
+
 </RelativeLayout>
