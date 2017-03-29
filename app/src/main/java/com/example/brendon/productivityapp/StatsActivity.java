@@ -1,12 +1,17 @@
 package com.example.brendon.productivityapp;
 
+import android.app.DatePickerDialog;
 import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
+import android.os.UserManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -24,7 +29,11 @@ import java.util.Locale;
 
 public class StatsActivity extends AppCompatActivity {
 
-    Calendar date;
+    private Calendar date;
+    private int intervalType;
+    static SimpleDateFormat daily = new SimpleDateFormat("EEE, d MMM", Locale.US);
+    static SimpleDateFormat weekly = new SimpleDateFormat("MMMM dd", Locale.US);
+    static SimpleDateFormat complete = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.US);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,82 +41,186 @@ public class StatsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stats);
 
         date = Calendar.getInstance();
+        //Setting time to 12 PM
+        date.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH),
+                date.get(Calendar.DAY_OF_MONTH), 1, 0, 0);
+        Log.d("Current Time", complete.format(date.getTime()));
 
-        updatePieChart(date);
-
-        final Spinner spinner = (Spinner) findViewById(R.id.intervals_spinner);
+        //Setting spinner content
+        final CustomSpinner spinner = (CustomSpinner) findViewById(R.id.intervals_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.interval_array, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        if (spinner != null) {
+            spinner.setAdapter(adapter);
+        }
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //DatePicker Listener
+        final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+
             @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                date.set(Calendar.YEAR, year);
+                date.set(Calendar.MONTH, monthOfYear);
+                date.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                String imc_met = spinner.getSelectedItem().toString();
+                TextView tv1 = (TextView)findViewById(R.id.textView);
+                String formattedDate = daily.format(date.getTime());
 
-                if (imc_met.equals("Day View")) {
+                if (tv1 != null) {
+                    tv1.setText(formattedDate);
+                }
 
-                };
+                intervalType = UsageStatsManager.INTERVAL_DAILY;
+                updatePieChart(date, intervalType);
+                fillListView();
+
+                spinner.setSelection(0);
 
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
+        };
 
-        });
+        //Spinner Listener
+        if (spinner != null) {
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
+                    String selectedItem = spinner.getSelectedItem().toString();
+
+                    if (selectedItem.equals("Day View")) {
+
+                        //Changing textview.text
+                        TextView tv1 = (TextView)findViewById(R.id.textView);
+                        String formattedDate = daily.format(date.getTime());
+
+                        if (tv1 != null) {
+                            tv1.setText(formattedDate);
+                        }
+
+                        intervalType = UsageStatsManager.INTERVAL_DAILY;
+                        updatePieChart(date, intervalType);
+                        fillListView();
+                    }
+                    else if (selectedItem.equals("Week View")) {
+
+                        //Changing textview.text
+                        TextView tv1 = (TextView)findViewById(R.id.textView);
+                        String formattedDateLast = weekly.format(date.getTime());
+                        date.add(Calendar.DAY_OF_YEAR, -7);
+                        String formattedDateFirst = weekly.format(date.getTime());
+                        date.add(Calendar.DAY_OF_YEAR, 7);
+
+                        if (tv1 != null) {
+                            tv1.setText(formattedDateFirst + " - " + formattedDateLast);
+                        }
+
+                        intervalType = UsageStatsManager.INTERVAL_WEEKLY;
+                        updatePieChart(date, intervalType);
+                        fillListView();
+                    }
+                    else if (selectedItem.equals("Change Date")) {
+
+                        new DatePickerDialog(StatsActivity.this, dateSetListener, date
+                                .get(Calendar.YEAR), date.get(Calendar.MONTH),
+                                date.get(Calendar.DAY_OF_MONTH)).show();
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // your code here
+                }
+            });
+        }
 
     }
 
     public void advanceDate(View view) {
 
-        date.add(Calendar.DAY_OF_YEAR, 1);
-        TextView tv1 = (TextView)findViewById(R.id.textView);
+        TextView tv1 = (TextView) findViewById(R.id.textView);
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        String formattedDate = df.format(date.getTime());
+        if (intervalType == UsageStatsManager.INTERVAL_DAILY) {
 
-        tv1.setText(formattedDate);
-        Log.d("I DON'T NEED A TAG", formattedDate);
+            date.add(Calendar.DAY_OF_YEAR, 1);
+            String formattedDate = daily.format(date.getTime());
 
-        updatePieChart(date);
+            if (tv1 != null) {
+                tv1.setText(formattedDate);
+            }
+
+            Log.d("DAILY INCREASE", formattedDate);
+        }
+
+        if (intervalType == UsageStatsManager.INTERVAL_WEEKLY) {
+            date.add(Calendar.DAY_OF_YEAR, 7);
+
+            String formattedDateLast = weekly.format(date.getTime());
+            date.add(Calendar.DAY_OF_YEAR, -7);
+            String formattedDateFirst = weekly.format(date.getTime());
+            date.add(Calendar.DAY_OF_YEAR, 7);
+
+            if (tv1 != null) {
+                tv1.setText(formattedDateFirst + " - " + formattedDateLast);
+            }
+
+            Log.d("WEEKLY INCREASE", formattedDateFirst + " - " + formattedDateLast);
+        }
+
+        updatePieChart(date, intervalType);
+        fillListView();
     }
 
     public void decreaseDate(View view) {
 
-        date.add(Calendar.DAY_OF_YEAR, -1);
-        TextView tv1 = (TextView)findViewById(R.id.textView);
+        TextView tv1 = (TextView) findViewById(R.id.textView);
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        String formattedDate = df.format(date.getTime());
+        if (intervalType == UsageStatsManager.INTERVAL_DAILY) {
+            date.add(Calendar.DAY_OF_YEAR, -1);
 
-        tv1.setText(formattedDate);
-        Log.d("I DON'T NEED A TAG", formattedDate);
+            String formattedDate = daily.format(date.getTime());
 
-        updatePieChart(date);
+            if (tv1 != null) {
+                tv1.setText(formattedDate);
+            }
+
+            Log.d("DAILY DECREASE", formattedDate);
+        }
+        else if (intervalType == UsageStatsManager.INTERVAL_WEEKLY) {
+            date.add(Calendar.DAY_OF_YEAR, -7);
+
+            String formattedDateLast = weekly.format(date.getTime());
+            date.add(Calendar.DAY_OF_YEAR, -7);
+            String formattedDateFirst = weekly.format(date.getTime());
+            date.add(Calendar.DAY_OF_YEAR, 7);
+
+            if (tv1 != null) {
+                tv1.setText(formattedDateFirst + " - " + formattedDateLast);
+            }
+
+            Log.d("WEEKLY DECREASE", formattedDateFirst + " - " + formattedDateLast);
+        }
+
+        updatePieChart(date, intervalType);
+        fillListView();
     }
 
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-    }
-
-    private void updatePieChart(Calendar date) {
+    private void updatePieChart(Calendar date, int intervalType) {
         CustomUsageStats usageStats = new CustomUsageStats();
-        List<UsageStats> usageStatsList = usageStats.getUsageStatsListByDate(this, date.getTime());
+        List<UsageStats> usageStatsList = usageStats.getUsageStatsListByDate(this, date,
+                intervalType);
 
         PieChart chart = (PieChart) findViewById(R.id.chart);
         List<PieEntry> entries = new ArrayList<>();
 
-        chart.setUsePercentValues(true);
+        if (chart != null) {
+            chart.setUsePercentValues(true);
+        }
 
         for (int i = 0; i < usageStatsList.size(); i++) {
             if (usageStatsList.get(i).getTotalTimeInForeground() != 0) {
@@ -123,7 +236,21 @@ public class StatsActivity extends AppCompatActivity {
 
         set.setColors(new int[] {R.color.colorPrimaryDark, R.color.colorAccent}, this);
         PieData data = new PieData(set);
-        chart.setData(data);
-        chart.invalidate();
+
+        if (chart != null) {
+            chart.setData(data);
+        }
+
+        if (chart != null) {
+            chart.invalidate();
+        }
+    }
+
+    private void fillListView() {
+
+        ListView listView = (ListView) findViewById(R.id.appList);
+
+        CustomUsageStats.printOnListView(this, listView, date, intervalType);
+
     }
 }

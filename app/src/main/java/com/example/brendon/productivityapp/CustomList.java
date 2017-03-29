@@ -69,12 +69,13 @@ public class CustomList extends ArrayAdapter<AppSelection>{
         public CheckBox chkBox;
     }
 
-    public View getView(int position, View convertView, ViewGroupCompat parent) {
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
 
         AppSelectionHolder holder = new AppSelectionHolder();
 
-        if (convertView == null) {
+        if (v == null || v.getTag() == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.list_single, null);
 

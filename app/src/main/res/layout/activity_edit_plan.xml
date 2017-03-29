@@ -24,7 +24,6 @@
         android:hint="Enter Plan"/>
 
     <Button
-        android:id="@+id/buttonAdvanceToMainActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textEditorPlan"

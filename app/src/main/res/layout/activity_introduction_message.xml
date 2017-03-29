@@ -16,7 +16,6 @@
         android:text="Welcome to the Productivity App!"/>
 
     <TextView
-        android:id="@+id/viewWelcomeMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/viewWelcomeFirstLine"
@@ -26,7 +25,6 @@
         android:text="@string/introduction_message"/>
 
     <Button
-        android:id="@+id/buttonAdvanceToFirstTimeActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Next"
