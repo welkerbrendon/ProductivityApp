@@ -38,6 +38,7 @@
         android:layout_below="@+id/buttonChangeGoal"
         android:layout_centerHorizontal="true"
         android:text="Edit Settings"
-        android:onClick="startSettingsActivity" />
+        android:onClick="startSettingsActivity"
+        android:id="@+id/button3" />
 
 </RelativeLayout>
