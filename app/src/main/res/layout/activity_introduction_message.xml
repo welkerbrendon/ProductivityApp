@@ -7,22 +7,25 @@
     tools:context="com.example.brendon.productivityapp.IntroductionMessageActivity">
 
     <TextView
-        android:textStyle="bold"
         android:id="@+id/viewWelcomeFirstLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:text="Welcome to the Productivity App!"
         android:textAlignment="center"
-        android:text="Welcome to the Productivity App!"/>
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/viewWelcomeFirstLine"
         android:layout_marginTop="50dp"
-        android:textAllCaps="false"
         android:lines="5"
-        android:text="@string/introduction_message"/>
+        android:text="We are very happy that you have decided to use this recourse to better manage your time. We first would like to help you learn how to use this app by walking you through setting things up for your first time. Click Next when you are ready to begin."
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:id="@+id/textView2" />
 
     <Button
         android:layout_width="wrap_content"
@@ -31,5 +34,14 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:onClick=""/>
+
+    <Button
+        android:id="@+id/Next1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:text="Next" />
 
 </RelativeLayout>

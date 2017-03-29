@@ -31,13 +31,14 @@ public class FirstTimeActivity extends ActionBarActivity implements
         android.widget.CompoundButton.OnCheckedChangeListener{
 
     ListView lv;
-    ArrayList<AppSelection> appSelectionList;
+    List<AppSelection> appSelectionList = new ArrayList<>();
+    List<String> unproductiveApps = new ArrayList<>();
     CustomList appSelectionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_single);
+        setContentView(R.layout.activity_first_time);
 
         // Get list of all installed apps
         final PackageManager pm = getPackageManager();
@@ -78,7 +79,7 @@ public class FirstTimeActivity extends ActionBarActivity implements
     }
 
     public List<String> getUnproductiveAppsList() {
-        return null;
+        return unproductiveApps;
     }
 
     public void startEditGoalActivity(View view) {
@@ -87,6 +88,7 @@ public class FirstTimeActivity extends ActionBarActivity implements
         startActivity(intent);
     }
 
+
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         int pos = lv.getPositionForView(compoundButton);
@@ -94,10 +96,20 @@ public class FirstTimeActivity extends ActionBarActivity implements
             AppSelection a = appSelectionList.get(pos);
             a.setChecked(b);
 
-            Toast.makeText(
-                    this,
-                    "Clicked on Planet: " + a.getPackageName() + ". State: is "
-                            + b, Toast.LENGTH_SHORT).show();
+
+            // Add or remove items if appropriate
+            if (b == true) {
+                if (!unproductiveApps.contains(a.getPackageName())) {
+                    unproductiveApps.add(a.getPackageName());
+                    Toast.makeText(this, a.getPackageName() + " was added to the list.", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                if (unproductiveApps.contains(a.getPackageName())) {
+                    unproductiveApps.remove(unproductiveApps.indexOf(a.getPackageName()));
+                    Toast.makeText(this, a.getPackageName() + " was removed from the list.", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 }

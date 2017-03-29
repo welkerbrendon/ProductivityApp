@@ -14,14 +14,15 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginStart="48dp"
-        android:background="@color/colorPrimary"
-        android:textAllCaps="false"
-        android:text="Send Data"
-        android:textSize="20sp"
-        android:layout_below="@+id/SetApps"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="70dp" />
+        android:layout_below="@+id/SetApps"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="70dp"
+        android:background="?attr/colorButtonNormal"
+        android:text="Send Data"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/Plan"
@@ -31,10 +32,10 @@
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/SendData"
         android:layout_marginEnd="43dp"
-        android:background="@color/colorPrimary"
-        android:textAllCaps="false"
-        android:fontFamily="sans-serif"
+        android:background="?attr/colorButtonNormal"
         android:text="My Plan"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
         android:textSize="20sp" />
 
     <Button
@@ -44,11 +45,11 @@
         android:layout_height="50dp"
         android:layout_alignStart="@+id/SendData"
         android:layout_centerVertical="true"
-        android:background="@color/colorPrimary"
-        android:textAllCaps="false"
-        android:fontFamily="serif"
+        android:background="?attr/colorButtonNormal"
         android:text="Set Apps"
         android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
         android:textSize="20sp" />
 
     <Button
@@ -58,10 +59,11 @@
         android:layout_height="50dp"
         android:layout_alignStart="@+id/Plan"
         android:layout_alignTop="@+id/SetApps"
-        android:background="@color/colorPrimary"
+        android:background="?attr/colorButtonNormal"
         android:onClick="startSettingsActivity"
         android:text="Settings"
         android:textAllCaps="false"
+        android:textColor="@android:color/black"
         android:textSize="20sp" />
 
     <Button
@@ -72,11 +74,11 @@
         android:layout_above="@+id/SetApps"
         android:layout_alignStart="@+id/SetApps"
         android:layout_marginBottom="71dp"
-        android:background="@color/colorPrimary"
-        android:fontFamily="sans-serif"
+        android:background="?attr/colorButtonNormal"
         android:text="My Goal"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="@android:color/black"
         android:textSize="20sp"
         android:visibility="visible" />
 
@@ -84,14 +86,14 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:textAllCaps="false"
-        android:fontFamily="sans-serif"
-        android:text="Usage Stats"
-        android:textSize="20sp"
         android:layout_alignBottom="@+id/Goal"
         android:layout_alignLeft="@id/Settings"
-        android:onClick="startStatsActivity"/>
+        android:background="?attr/colorButtonNormal"
+        android:onClick="startStatsActivity"
+        android:text="Usage Stats"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
 
     <Button
         android:layout_width="wrap_content"
