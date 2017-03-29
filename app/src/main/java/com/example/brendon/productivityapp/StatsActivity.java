@@ -397,21 +397,35 @@ public class StatsActivity extends AppCompatActivity {
             day++;
         }
 
-        LineDataSet set = new LineDataSet (entries, "Productivity");
+        if (!entries.isEmpty()) {
+            LineDataSet set = new LineDataSet(entries, "Productivity");
 
-        //Setting colors
+            //Setting colors
 
-        set.setColors(new int[] {R.color.colorPrimaryDark, R.color.colorAccent}, this);
-        LineData data = new LineData(set);
-        data.setValueTextSize(20);
+            set.setColors(new int[]{R.color.colorPrimaryDark, R.color.colorAccent}, this);
+            LineData data = new LineData(set);
+            data.setValueTextSize(20);
 
-        if (chart != null) {
-            chart.setData(data);
+            if (chart != null) {
+                chart.setData(data);
+            }
+
+
+            if (chart != null) {
+                chart.invalidate();
+            }
         }
+        else {
+            LineData data = new LineData();
+
+            if (chart != null) {
+                chart.setData(data);
+            }
 
 
-        if (chart != null) {
-            chart.invalidate();
+            if (chart != null) {
+                chart.invalidate();
+            }
         }
     }
 
