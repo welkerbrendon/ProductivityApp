@@ -9,12 +9,16 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.github.mikephil.charting.charts.PieChart;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * This class enables the app to gather UsageStats from
@@ -29,7 +33,7 @@ public class CustomUsageStats {
 
     @SuppressWarnings("ResourceType")
     //Creating the userstats manager
-    private static UsageStatsManager getUsageStatsManager(Context context){
+    public static UsageStatsManager getUsageStatsManager(Context context){
 
         UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
         return usm;
@@ -56,17 +60,25 @@ public class CustomUsageStats {
         return usageStatsList;
     }
 
-    //Getting data usage
-    public static List<UsageStats> getUsageStatsListByDate(Context context, Calendar date, int intervalType){
+    //Getting data usage by date
+    public static List<UsageStats> getUsageStatsListByDate(Context context, Calendar date){
         UsageStatsManager usm = getUsageStatsManager(context);
 
-        long endTime = date.getTimeInMillis();
+        Calendar startTime = Calendar.getInstance();
 
-        long startTime = date.getTimeInMillis() - 1800000;
+        startTime.setTime(date.getTime());
+        startTime.add(Calendar.DAY_OF_YEAR, - 1);
+        startTime.add(Calendar.SECOND, 1);
 
-        // For testing purposes
-        List<UsageStats> usageStatsList = usm.queryUsageStats(intervalType,
-                startTime, endTime);
+        List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
+                startTime.getTimeInMillis(), date.getTimeInMillis());
+
+        int debug = 0;
+        //Just debugging stuff
+        for (int i = 0; i < usageStatsList.size(); i++) {
+            debug = 1;
+        }
+
         if (usageStatsList.isEmpty()) {
             Log.d(TAG, "Nothing in usageStatsList");
         }
@@ -74,24 +86,64 @@ public class CustomUsageStats {
             Log.d(TAG, "Loaded queryUsageStats correctly");
         }
 
-        Log.d("Range time", complete.format(startTime) + " - " + complete.format(endTime));
+        Log.d("Range time", complete.format(startTime.getTimeInMillis()) + " - " +
+                complete.format(date.getTimeInMillis()));
+
         return usageStatsList;
     }
 
     //Displaying the apps used on list view
-    public static void printOnListView(Context context, ListView listView, Calendar date,
-                                       int intervalType){
-
-        List<UsageStats> statsList = getUsageStatsListByDate(context, date, intervalType);
+    public static void printOnListViewDaily(Context context, ListView listView,
+                                            List<UsageStats> usageStatsList){
 
         List<String> appNames = new ArrayList<String>();
 
-        System.out.println("SIZE: " + statsList.size());
+            System.out.println("SIZE: " + usageStatsList.size());
 
-        for (int i = 0; i < statsList.size(); i++) {
-            if (statsList.get(i).getTotalTimeInForeground() != 0) {
+            for (int i = 0; i < usageStatsList.size(); i++)
+            {
+                if (usageStatsList.get(i).getTotalTimeInForeground() != 0) {
 
-                String packageName = statsList.get(i).getPackageName();
+                    String packageName = usageStatsList.get(i).getPackageName();
+                    PackageManager packageManager = context.getPackageManager();
+                    ApplicationInfo ai;
+                    try {
+                        ai = packageManager.getApplicationInfo(packageName, 0);
+                    }
+                    catch(final PackageManager.NameNotFoundException e) {
+                        ai = null;
+                    }
+
+                    if (ai != null) {
+                        String appName = (String) packageManager.getApplicationLabel(ai);
+
+                        System.out.println(appName);
+                        appNames.add(appName + " TIME SPENT: "
+                                + usageStatsList.get(i).getTotalTimeInForeground() / 1000 + "s");
+                    }
+                }
+
+            }
+
+
+        ArrayAdapter<String> itemsAdapter =
+                new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, appNames);
+
+        listView.setAdapter(itemsAdapter);
+    }
+
+    public static void printOnListViewWeekly(Context context, ListView listView,
+                                             HashMap<String, Long> usageMap){
+
+        List<String> appNames = new ArrayList<String>();
+
+        System.out.println("SIZE: " + usageMap.size());
+
+        for (HashMap.Entry<String, Long> entry : usageMap.entrySet())
+        {
+            if (entry.getValue() > 0) {
+
+                String packageName = entry.getKey();
                 PackageManager packageManager = context.getPackageManager();
                 ApplicationInfo ai;
                 try {
@@ -106,16 +158,17 @@ public class CustomUsageStats {
 
                     System.out.println(appName);
                     appNames.add(appName + " TIME SPENT: "
-                            + statsList.get(i).getTotalTimeInForeground() / 1000 + "s");
+                            + entry.getValue() / 1000 + "s");
                 }
             }
+
         }
+
 
         ArrayAdapter<String> itemsAdapter =
                 new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, appNames);
 
         listView.setAdapter(itemsAdapter);
     }
-
 
 }

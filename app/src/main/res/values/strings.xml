@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">ProductivityApp</string>
     <string name="activity_messaging_name">Messaging</string>
-    <string-array name="interval_array">
+    <string-array name="interval_array1">
         <item>Day View</item>
+        <item>Week View</item>
+        <item>Change Date</item>
+    </string-array>
+    <string-array name="interval_array2">
         <item>Week View</item>
         <item>Change Date</item>
     </string-array>
