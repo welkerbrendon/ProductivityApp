@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         String json = settingsPref.getString("Settings", "");
         Settings settings = gson.fromJson(json, Settings.class);
 
-        //scheduleAlarm();
+        scheduleAlarm();
     }
 
     protected void onPause() {
@@ -93,17 +93,21 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, settingsPref.getString("Settings", toGetJson));
     }
 
-    public void scheduleAlarm(View view) {
+    public void scheduleAlarm() {
         // Make and Intent to send to the AlarmReceiver
         Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+
+        Log.d(TAG, "In scheduleAlarm()");
 
         final PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
                 AlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         long firstKickoffTime = System.currentTimeMillis();
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarm.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                 firstKickoffTime, AlarmManager.INTERVAL_HOUR, pendingIntent);
+
+        Log.d(TAG, "Alarm scheduled");
     }
 
     // Checks if the user has granted permission to the app

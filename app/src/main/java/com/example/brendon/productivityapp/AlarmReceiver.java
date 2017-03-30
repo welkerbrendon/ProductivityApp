@@ -3,6 +3,7 @@ package com.example.brendon.productivityapp;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.util.StringBuilderPrinter;
 import android.widget.Toast;
 
@@ -11,12 +12,13 @@ import android.widget.Toast;
  */
 
 public class AlarmReceiver extends BroadcastReceiver {
+    private static final String TAG = "AlarmReceiver";
     public static final int REQUEST_CODE = 12345;
     public static final String EXTRA_GOAL = "GOAL";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "BroadcastReceived", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "In AlarmReceiver");
 
         Intent i = new Intent(context, TimeTrackingService.class);
         String jsonGoal = intent.getStringExtra(MainActivity.EXTRA_GOAL);

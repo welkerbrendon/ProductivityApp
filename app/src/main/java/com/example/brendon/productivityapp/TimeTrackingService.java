@@ -65,7 +65,7 @@ public class TimeTrackingService extends IntentService {
         //  means that in whatever function we call the workIntent,
         //  we must use setData() to put a JSON string of the Goal we want
         //  to modify.
-
+        Log.d(TAG, "In Service");
         workIntent.getData();
 
 

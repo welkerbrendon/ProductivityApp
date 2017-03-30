@@ -14,9 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="39dp"
         tools:layout_editor_absoluteX="2dp"
-        android:layout_above="@id/button4"
-        >
-
+        android:layout_above="@+id/button4">
     </ListView>
 
     <EditText
