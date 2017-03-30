@@ -136,8 +136,8 @@ public class StatsActivity extends AppCompatActivity {
                         }
                         case "Change Date":
 
-                            new DatePickerDialog(StatsActivity.this, dateSetListener, date
-                                    .get(Calendar.YEAR), date.get(Calendar.MONTH),
+                            new DatePickerDialog(StatsActivity.this, dateSetListener,
+                                    date.get(Calendar.YEAR), date.get(Calendar.MONTH),
                                     date.get(Calendar.DAY_OF_MONTH)).show();
                             break;
                     }
@@ -155,22 +155,30 @@ public class StatsActivity extends AppCompatActivity {
     public void advanceDate(View view) {
 
         TextView tv1 = (TextView) findViewById(R.id.textView);
+        Calendar currentDate = Calendar.getInstance();
 
         if (intervalType == UsageStatsManager.INTERVAL_DAILY) {
 
-            date.add(Calendar.DAY_OF_YEAR, 1);
-            String formattedDate = daily.format(date.getTime());
+            if (currentDate.get(Calendar.DAY_OF_YEAR) > date.get(Calendar.DAY_OF_YEAR)) {
+                date.add(Calendar.DAY_OF_YEAR, 1);
+                String formattedDate = daily.format(date.getTime());
 
-            if (tv1 != null) {
-                tv1.setText(formattedDate);
+                if (tv1 != null) {
+                    tv1.setText(formattedDate);
+                }
+
+                Log.d("DAILY INCREASE", formattedDate);
             }
-
-            Log.d("DAILY INCREASE", formattedDate);
         }
 
         if (intervalType == UsageStatsManager.INTERVAL_WEEKLY) {
 
             date.add(Calendar.WEEK_OF_YEAR, 1);
+
+            if (date.get(Calendar.DAY_OF_YEAR) > currentDate.get(Calendar.DAY_OF_YEAR)) {
+                date.add(Calendar.WEEK_OF_YEAR, -1);
+                date.set(Calendar.DAY_OF_YEAR,  currentDate.get(Calendar.DAY_OF_YEAR));
+            }
             String formattedDateLast = weekly.format(date.getTime());
             date.add(Calendar.WEEK_OF_YEAR, -1);
             String formattedDateFirst = weekly.format(date.getTime());
@@ -346,6 +354,11 @@ public class StatsActivity extends AppCompatActivity {
         //Setting colors
 
         set.setColors(new int[] {R.color.colorPrimaryDark, R.color.colorAccent}, this);
+
+        //Setting radius
+        chart.setHoleRadius(0);
+        chart.setTransparentCircleRadius(0);
+
         PieData data = new PieData(set);
 
         if (chart != null) {
