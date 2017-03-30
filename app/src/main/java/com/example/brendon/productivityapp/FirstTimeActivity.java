@@ -4,6 +4,7 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -17,6 +18,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.app.Activity;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +32,8 @@ import java.util.List;
  */
 public class FirstTimeActivity extends ActionBarActivity implements
         android.widget.CompoundButton.OnCheckedChangeListener{
+
+    public static final String PREFS_NAME = "unproductiveAppsList";
 
     ListView lv;
     List<AppSelection> appSelectionList = new ArrayList<>();
@@ -111,5 +116,21 @@ public class FirstTimeActivity extends ActionBarActivity implements
                 }
             }
         }
+    }
+
+    private void onButtonClick() {
+        Gson gson = new Gson();
+        String json = gson.toJson(appSelectionList);
+
+        SharedPreferences settingsPref = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor settingEditor = settingsPref.edit();
+
+        settingEditor.putString("Unproductive Apps List", json);
+
+        Toast.makeText(this, "List saved to shared preferences.", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(this, MainActivity.class);
+
+        startActivity(intent);
     }
 }
