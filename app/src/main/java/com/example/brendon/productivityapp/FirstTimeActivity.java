@@ -121,7 +121,7 @@ public class FirstTimeActivity extends ActionBarActivity implements
 
     public void onButtonClick(View view) {
         Gson gson = new Gson();
-        String json = gson.toJson(appSelectionList);
+        String json = gson.toJson(unproductiveApps);
 
         SharedPreferences settingsPref = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor settingEditor = settingsPref.edit();
