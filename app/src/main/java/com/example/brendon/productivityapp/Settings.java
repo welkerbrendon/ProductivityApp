@@ -1,5 +1,11 @@
 package com.example.brendon.productivityapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+import com.google.gson.Gson;
+import static com.example.brendon.productivityapp.MainActivity.TAG;
+
 /**
  * This class is a collection of the different
  * options a user may select to help with
@@ -7,6 +13,7 @@ package com.example.brendon.productivityapp;
  */
 
 public class Settings {
+    public static final String PREFS_NAME = "savedSettings";
     private boolean notifications;
     private boolean weeklyGoalReminder;
     private boolean dailyPlanReminder;
@@ -170,4 +177,20 @@ public class Settings {
     public void setFirstTime(boolean firstTime) {
         this.firstTime = firstTime;
     }
+
+    public void saveToSharedPreferences(Context context) {
+
+        // Save settings as a json
+        Gson gson = new Gson();
+        String json = gson.toJson(this);
+
+        //Saving settings in shared preferences
+        SharedPreferences settingsPref = context.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor settingEditor = settingsPref.edit();
+        settingEditor.putString("Settings", json);
+
+        //Commit edits
+        settingEditor.commit();
+    }
+
 }
