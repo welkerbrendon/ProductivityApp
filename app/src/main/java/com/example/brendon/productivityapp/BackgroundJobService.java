@@ -23,7 +23,7 @@ public class BackgroundJobService extends JobService {
         Intent intent = new Intent(this, TimeTrackingService.class);
 
         startService(intent);
-        
+
         return false;
     }
 
