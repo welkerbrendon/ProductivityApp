@@ -4,6 +4,7 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -16,6 +17,8 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.app.Activity;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +33,13 @@ import java.util.List;
 public class FirstTimeActivity extends ActionBarActivity implements
         android.widget.CompoundButton.OnCheckedChangeListener{
 
+    public static final String PREFS_NAME = "Unproductive Apps List";
+
     ListView lv;
     List<AppSelection> appSelectionList = new ArrayList<>();
     List<String> unproductiveApps = new ArrayList<>();
     CustomList appSelectionAdapter;
+    Settings settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +119,7 @@ public class FirstTimeActivity extends ActionBarActivity implements
         }
     }
 
-    private void onButtonClick() {
+    public void onButtonClick(View view) {
         Gson gson = new Gson();
         String json = gson.toJson(appSelectionList);
 
@@ -124,12 +130,6 @@ public class FirstTimeActivity extends ActionBarActivity implements
 
         Toast.makeText(this, "List saved to shared preferences.", Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(this, MainActivity.class);
-
-        startActivity(intent);
-    }
-
-    public void goNext(View view){
         Intent intent;
         if(settings.isFirstTime()){
             intent = new Intent(this, EditGoalActivity.class);
