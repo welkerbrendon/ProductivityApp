@@ -3,6 +3,9 @@ package com.example.brendon.productivityapp;
 import android.app.AlarmManager;
 import android.app.AppOpsManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "savedSettings";
     public static final String EXTRA_GOAL = "GOAL";
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 100;
+    BackgroundJobService backgroundService;
+    private static int jobId = 0;
 
     /**
      * This function will be instantiated when the activity is created.
@@ -63,7 +68,18 @@ public class MainActivity extends AppCompatActivity {
         String json = settingsPref.getString("Settings", "");
         Settings settings = gson.fromJson(json, Settings.class);
 
-        scheduleAlarm();
+        startBackgroundService();
+    }
+
+    public void startBackgroundService() {
+        ComponentName mServiceComponent = new ComponentName(this, BackgroundJobService.class);
+        JobInfo.Builder builder = new JobInfo.Builder(jobId++, mServiceComponent);
+        builder.setMinimumLatency(600 * 1000);
+        builder.setOverrideDeadline(1800 * 1000);
+        builder.setRequiresDeviceIdle(false);
+        builder.setRequiresCharging(false);
+        JobScheduler jobScheduler = (JobScheduler) getApplication().getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        jobScheduler.schedule(builder.build());
     }
 
     protected void onPause() {
@@ -93,22 +109,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, settingsPref.getString("Settings", toGetJson));
     }
 
-    public void scheduleAlarm() {
-        // Make an Intent to send to the AlarmReceiver
-        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
 
-        Log.d(TAG, "In scheduleAlarm()");
-
-        final PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                AlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        long firstKickoffTime = System.currentTimeMillis();
-        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-                firstKickoffTime, AlarmManager.INTERVAL_HOUR, pendingIntent);
-
-        Log.d(TAG, "Alarm scheduled");
-    }
 
     // Checks if the user has granted permission to the app
     private boolean hasPermission() {
@@ -137,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startFirstTimeActivity(View view) {
-        Intent intent = new Intent(this, FirstTimeActivity.class);
+    public void startFirstTime(View view) {
+        Intent intent = new Intent(this, IntroductionMessageActivity.class);
 
         startActivity(intent);
     }
@@ -154,5 +155,19 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+
+    public void startPlanActivity(View view) {
+        Intent intent = new Intent(this, EditPlan.class);
+
+        startActivity(intent);
+    }
+
+    public void startSetApps(View view) {
+        Intent intent = new Intent(this,FirstTimeActivity.class);
+
+        startActivity(intent);
+    }
+
+
 
 }

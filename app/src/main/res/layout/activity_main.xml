@@ -22,7 +22,8 @@
         android:text="Send Data"
         android:textAllCaps="false"
         android:textColor="@android:color/black"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:onClick="startMessageActivity"/>
 
     <Button
         android:id="@+id/Plan"
@@ -36,7 +37,8 @@
         android:text="My Plan"
         android:textAllCaps="false"
         android:textColor="@android:color/black"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:onClick="startPlanActivity"/>
 
     <Button
         android:id="@+id/SetApps"
@@ -50,7 +52,8 @@
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@android:color/black"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:onClick= "startSetApps"/>
 
     <Button
         android:id="@+id/Settings"
@@ -80,7 +83,8 @@
         android:textAllCaps="false"
         android:textColor="@android:color/black"
         android:textSize="20sp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:onClick="startEditGoalActivity"/>
 
     <Button
         style="@style/Widget.AppCompat.Button.Colored"
@@ -101,7 +105,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="21dp"
-        android:onClick="startFirstTimeActivity"
+        android:onClick="startFirstTime"
         android:text="First Time (Test)" />
 
     <Button
