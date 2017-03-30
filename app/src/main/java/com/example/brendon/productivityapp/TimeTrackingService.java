@@ -52,16 +52,24 @@ public class TimeTrackingService extends IntentService {
     private Time unprouctiveTime;
     private Settings settings;
 
-    public TimeTrackingService(Goal userGoal) {
+    public TimeTrackingService() {
         super("TimeTrackingService");
         displayed25 = false;
         displayed50 = false;
         displayed75 = false;
-        theGoal = userGoal;
     }
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
+        // Here, we will need to get the Goal from the workIntent.  This
+        //  means that in whatever function we call the workIntent,
+        //  we must use setData() to put a JSON string of the Goal we want
+        //  to modify.
+        Log.d(TAG, "In Service");
+        workIntent.getData();
+
+
+
         // Get the current (old) unproductive Time from Shared Preferences
         SharedPreferences unproductiveTimePreferences =
                 getSharedPreferences(PREFS_UNPRODUCTIVE_TIME_FILE, 0);

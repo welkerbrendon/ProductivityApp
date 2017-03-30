@@ -1,9 +1,12 @@
 package com.example.brendon.productivityapp;
 
+import android.app.AlarmManager;
 import android.app.AppOpsManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -26,6 +29,7 @@ import com.google.gson.Gson;
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     public static final String PREFS_NAME = "savedSettings";
+    public static final String EXTRA_GOAL = "GOAL";
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 100;
 
     /**
@@ -58,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = settingsPref.getString("Settings", "");
         Settings settings = gson.fromJson(json, Settings.class);
+
+        scheduleAlarm();
     }
 
     protected void onPause() {
@@ -85,6 +91,23 @@ public class MainActivity extends AppCompatActivity {
         settingEditor.commit();
 
         Log.d(TAG, settingsPref.getString("Settings", toGetJson));
+    }
+
+    public void scheduleAlarm() {
+        // Make an Intent to send to the AlarmReceiver
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+
+        Log.d(TAG, "In scheduleAlarm()");
+
+        final PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                AlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        long firstKickoffTime = System.currentTimeMillis();
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                firstKickoffTime, AlarmManager.INTERVAL_HOUR, pendingIntent);
+
+        Log.d(TAG, "Alarm scheduled");
     }
 
     // Checks if the user has granted permission to the app
