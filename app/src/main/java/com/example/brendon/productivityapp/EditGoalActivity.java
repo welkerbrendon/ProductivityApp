@@ -14,6 +14,7 @@ public class EditGoalActivity extends AppCompatActivity {
     TextView editGoalHeader;
     EditText hoursEditor;
     EditText minutesEditor;
+    Settings settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,18 @@ public class EditGoalActivity extends AppCompatActivity {
 
     public void startGoalView(View view) {
         Intent intent = new Intent(this, GoalView.class);
+
+        startActivity(intent);
+    }
+
+    public void goNext(View view){
+        Intent intent;
+        if(settings.isFirstTime()){
+            intent = new Intent(this, SettingsActivity.class);
+        }
+        else{
+            intent = new Intent(this, MainActivity.class);
+        }
 
         startActivity(intent);
     }

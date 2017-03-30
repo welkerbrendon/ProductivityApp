@@ -34,6 +34,7 @@ public class FirstTimeActivity extends ActionBarActivity implements
     List<AppSelection> appSelectionList = new ArrayList<>();
     List<String> unproductiveApps = new ArrayList<>();
     CustomList appSelectionAdapter;
+    Settings settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,5 +112,17 @@ public class FirstTimeActivity extends ActionBarActivity implements
                 }
             }
         }
+    }
+
+    public void goNext(View view){
+        Intent intent;
+        if(settings.isFirstTime()){
+            intent = new Intent(this, EditGoalActivity.class);
+        }
+        else {
+            intent = new Intent(this, MainActivity.class);
+        }
+
+        startActivity(intent);
     }
 }
