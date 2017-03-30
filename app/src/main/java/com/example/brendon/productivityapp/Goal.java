@@ -21,7 +21,6 @@ public class Goal {
      * wants to use on unproductive apps.
      */
     Time time;
-    ArrayList<UsageStats> unproductiveApps; // Here, we shall store our list of unproductive Apps.
 
     public String getPlan() {
         return plan;
@@ -36,14 +35,6 @@ public class Goal {
      */
     public void savePlan() {
 
-    }
-
-    public ArrayList<UsageStats> getUnproductiveApps() {
-        return unproductiveApps;
-    }
-
-    public void setUnproductiveApps(ArrayList<UsageStats> unproductiveApps) {
-        this.unproductiveApps = unproductiveApps;
     }
 
     public Time getTime() {

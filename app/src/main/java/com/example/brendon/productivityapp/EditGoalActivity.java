@@ -21,6 +21,9 @@ public class EditGoalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_goal);
 
+        settings = new Settings();
+        userGoal = new Goal();
+
         editGoalHeader = (TextView) findViewById(R.id.textViewPromptGoal);
         hoursEditor = (EditText) findViewById(R.id.editHours);
         minutesEditor = (EditText) findViewById(R.id.editMinutes);
