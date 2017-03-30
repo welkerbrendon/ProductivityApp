@@ -39,7 +39,7 @@ public class FirstTimeActivity extends ActionBarActivity implements
     List<AppSelection> appSelectionList = new ArrayList<>();
     List<String> unproductiveApps = new ArrayList<>();
     CustomList appSelectionAdapter;
-    Settings settings;
+    Settings settings = new Settings();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,13 +107,11 @@ public class FirstTimeActivity extends ActionBarActivity implements
             if (b == true) {
                 if (!unproductiveApps.contains(a.getPackageName())) {
                     unproductiveApps.add(a.getPackageName());
-                    Toast.makeText(this, a.getPackageName() + " was added to the list.", Toast.LENGTH_SHORT).show();
                 }
             }
             else {
                 if (unproductiveApps.contains(a.getPackageName())) {
                     unproductiveApps.remove(unproductiveApps.indexOf(a.getPackageName()));
-                    Toast.makeText(this, a.getPackageName() + " was removed from the list.", Toast.LENGTH_SHORT).show();
                 }
             }
         }

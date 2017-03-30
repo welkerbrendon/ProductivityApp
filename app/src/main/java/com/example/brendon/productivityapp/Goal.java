@@ -20,7 +20,7 @@ public class Goal {
      * Determines the specific maximum amount of time the user
      * wants to use on unproductive apps.
      */
-    Time time;
+    Time time = new Time();
     ArrayList<UsageStats> unproductiveApps; // Here, we shall store our list of unproductive Apps.
 
     public String getPlan() {

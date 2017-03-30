@@ -6,30 +6,19 @@
     android:layout_height="match_parent"
     tools:context="com.example.brendon.productivityapp.SettingsActivity">
 
-    <ListView
-        android:id="@+id/list"
-        style="@style/Widget.AppCompat.ListView.DropDown"
-        android:layout_width="382dp"
-        android:layout_height="390dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="2dp"
-        android:layout_above="@+id/button4"
-        android:layout_alignParentEnd="true">
-    </ListView>
 
-    <EditText
+    <TextView
         android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/button4"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:lines="2"
         android:text="Please select the settings you would like to use"
-        android:textAlignment="center"
-        android:textSize="18sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         tools:layout_editor_absoluteX="-32dp"
-        tools:layout_editor_absoluteY="-5dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/button4" />
+        tools:layout_editor_absoluteY="-5dp" />
 
     <Button
         android:id="@+id/button4"
@@ -39,5 +28,62 @@
         android:layout_alignParentBottom="true"
         android:onClick="goHome"/>
 
+    <CheckBox
+        android:id="@+id/chk_notifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editText"
+        android:text="Notifications" />
+
+    <CheckBox
+        android:id="@+id/chk_weekly_goal_reminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/chk_notifications"
+        android:text="Weekly Goal Reminder" />
+
+    <CheckBox
+        android:id="@+id/chk_daily_plan_reminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Daily Plan Reminder"
+        android:layout_below="@+id/chk_weekly_goal_reminder"
+        android:layout_alignParentStart="true" />
+
+    <CheckBox
+        android:id="@+id/chk_weekly_plan_reminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/chk_daily_plan_reminder"
+        android:text="Weekly Plan Reminder" />
+
+    <CheckBox
+        android:id="@+id/chk_lock_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/chk_weekly_plan_reminder"
+        android:text="Lock Out" />
+
+    <CheckBox
+        android:id="@+id/chk_auto_data_sending"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/chk_lock_out"
+        android:text="Automatically Send Data" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/chk_auto_data_sending"
+        android:ems="10"
+        android:hint="Break Length"
+        android:inputType="textPersonName|number" />
 
 </RelativeLayout>

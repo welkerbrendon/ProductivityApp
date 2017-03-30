@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -29,20 +30,29 @@ public class GoalView extends AppCompatActivity {
         // Load the goal from SharedPreferences
         SharedPreferences goalPreferences = getSharedPreferences(GOAL_PREFS_FILE, 0);
 
-        // Convert json string to Goal Object
-        // !! Replace "goal" with actual value set in FirstTimeActivity !!
-        Gson gson = new Gson();
-        String jsonGoal = goalPreferences.getString(GOAL_PREFS_FILE, "goal");
-        userGoal = gson.fromJson(jsonGoal, Goal.class);
+        if (goalPreferences.contains("goal")) {
+            // Convert json string to Goal Object
+            // !! Replace "goal" with actual value set in FirstTimeActivity !!
+            Gson gson = new Gson();
+            String jsonGoal = goalPreferences.getString(GOAL_PREFS_FILE, "goal");
 
-        // Calculate the progress made on the goal
-        long progress = calculateProgress(userGoal);
+            userGoal = gson.fromJson(jsonGoal, Goal.class);
 
-        String unproductiveMessage =
-                String.format("You have used %f% of your unproductiveTime", (float) progress);
+            // Calculate the progress made on the goal
+            long progress = calculateProgress(userGoal);
 
-        viewUnproductiveMessage = (TextView) findViewById(R.id.textViewGoal);
-        viewUnproductiveMessage.setText(unproductiveMessage);
+            String unproductiveMessage =
+                    String.format("You have used %f% of your unproductiveTime", (float) progress);
+
+            viewUnproductiveMessage = (TextView) findViewById(R.id.textViewGoal);
+            viewUnproductiveMessage.setText(unproductiveMessage);
+        }
+        else {
+            Toast.makeText(this, "Please create a goal.", Toast.LENGTH_SHORT);
+            Intent intent = new Intent(this, EditGoalActivity.class);
+
+            startActivity(intent);
+        }
     }
 
     public long calculateProgress(Goal userGoal) {
