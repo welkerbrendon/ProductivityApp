@@ -102,5 +102,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="21dp"
         android:onClick="startFirstTimeActivity"
-        android:text="First Time (Test)" />/>
+        android:text="First Time (Test)" />
+
+    <Button
+        android:id="@+id/testService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test Service"
+        android:onClick="scheduleAlarm" />
 </RelativeLayout>
