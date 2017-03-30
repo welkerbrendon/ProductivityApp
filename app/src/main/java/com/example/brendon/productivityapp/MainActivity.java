@@ -174,6 +174,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void startViewGoalActivity(View view) {
+        Intent intent = new Intent(this, GoalView.class);
+
+        startActivity(intent);
+    }
+
 
 
 }
