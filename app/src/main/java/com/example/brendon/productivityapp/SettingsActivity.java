@@ -56,9 +56,16 @@ public class SettingsActivity extends AppCompatActivity {
         CheckBox chk_auto_send_data = (CheckBox) findViewById(R.id.chk_auto_data_sending);
         if (chk_auto_send_data.isChecked()) { settings.setAutoDataSending(true); }
 
+
         EditText break_length = (EditText) findViewById(R.id.editText2);
         String input = break_length.getText().toString();
-        int breakLength = Integer.parseInt(input);
+        int breakLength;
+
+        if (input.isEmpty())
+            breakLength = 0;
+        else
+            breakLength = Integer.parseInt(input);
+
         settings.setBreakLength(breakLength);
 
         settings.saveToSharedPreferences(this);

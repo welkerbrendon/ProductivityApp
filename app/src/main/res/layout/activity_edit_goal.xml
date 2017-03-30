@@ -48,8 +48,9 @@
         android:onClick="startGoalView"
         android:textAllCaps="false"
         android:text="Back to Goal View"
+        android:id="@+id/button6"
         android:layout_below="@+id/linearLayout"
-        android:id="@+id/button6" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/button7"
