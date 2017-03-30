@@ -1,6 +1,7 @@
 package com.example.brendon.productivityapp;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -102,5 +103,11 @@ public class MessagingActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    public void startMainActivity(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+
+        startActivity(intent);
     }
 }
