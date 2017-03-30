@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void scheduleAlarm() {
-        // Make and Intent to send to the AlarmReceiver
+        // Make an Intent to send to the AlarmReceiver
         Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
 
         Log.d(TAG, "In scheduleAlarm()");
