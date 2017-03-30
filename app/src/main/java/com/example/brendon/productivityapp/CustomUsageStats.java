@@ -5,6 +5,7 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
