@@ -24,7 +24,7 @@ public class BackgroundJobService extends JobService {
 
         startService(intent);
 
-        return false;
+        return true;
     }
 
     @Override

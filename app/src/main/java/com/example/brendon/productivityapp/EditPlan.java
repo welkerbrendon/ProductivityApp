@@ -5,10 +5,13 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 
 public class EditPlan extends AppCompatActivity {
+    EditText textEditorPlan;
 
     public static final String PREFS_NAME = "savedSettings";
+    public static final String PREFS_GOAL_NAME = "savedGoal";
     Settings settings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +22,25 @@ public class EditPlan extends AppCompatActivity {
     public void startMainActivity(View view) {
         Intent intent = new Intent(this, MainActivity.class);
 
-        settings = (Settings) getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settingPreferences = getSharedPreferences(PREFS_NAME, 0);
+        if(settingPreferences.contains(PREFS_NAME))
+            settings = (Settings) getSharedPreferences(PREFS_NAME, 0);
+        else
+            settings = new Settings();
 
         settings.setFirstTime(false);
 
         settings.saveToSharedPreferences(this);
 
         startActivity(intent);
+    }
+
+    public void loadPlan() {
+        SharedPreferences goalPreferences = getSharedPreferences(PREFS_GOAL_NAME, 0);
+        if(goalPreferences.contains(PREFS_GOAL_NAME)){
+            Goal goal = (Goal) goalPreferences;
+            String plan = goal.getPlan();
+            textEditorPlan.setText(plan);
+        }
     }
 }

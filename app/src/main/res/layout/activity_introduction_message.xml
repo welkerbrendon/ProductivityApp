@@ -24,7 +24,7 @@
         android:lines="10"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="We are very happy that you have decided to use this recourse to better manage your time. We first would like to help you learn how to use this app by walking you through setting things up for your first time. Click Next when you are ready to begin."
+        android:text="We are very happy that you have decided to use this resourse to better manage your time. Lets help you get started by setting things up. Click Start when you are ready to begin."
         android:textAllCaps="false"
         android:textSize="18sp"
         android:id="@+id/textView2" />

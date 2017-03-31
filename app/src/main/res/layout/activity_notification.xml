@@ -9,7 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="TextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
 
     <EditText
         android:layout_width="100dp"

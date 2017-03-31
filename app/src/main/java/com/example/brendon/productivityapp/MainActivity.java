@@ -12,7 +12,7 @@ import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.provider.Settings;
+//import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 100;
     BackgroundJobService backgroundService;
     private static int jobId = 0;
+    Settings settings;
 
     /**
      * This function will be instantiated when the activity is created.
@@ -57,16 +58,19 @@ public class MainActivity extends AppCompatActivity {
         if (!hasPermission())
             requestPermission();
 
-        /* This is the code that you need to use to load settings.
-           I am not sure where you want me to put it, so I'll just
-           leave it here */
-        //Loading settings
-        SharedPreferences settingsPref = getSharedPreferences(PREFS_NAME, 0);
 
-        //Deserializing
-        Gson gson = new Gson();
-        String json = settingsPref.getString("Settings", "");
-        Settings settings = gson.fromJson(json, Settings.class);
+        SharedPreferences settingsPreferences = getSharedPreferences(PREFS_NAME, 0);
+        if(settingsPreferences.contains(PREFS_NAME))
+            settings = (Settings) settingsPreferences;
+        else
+            settings = new Settings();
+
+        if(settings.isFirstTime()) {
+            Intent intent = new Intent(this, IntroductionMessageActivity.class);
+            startActivity(intent);
+        }
+
+
 
         startBackgroundService();
     }
@@ -74,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
     public void startBackgroundService() {
         ComponentName mServiceComponent = new ComponentName(this, BackgroundJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(jobId++, mServiceComponent);
-        builder.setMinimumLatency(600 * 1000);
-        builder.setOverrideDeadline(1800 * 1000);
+        builder.setMinimumLatency(60 * 1000);
+        builder.setOverrideDeadline(600 * 1000);
         builder.setRequiresDeviceIdle(false);
         builder.setRequiresCharging(false);
         JobScheduler jobScheduler = (JobScheduler) getApplication().getSystemService(Context.JOB_SCHEDULER_SERVICE);
@@ -126,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
 
         startActivityForResult(
-                new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
+                new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS),
                 MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
     }
 
