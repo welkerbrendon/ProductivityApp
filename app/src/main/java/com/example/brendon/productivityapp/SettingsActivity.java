@@ -36,7 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void goHome(View view){
 
-        Settings settings = new Settings();
+        Settings settings = new Settings(this);
 
         CheckBox chk_notifications = (CheckBox) findViewById(R.id.chk_notifications);
         if (chk_notifications.isChecked()) { settings.setNotifications(true); }

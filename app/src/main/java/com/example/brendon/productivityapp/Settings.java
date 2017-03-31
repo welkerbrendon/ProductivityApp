@@ -44,6 +44,18 @@ public class Settings {
             this.setAutoDataSending(settings.isAutoDataSending());
             this.setBreakLength(settings.getBreakLength());
             this.setDailyPlanReminder(settings.isDailyPlanReminder());
+            this.setFirstTime(settings.isFirstTime());
+            this.setHourForDailyPlan(settings.getHourForDailyPlan());
+            this.setHourForGoalReminder(settings.getHourForGoalReminder());
+            this.setHourForWeeklyPlan(settings.getHourForWeeklyPlan());
+            this.setTakeBreak(settings.isTakeBreak());
+            this.setTimeUntilBreak(settings.getTimeUntilBreak());
+            this.setLockOut(settings.isLockOut());
+            this.setMinutesForWeeklyPlan(settings.getMinutesForWeeklyPlan());
+            this.setMinutesForDailyPlan(settings.getMinutesForDailyPlan());
+            this.setMinutesForGoalReminder(settings.getMinutesForGoalReminder());
+            this.setWeeklyPlanReminder(settings.isWeeklyPlanReminder());
+            this.setWeeklyGoalReminder(settings.isWeeklyGoalReminder());
         }
 
         else {

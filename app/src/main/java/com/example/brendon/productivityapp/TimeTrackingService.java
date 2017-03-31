@@ -48,9 +48,9 @@ public class TimeTrackingService extends IntentService {
     private boolean displayed25;
     private boolean displayed50;
     private boolean displayed75;
-    private Goal theGoal;
+    private Goal theGoal = new Goal(this);
     private Time unprouctiveTime;
-    private Settings settings;
+    private Settings settings = new Settings(this);
 
     public TimeTrackingService() {
         super("TimeTrackingService");

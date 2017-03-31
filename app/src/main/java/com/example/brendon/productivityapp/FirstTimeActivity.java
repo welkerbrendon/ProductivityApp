@@ -39,7 +39,7 @@ public class FirstTimeActivity extends ActionBarActivity implements
     List<AppSelection> appSelectionList = new ArrayList<>();
     List<String> unproductiveApps = new ArrayList<>();
     CustomList appSelectionAdapter;
-    Settings settings = new Settings();
+    Settings settings = new Settings(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
