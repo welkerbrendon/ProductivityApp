@@ -70,8 +70,12 @@ public class SettingsActivity extends AppCompatActivity {
 
         settings.saveToSharedPreferences(this);
 
-        Intent intent = new Intent(this, MainActivity.class);
-
-        startActivity(intent);
+        Intent intent;
+        if(settings.isFirstTime()){
+            intent = new Intent(this, EditPlan.class);
+        }
+        else{
+            intent = new Intent(this, MainActivity.class);
+        }
     }
 }

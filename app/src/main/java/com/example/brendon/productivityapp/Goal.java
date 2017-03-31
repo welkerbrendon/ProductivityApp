@@ -1,8 +1,13 @@
 package com.example.brendon.productivityapp;
 
 import android.app.usage.UsageStats;
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a specific goal a user will use to
@@ -10,6 +15,9 @@ import java.util.ArrayList;
  */
 
 public class Goal {
+
+    public static final String PREFS_NAME = "savedGoal";
+
     /**
      * This variable enables the user to put personalized
      * information on how the time goal will be achieved.
@@ -21,7 +29,24 @@ public class Goal {
      * wants to use on unproductive apps.
      */
     Time time = new Time();
-    ArrayList<UsageStats> unproductiveApps; // Here, we shall store our list of unproductive Apps.
+    List<UsageStats> unproductiveApps = new ArrayList<>();
+
+    /*
+    * Default Constructor
+    *   Pulls data from shared preferences
+    */
+    Goal(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String goalJson = sharedPreferences.getString("Goal", null);
+
+        if (goalJson != null) {
+            Gson gson = new Gson();
+            Goal goal = gson.fromJson(goalJson, Goal.class);
+
+            this.plan = goal.getPlan();
+            this.time = goal.getTime();
+        }
+    }
 
     public String getPlan() {
         return plan;
@@ -38,7 +63,7 @@ public class Goal {
 
     }
 
-    public ArrayList<UsageStats> getUnproductiveApps() {
+    public List<UsageStats> getUnproductiveApps() {
         return unproductiveApps;
     }
 
@@ -52,5 +77,20 @@ public class Goal {
 
     public void setTime(Time time) {
         this.time = time;
+    }
+
+    // Saves the goal to shared preferences
+    public void saveToSharedPreferences(Context context) {
+        // Save goal as a json
+        Gson gson = new Gson();
+        String json = gson.toJson(this);
+
+        //Save goal in shared preferences
+        SharedPreferences settingsPref = context.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor settingEditor = settingsPref.edit();
+        settingEditor.putString("Goal", json);
+
+        // Commit edits
+        settingEditor.commit();
     }
 }

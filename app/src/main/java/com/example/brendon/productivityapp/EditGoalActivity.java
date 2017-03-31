@@ -47,12 +47,14 @@ public class EditGoalActivity extends AppCompatActivity {
     }
 
     public void goNext(View view){
+        userGoal.saveToSharedPreferences(this);
+
         Intent intent;
         if(settings.isFirstTime()){
             intent = new Intent(this, SettingsActivity.class);
         }
         else{
-            intent = new Intent(this, MainActivity.class);
+            intent = new Intent(this, GoalView.class);
         }
 
         startActivity(intent);

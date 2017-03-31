@@ -138,16 +138,4 @@ public class FirstTimeActivity extends ActionBarActivity implements
 
         startActivity(intent);
     }
-
-    public void goNext(View view) {
-        Intent intent;
-
-        if(settings.isFirstTime())
-            intent = new Intent(this, EditGoalActivity.class);
-        else
-            intent = new Intent(this, MainActivity.class);
-
-        startActivity(intent);
-    }
-
 }
