@@ -34,12 +34,13 @@ public class FirstTimeActivity extends ActionBarActivity implements
         android.widget.CompoundButton.OnCheckedChangeListener{
 
     public static final String PREFS_NAME = "Unproductive Apps List";
+    public static final String PREFS_SETTINGS_NAME = "savedSettings";
 
     ListView lv;
     List<AppSelection> appSelectionList = new ArrayList<>();
     List<String> unproductiveApps = new ArrayList<>();
     CustomList appSelectionAdapter;
-    Settings settings = new Settings(this);
+    Settings settings = new Settings();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +130,10 @@ public class FirstTimeActivity extends ActionBarActivity implements
         Toast.makeText(this, "List saved to shared preferences.", Toast.LENGTH_SHORT).show();
 
         Intent intent;
+        SharedPreferences sharedPref = getSharedPreferences(PREFS_SETTINGS_NAME, 0);
+        if(settingsPref.contains(PREFS_SETTINGS_NAME))
+            settings = (Settings) getSharedPreferences(PREFS_SETTINGS_NAME, 0);
+
         if(settings.isFirstTime()){
             intent = new Intent(this, EditGoalActivity.class);
         }

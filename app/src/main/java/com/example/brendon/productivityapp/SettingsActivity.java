@@ -34,9 +34,9 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    public void goHome(View view){
+    public void goNext(View view){
 
-        Settings settings = new Settings(this);
+        Settings settings = new Settings();
 
         CheckBox chk_notifications = (CheckBox) findViewById(R.id.chk_notifications);
         if (chk_notifications.isChecked()) { settings.setNotifications(true); }
@@ -71,11 +71,14 @@ public class SettingsActivity extends AppCompatActivity {
         settings.saveToSharedPreferences(this);
 
         Intent intent;
+
         if(settings.isFirstTime()){
             intent = new Intent(this, EditPlan.class);
         }
         else{
             intent = new Intent(this, MainActivity.class);
         }
+
+        startActivity(intent);
     }
 }

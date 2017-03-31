@@ -1,6 +1,7 @@
 package com.example.brendon.productivityapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,19 +11,19 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 public class EditGoalActivity extends AppCompatActivity {
-    Goal userGoal;
+    Goal userGoal = new Goal();
     TextView editGoalHeader;
     EditText hoursEditor;
     EditText minutesEditor;
-    Settings settings;
+    Settings settings = new Settings();
+
+    public static final String PREFS_NAME = "savedSettings";
+    public static final String PREFS_GOAL_NAME = "savedGoal";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_goal);
-
-        settings = new Settings(this);
-        userGoal = new Goal();
 
         editGoalHeader = (TextView) findViewById(R.id.textViewPromptGoal);
         hoursEditor = (EditText) findViewById(R.id.editHours);
@@ -33,11 +34,11 @@ public class EditGoalActivity extends AppCompatActivity {
 
         Gson gson = new Gson();
         String jsonGoal = intent.getStringExtra(GoalView.GOAL_EXTRA);
-        userGoal = gson.fromJson(jsonGoal, Goal.class);
+        if(gson.fromJson(jsonGoal, Goal.class) != null)
+            userGoal = gson.fromJson(jsonGoal, Goal.class);
     }
 
     public void updateGoal() {
-
     }
 
     public void startGoalView(View view) {
@@ -47,8 +48,13 @@ public class EditGoalActivity extends AppCompatActivity {
     }
 
     public void goNext(View view){
-        userGoal.saveToSharedPreferences(this);
+        if(userGoal != null)
+            userGoal.saveToSharedPreferences(this);
 
+        SharedPreferences settingsPreferences = getSharedPreferences(PREFS_NAME, 0);
+
+        if(settingsPreferences.contains(PREFS_NAME))
+            settings = (Settings) getSharedPreferences(PREFS_NAME, 0);
         Intent intent;
         if(settings.isFirstTime()){
             intent = new Intent(this, SettingsActivity.class);

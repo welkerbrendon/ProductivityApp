@@ -31,21 +31,9 @@ public class Goal {
     Time time = new Time();
     List<UsageStats> unproductiveApps = new ArrayList<>();
 
-    /*
-    * Default Constructor
-    *   Pulls data from shared preferences
-    */
-    Goal(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        String goalJson = sharedPreferences.getString("Goal", null);
 
-        if (goalJson != null) {
-            Gson gson = new Gson();
-            Goal goal = gson.fromJson(goalJson, Goal.class);
-
-            this.plan = goal.getPlan();
-            this.time = goal.getTime();
-        }
+    public Goal(){
+        plan = "no plan";
     }
 
     public String getPlan() {

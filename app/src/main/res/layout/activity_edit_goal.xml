@@ -12,7 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:context="com.example.brendon.productivityapp.EditGoalActivity"
-        android:id="@+id/linearLayout">
+        android:id="@+id/linearLayout"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textViewPromptGoal"
@@ -20,7 +21,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:text="Please enter new goal:" />
+            android:text="Please enter goal for the amount of time you will seek to limit yourself on unproductive apps:" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
         <EditText
             android:id="@+id/editHours"
@@ -40,16 +46,17 @@
             android:layout_centerHorizontal="true"
             android:hint="Minutes" />
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/button7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Done"
-        android:onClick="goNext"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentStart="true" />
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Done"
+            android:onClick="goNext"/>
+
+
+    </LinearLayout>
 
 </RelativeLayout>
 

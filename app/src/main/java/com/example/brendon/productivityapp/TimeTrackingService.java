@@ -45,12 +45,15 @@ public class TimeTrackingService extends IntentService {
 
      */
 
+    public static final String PREFS_NAME = "savedSettings";
+    public static final String PREFS_GOAL_NAME = "savedGoal";
+
     private boolean displayed25;
     private boolean displayed50;
     private boolean displayed75;
-    private Goal theGoal = new Goal(this);
+    private Goal theGoal;
     private Time unprouctiveTime;
-    private Settings settings = new Settings(this);
+    private Settings settings;
 
     public TimeTrackingService() {
         super("TimeTrackingService");
@@ -81,6 +84,12 @@ public class TimeTrackingService extends IntentService {
         checkTime = unprouctiveTime;
         saveUnproductiveTime();
 
+        SharedPreferences settingsPreferences = getSharedPreferences(PREFS_NAME, 0);
+        if(settingsPreferences.contains(PREFS_NAME))
+            settings = (Settings) getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences goalPreferences = getSharedPreferences(PREFS_GOAL_NAME, 0);
+        if(goalPreferences.contains(PREFS_GOAL_NAME))
+            theGoal = (Goal) getSharedPreferences(PREFS_GOAL_NAME, 0);
         notifications(checkTime);
     }
 
@@ -131,7 +140,7 @@ public class TimeTrackingService extends IntentService {
     }
 
     public void notifications(Time checkTime) {
-        if(!displayed25 && theGoal.getTime().getMilliseconds()*.25 <= unprouctiveTime.getMilliseconds()) {
+        if(settings.isNotifications() && !displayed25 && theGoal.getTime().getMilliseconds()*.25 <= unprouctiveTime.getMilliseconds()) {
             Intent intent = new Intent(this, NotificationActivity.class);
             intent.putExtra("Message", "You have used up at least 25% of your goal time on unproductive apps.");
             intent.putExtra("Goal Hours", theGoal.getTime().getHours());
