@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import com.google.gson.Gson;
+
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.brendon.productivityapp.MainActivity.TAG;
 
 /**
@@ -31,24 +33,41 @@ public class Settings {
     private int hourForWeeklyPlan;
     private int minutesForWeeklyPlan;
 
-    Settings() {
-        notifications = false;
-        weeklyGoalReminder = false;
-        dailyPlanReminder = false;
-        weeklyPlanReminder = false;
-        lockOut = false;
-        autoDataSending = false;
-        takeBreak = false;
-        firstTime = false;
-        timeUntilBreak = 0;
-        breakLength = 0;
-        hourForGoalReminder = 0;
-        minutesForGoalReminder = 0;
-        hourForDailyPlan = 0;
-        minutesForDailyPlan = 0;
-        hourForWeeklyPlan = 0;
-        minutesForWeeklyPlan = 0;
+    Settings(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, 0);
+
+        if(sharedPreferences.contains(PREFS_NAME)){
+            String settingsJson = sharedPreferences.getString(PREFS_NAME, null);
+            Gson gson = new Gson();
+            Settings settings = gson.fromJson(settingsJson, Settings.class);
+            this.setNotifications(settings.isNotifications());
+            this.setAutoDataSending(settings.isAutoDataSending());
+            this.setBreakLength(settings.getBreakLength());
+            this.setDailyPlanReminder(settings.isDailyPlanReminder());
+        }
+
+        else {
+
+            notifications = false;
+            weeklyGoalReminder = false;
+            dailyPlanReminder = false;
+            weeklyPlanReminder = false;
+            lockOut = false;
+            autoDataSending = false;
+            takeBreak = false;
+            firstTime = false;
+            timeUntilBreak = 0;
+            breakLength = 0;
+            hourForGoalReminder = 0;
+            minutesForGoalReminder = 0;
+            hourForDailyPlan = 0;
+            minutesForDailyPlan = 0;
+            hourForWeeklyPlan = 0;
+            minutesForWeeklyPlan = 0;
+        }
     }
+
+
 
     public boolean isWeeklyGoalReminder() {
         return weeklyGoalReminder;
