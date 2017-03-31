@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
     private void requestPermission() {
         Toast.makeText(getApplicationContext(),
                 "You must allow the app permission to access Usage Stats./nOpening System Settings.",
-                Toast.LENGTH_SHORT).show();
+                Toast.LENGTH_LONG).show();
 
         startActivityForResult(
                 new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS),
