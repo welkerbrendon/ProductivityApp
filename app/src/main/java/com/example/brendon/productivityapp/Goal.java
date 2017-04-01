@@ -15,8 +15,9 @@ import java.util.List;
  */
 
 public class Goal {
-
-    public static final String PREFS_NAME = "savedGoal";
+    // The following String must be the same for ALL usages of getSharedPreferences.
+    public static final String PREFS_NAME = "savedSettings";
+    public static final String GOAL_KEY = "goalKey";
 
     /**
      * This variable enables the user to put personalized
@@ -71,12 +72,12 @@ public class Goal {
     public void saveToSharedPreferences(Context context) {
         // Save goal as a json
         Gson gson = new Gson();
-        String json = gson.toJson(this);
+        String json = gson.toJson(this, Goal.class);
 
         //Save goal in shared preferences
         SharedPreferences settingsPref = context.getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor settingEditor = settingsPref.edit();
-        settingEditor.putString("Goal", json);
+        settingEditor.putString(GOAL_KEY, json);
 
         // Commit edits
         settingEditor.commit();

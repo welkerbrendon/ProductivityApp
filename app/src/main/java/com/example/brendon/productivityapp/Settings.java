@@ -17,6 +17,8 @@ import static com.example.brendon.productivityapp.MainActivity.TAG;
 
 public class Settings {
     public static final String PREFS_NAME = "savedSettings";
+    public static final String SETTINGS_KEY = "settingsKey";
+
     private boolean notifications;
     private boolean weeklyGoalReminder;
     private boolean dailyPlanReminder;
@@ -188,15 +190,18 @@ public class Settings {
 
         // Save settings as a json
         Gson gson = new Gson();
-        String json = gson.toJson(this);
+        String json = gson.toJson(this, Settings.class);
 
         //Saving settings in shared preferences
-        SharedPreferences settingsPref = context.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settingsPref = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor settingEditor = settingsPref.edit();
-        settingEditor.putString("Settings", json);
+        settingEditor.putString(SETTINGS_KEY, json);
 
         //Commit edits
         settingEditor.commit();
+
+        Log.d(TAG, "Settings have been committed in Settings Class:" +
+        settingsPref.getString(SETTINGS_KEY, json));
     }
 
 }

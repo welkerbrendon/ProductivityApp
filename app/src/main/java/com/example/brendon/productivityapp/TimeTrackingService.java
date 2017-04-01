@@ -46,6 +46,7 @@ public class TimeTrackingService extends IntentService {
      */
 
     public static final String PREFS_NAME = "savedSettings";
+    public static final String GOAL_KEY = "goalKey";
     public static final String PREFS_GOAL_NAME = "savedGoal";
 
     private boolean displayed25;
@@ -53,6 +54,7 @@ public class TimeTrackingService extends IntentService {
     private boolean displayed75;
     private Goal theGoal;
     private Time unprouctiveTime;
+    private long unproductiveTimeLong;
     private Settings settings;
 
     public TimeTrackingService() {
@@ -74,7 +76,11 @@ public class TimeTrackingService extends IntentService {
 
         // Get the current (old) unproductive Time from Shared Preferences
         SharedPreferences unproductiveTimePreferences =
-                getSharedPreferences(PREFS_UNPRODUCTIVE_TIME_FILE, 0);
+                getSharedPreferences(PREFS_NAME, 0);
+
+        Gson gson = new Gson();
+        String jsonGoal = unproductiveTimePreferences.getString(GOAL_KEY, null);
+
         unprouctiveTime.setMilliseconds(unproductiveTimePreferences.getLong(UNPRODUCTIVE_TIME_KEY, 0));
 
         // Call calculate method to start calculation of unproductive time spent
