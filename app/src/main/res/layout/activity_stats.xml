@@ -76,6 +76,13 @@
                 android:layout_below="@+id/pieChart"
                 android:layout_marginTop="20dp" />
 
+            <ListView
+                android:id="@+id/list_view"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/appList"/>
+
             <Button
                 android:id="@+id/pieButton"
                 android:layout_width="wrap_content"
