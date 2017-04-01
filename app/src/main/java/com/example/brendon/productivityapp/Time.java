@@ -6,10 +6,10 @@ package com.example.brendon.productivityapp;
  */
 
 public class Time {
-    int hours;
-    int minutes;
-    int seconds;
-    long milliseconds;
+    public int hours;
+    public int minutes;
+    public int seconds;
+    public long milliseconds;
 
     Time() {hours = 0; minutes = 0; seconds = 0; milliseconds = 0;}
 

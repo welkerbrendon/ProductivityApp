@@ -48,6 +48,7 @@ public class TimeTrackingService extends IntentService {
     public static final String PREFS_NAME = "savedSettings";
     public static final String GOAL_KEY = "goalKey";
     public static final String PREFS_GOAL_NAME = "savedGoal";
+    public static final String SETTINGS_KEY = "settingsKey";
 
     private boolean displayed25;
     private boolean displayed50;
@@ -56,6 +57,8 @@ public class TimeTrackingService extends IntentService {
     private Time unprouctiveTime;
     private long unproductiveTimeLong;
     private Settings settings;
+
+    SharedPreferences preferences;
 
     public TimeTrackingService() {
         super("TimeTrackingService");
@@ -75,13 +78,21 @@ public class TimeTrackingService extends IntentService {
 
 
         // Get the current (old) unproductive Time from Shared Preferences
-        SharedPreferences unproductiveTimePreferences =
-                getSharedPreferences(PREFS_NAME, 0);
+        preferences = getSharedPreferences(PREFS_NAME, 0);
+        Log.d(TAG, "Service: onHandle SharedPreferences Loaded");
 
         Gson gson = new Gson();
-        String jsonGoal = unproductiveTimePreferences.getString(GOAL_KEY, null);
+        String jsonGoal = preferences.getString(GOAL_KEY, null);
+        theGoal = gson.fromJson(jsonGoal, Goal.class);
 
-        unprouctiveTime.setMilliseconds(unproductiveTimePreferences.getLong(UNPRODUCTIVE_TIME_KEY, 0));
+        // CORRECTION:  The Goal will only have what our goal is, not any updated time.
+        //  Therefore, we should not set the unproductiveTime in this Service to anything
+        //  regarding the Goal.
+
+        // Now we will get the unproductive Time already spent, which should be vested in the
+        //  goal that we just received.
+        //unprouctiveTime.setMilliseconds(theGoal.getTime().milliseconds);
+        //unprouctiveTime.setMilliseconds(preferences.getLong(UNPRODUCTIVE_TIME_KEY, 0));
 
         // Call calculate method to start calculation of unproductive time spent
         calculateUnproductiveTimeSpent();
@@ -90,27 +101,41 @@ public class TimeTrackingService extends IntentService {
         checkTime = unprouctiveTime;
         saveUnproductiveTime();
 
+        // Retrieve the Settings Class from SharedPreferences
+        String jsonSettings = preferences.getString(SETTINGS_KEY, null);
+        settings = gson.fromJson(jsonSettings, Settings.class);
+
+        /*
         SharedPreferences settingsPreferences = getSharedPreferences(PREFS_NAME, 0);
         if(settingsPreferences.contains(PREFS_NAME))
             settings = (Settings) getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences goalPreferences = getSharedPreferences(PREFS_GOAL_NAME, 0);
         if(goalPreferences.contains(PREFS_GOAL_NAME))
             theGoal = (Goal) getSharedPreferences(PREFS_GOAL_NAME, 0);
+            */
+
         notifications(checkTime);
     }
 
     public void saveUnproductiveTime() {
-        SharedPreferences unproductiveTimePreferences =
-                getSharedPreferences(PREFS_UNPRODUCTIVE_TIME_FILE, 0);
+        // Wrong format:
+        //SharedPreferences preferences =
+        //        getSharedPreferences(PREFS_UNPRODUCTIVE_TIME_FILE, 0);
 
-        SharedPreferences.Editor unproductiveTimeEditor = unproductiveTimePreferences.edit();
-        unproductiveTimeEditor.putLong(UNPRODUCTIVE_TIME_KEY ,unprouctiveTime.getMilliseconds());
+        // Correct format:
+        preferences = getSharedPreferences(PREFS_NAME, 0);
+
+        SharedPreferences.Editor unproductiveTimeEditor = preferences.edit();
+        unproductiveTimeEditor.putLong(UNPRODUCTIVE_TIME_KEY, unprouctiveTime.getMilliseconds());
 
         Log.d(TAG, "Unproductive Time Saved.  New Time: " + unprouctiveTime.getMilliseconds());
         unproductiveTimeEditor.commit();
+        Log.d(TAG, "Unproductive Time Saved Value: " + preferences
+                .getLong(UNPRODUCTIVE_TIME_KEY, unprouctiveTime.getMilliseconds()));
     }
 
     public void calculateUnproductiveTimeSpent() {
+        Log.d(TAG, "In calculateUnproductiveTime");
         long tempUnproductiveTime = 0;
 
         // Update unproductiveTime
@@ -122,13 +147,26 @@ public class TimeTrackingService extends IntentService {
         List<UsageStats> allAppsList = usageStatsAccessor.getUsageStatsList(this);
 
         // Compare the NAMES (or PackageNames) to SharedPreferences List of Unproductive Apps
-        SharedPreferences appsPreferences = getSharedPreferences(PREFS_APPS_FILE, 0);
+
+        //SharedPreferences appsPreferences = getSharedPreferences(PREFS_NAME, 0);
+        //SharedPreferences appsPreferences = getSharedPreferences(PREFS_APPS_FILE, 0);
 
         // We will retrieve the unproductiveAppsList by JSON
-        String jsonList = appsPreferences.getString(JSON_LIST_KEY, null);
+        String jsonList = preferences.getString(JSON_LIST_KEY, null);
+        /*
         List<UsageStats> unproductiveAppsList = new Gson().fromJson(jsonList,
                 new TypeToken<List<UsageStats>>() {
                 }.getType());
+*/
+
+        // Going to try this way for the List
+        Log.d(TAG, "About to deserialize List");
+        Gson gson = new Gson();
+        List<UsageStats> unproductiveAppsList = gson
+                .fromJson(jsonList, new TypeToken<List<UsageStats>>(){}.getType());
+
+        Log.d(TAG, "List deserialized");
+
 
         // For all apps that match the name, get their timeInMilli and += to unproductiveTime.
         for (int i = 0; i < allAppsList.size(); i++) {
@@ -146,7 +184,8 @@ public class TimeTrackingService extends IntentService {
     }
 
     public void notifications(Time checkTime) {
-        if(settings.isNotifications() && !displayed25 && theGoal.getTime().getMilliseconds()*.25 <= unprouctiveTime.getMilliseconds()) {
+        if(settings.isNotifications() && !displayed25 &&
+                theGoal.getTime().getMilliseconds()*.25 <= unprouctiveTime.getMilliseconds()) {
             Intent intent = new Intent(this, NotificationActivity.class);
             intent.putExtra("Message", "You have used up at least 25% of your goal time on unproductive apps.");
             intent.putExtra("Goal Hours", theGoal.getTime().getHours());
@@ -158,7 +197,8 @@ public class TimeTrackingService extends IntentService {
             displayed25 = true;
             startActivity(intent);
         }
-        else if(settings.isNotifications() && !displayed50 && theGoal.getTime().getMilliseconds()*.5 <= unprouctiveTime.getMilliseconds()){
+        else if(settings.isNotifications() && !displayed50 &&
+                theGoal.getTime().getMilliseconds()*.5 <= unprouctiveTime.getMilliseconds()){
             Intent intent = new Intent(this, NotificationActivity.class);
             intent.putExtra("Message", "You have used up at least 50% of your goal time on unproductive apps.");
             intent.putExtra("Goal Hours", theGoal.getTime().getHours());
