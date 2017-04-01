@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 
 import static android.content.Context.MODE_APPEND;
 import static android.content.Context.MODE_PRIVATE;
+import static com.example.brendon.productivityapp.MainActivity.PREFS_NAME;
 import static com.example.brendon.productivityapp.MainActivity.TAG;
 
 /**
@@ -16,8 +17,7 @@ import static com.example.brendon.productivityapp.MainActivity.TAG;
  */
 
 public class Settings {
-    public static final String PREFS_NAME = "savedSettings";
-    public static final String SETTINGS_KEY = "settingsKey";
+    public static final String PREFS_NAME = "Settings";
 
     private boolean notifications;
     private boolean weeklyGoalReminder;
@@ -195,13 +195,13 @@ public class Settings {
         //Saving settings in shared preferences
         SharedPreferences settingsPref = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor settingEditor = settingsPref.edit();
-        settingEditor.putString(SETTINGS_KEY, json);
+        settingEditor.putString(PREFS_NAME, json);
 
         //Commit edits
         settingEditor.commit();
 
         Log.d(TAG, "Settings have been committed in Settings Class:" +
-        settingsPref.getString(SETTINGS_KEY, json));
+        settingsPref.getString(PREFS_NAME, json));
     }
 
 }

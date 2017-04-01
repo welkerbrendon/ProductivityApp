@@ -31,6 +31,23 @@ public class SettingsActivity extends AppCompatActivity {
             Settings settings = gson.fromJson(settingsJson, Settings.class);
 
             // Set checkboxes to match settings
+            CheckBox chk_notifications = (CheckBox) findViewById(R.id.chk_notifications);
+            chk_notifications.setChecked(settings.isNotifications());
+
+            CheckBox chk_weekly_goal_reminder = (CheckBox) findViewById(R.id.chk_weekly_goal_reminder);
+            chk_weekly_goal_reminder.setChecked(settings.isWeeklyGoalReminder());
+
+            CheckBox chk_daily_plan_reminder = (CheckBox) findViewById(R.id.chk_daily_plan_reminder);
+            chk_daily_plan_reminder.setChecked(settings.isDailyPlanReminder());
+
+            CheckBox chk_weekly_plan_reminder = (CheckBox) findViewById(R.id.chk_weekly_plan_reminder);
+            chk_weekly_plan_reminder.setChecked(settings.isWeeklyPlanReminder());
+
+            CheckBox chk_lock_out = (CheckBox) findViewById(R.id.chk_lock_out);
+            chk_lock_out.setChecked(settings.isLockOut());
+
+            CheckBox chk_auto_send_data = (CheckBox) findViewById(R.id.chk_auto_data_sending);
+            chk_auto_send_data.setChecked(settings.isAutoDataSending());
         }
     }
 
@@ -39,23 +56,22 @@ public class SettingsActivity extends AppCompatActivity {
         Settings settings = new Settings();
 
         CheckBox chk_notifications = (CheckBox) findViewById(R.id.chk_notifications);
-        if (chk_notifications.isChecked()) { settings.setNotifications(true); }
+        settings.setNotifications(chk_notifications.isChecked());
 
         CheckBox chk_weekly_goal_reminder = (CheckBox) findViewById(R.id.chk_weekly_goal_reminder);
-        if (chk_weekly_goal_reminder.isChecked()) { settings.setWeeklyGoalReminder(true); }
+        settings.setWeeklyGoalReminder(chk_weekly_goal_reminder.isChecked());
 
         CheckBox chk_daily_plan_reminder = (CheckBox) findViewById(R.id.chk_daily_plan_reminder);
-        if (chk_daily_plan_reminder.isChecked()) { settings.setDailyPlanReminder(true); }
+        settings.setDailyPlanReminder(chk_daily_plan_reminder.isChecked());
 
         CheckBox chk_weekly_plan_reminder = (CheckBox) findViewById(R.id.chk_weekly_plan_reminder);
-        if (chk_weekly_plan_reminder.isChecked()) { settings.setWeeklyPlanReminder(true); }
+        settings.setWeeklyPlanReminder(chk_weekly_plan_reminder.isChecked());
 
         CheckBox chk_lock_out = (CheckBox) findViewById(R.id.chk_lock_out);
-        if (chk_lock_out.isChecked()) { settings.setLockOut(true); }
+        settings.setLockOut(chk_lock_out.isChecked());
 
         CheckBox chk_auto_send_data = (CheckBox) findViewById(R.id.chk_auto_data_sending);
-        if (chk_auto_send_data.isChecked()) { settings.setAutoDataSending(true); }
-
+        settings.setAutoDataSending(chk_auto_send_data.isChecked());
 
         EditText break_length = (EditText) findViewById(R.id.editText2);
         String input = break_length.getText().toString();

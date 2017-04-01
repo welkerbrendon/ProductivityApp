@@ -31,7 +31,7 @@ import com.google.gson.Gson;
  */
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
-    public static final String PREFS_NAME = "savedSettings";
+    public static final String PREFS_NAME = "Settings";
     public static final String EXTRA_GOAL = "GOAL";
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 100;
     BackgroundJobService backgroundService;
@@ -60,8 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         SharedPreferences settingsPreferences = getSharedPreferences(PREFS_NAME, 0);
-        if(settingsPreferences.contains(PREFS_NAME))
-            settings = (Settings) settingsPreferences;
+        String json = settingsPreferences.getString(PREFS_NAME, null);
+        if(json != null) {
+            Gson gson = new Gson();
+
+            settings = gson.fromJson(json, Settings.class);
+        }
         else
             settings = new Settings();
 

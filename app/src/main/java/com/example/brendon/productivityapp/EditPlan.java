@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+
 public class EditPlan extends AppCompatActivity {
     EditText textEditorPlan;
 
@@ -20,11 +22,14 @@ public class EditPlan extends AppCompatActivity {
     }
 
     public void startMainActivity(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
 
         SharedPreferences settingPreferences = getSharedPreferences(PREFS_NAME, 0);
-        if(settingPreferences.contains(PREFS_NAME))
-            settings = (Settings) getSharedPreferences(PREFS_NAME, 0);
+        if(settingPreferences.contains(PREFS_NAME)) {
+            String json = settingPreferences.getString(PREFS_NAME, null);
+
+            Gson gson = new Gson();
+            settings = gson.fromJson(json, Settings.class);
+        }
         else
             settings = new Settings();
 
@@ -32,6 +37,7 @@ public class EditPlan extends AppCompatActivity {
 
         settings.saveToSharedPreferences(this);
 
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
