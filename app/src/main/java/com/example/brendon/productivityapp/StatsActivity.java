@@ -3,6 +3,8 @@ package com.example.brendon.productivityapp;
 import android.app.DatePickerDialog;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.UserManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +20,9 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -25,6 +30,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,23 +48,6 @@ public class StatsActivity extends AppCompatActivity {
     static SimpleDateFormat daily = new SimpleDateFormat("EEE, d MMM", Locale.US);
     static SimpleDateFormat weekly = new SimpleDateFormat("MMMM dd", Locale.US);
     static SimpleDateFormat complete = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.US);
-
-    // Array of strings for ListView Title
-    String[] listviewTitle = new String[]{
-            "ListView Title 1", "ListView Title 2", "ListView Title 3", "ListView Title 4",
-            "ListView Title 5", "ListView Title 6", "ListView Title 7", "ListView Title 8",
-    };
-
-
-    int[] listviewImage = new int[]{
-            R.drawable.ic_action_name, R.drawable.ic_action_name, R.drawable.ic_action_name, R.drawable.ic_action_name,
-            R.drawable.ic_action_name, R.drawable.ic_action_name, R.drawable.ic_action_name, R.drawable.ic_action_name,
-    };
-
-    String[] listviewShortDescription = new String[]{
-            "Android ListView Short Description", "Android ListView Short Description", "Android ListView Short Description", "Android ListView Short Description",
-            "Android ListView Short Description", "Android ListView Short Description", "Android ListView Short Description", "Android ListView Short Description",
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,24 +71,6 @@ public class StatsActivity extends AppCompatActivity {
         if (spinner != null) {
             spinner.setAdapter(adapter);
         }
-
-        //Testing stuff
-        List<HashMap<String, String>> aList = new ArrayList<HashMap<String, String>>();
-
-        for (int i = 0; i < 8; i++) {
-            HashMap<String, String> hm = new HashMap<String, String>();
-            hm.put("listview_title", listviewTitle[i]);
-            hm.put("listview_discription", listviewShortDescription[i]);
-            hm.put("listview_image", Integer.toString(listviewImage[i]));
-            aList.add(hm);
-        }
-
-        String[] from = {"listview_image", "listview_title", "listview_discription"};
-        int[] to = {R.id.listview_image, R.id.listview_item_title, R.id.listview_item_short_description};
-
-        SimpleAdapter simpleAdapter = new SimpleAdapter(getBaseContext(), aList, R.layout.custom_list_view, from, to);
-        ListView androidListView = (ListView) findViewById(R.id.list_view);
-        androidListView.setAdapter(simpleAdapter);
 
         //DatePicker Listener
         final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -321,15 +292,28 @@ public class StatsActivity extends AppCompatActivity {
         List<PieEntry> entries = new ArrayList<>();
         PieChart chart = (PieChart) findViewById(R.id.pieChart);
 
+        String packageName;
+        PackageManager packageManager = this.getPackageManager();
+        ApplicationInfo ai;
+
         Log.d("Interval Type", String.valueOf(intervalType));
 
         if (intervalType == UsageStatsManager.INTERVAL_DAILY) {
             List<UsageStats> usageStatsList = CustomUsageStats.getUsageStatsListByDate(this, date);
 
             for (int i = 0; i < usageStatsList.size(); i++) {
-                if (usageStatsList.get(i).getTotalTimeInForeground() != 0) {
+                packageName = usageStatsList.get(i).getPackageName();
+
+                try {
+                    ai = packageManager.getApplicationInfo(packageName, 0);
+                }
+                catch(final PackageManager.NameNotFoundException e) {
+                    ai = null;
+                }
+
+                if (usageStatsList.get(i).getTotalTimeInForeground() != 0 && ai != null) {
                     entries.add(new PieEntry(usageStatsList.get(i).getTotalTimeInForeground(),
-                            usageStatsList.get(i).getPackageName()));
+                            (String) packageManager.getApplicationLabel(ai)));
                 }
             }
 
@@ -372,38 +356,58 @@ public class StatsActivity extends AppCompatActivity {
 
             for (HashMap.Entry<String, Long> entry : usageStatsHashMap.entrySet())
             {
-                if (entry.getValue() > 0)
-                entries.add(new PieEntry(entry.getValue(),
-                        entry.getKey()));
+                packageName = entry.getKey();
+
+                try {
+                    ai = packageManager.getApplicationInfo(packageName, 0);
+                }
+                catch(final PackageManager.NameNotFoundException e) {
+                    ai = null;
+                }
+
+                if (entry.getValue() > 0) {
+                    entries.add(new PieEntry(entry.getValue(),
+                            (String) packageManager.getApplicationLabel(ai)));
+                }
             }
 
             fillListViewWeekly(usageStatsHashMap);
         }
 
-
-        PieDataSet set = new PieDataSet(entries, "Productivity");
+        PieDataSet set = new PieDataSet(entries, "Apps Used");
 
         //Formating stuff
         if (chart != null) {
             chart.setUsePercentValues(true);
         }
         //Setting colors
-
-        set.setColors(new int[] {R.color.colorPrimaryDark, R.color.colorAccent}, this);
+        set.setColors(this.getResources().getIntArray(R.array.rainbow));
+        set.setValueTextSize(13);
+        set.setValueTextColor(R.color.black);
+        set.setValueLineColor(R.color.black);
 
         //Setting radius
         chart.setHoleRadius(0);
         chart.setTransparentCircleRadius(0);
 
-        PieData data = new PieData(set);
+        Description description = new Description();
+        description.setText("Apps used");
+        description.setTextSize(15);
+        chart.setDescription(description);
 
-        if (chart != null) {
-            chart.setData(data);
-        }
+        Legend legend = chart.getLegend();
+        legend.setEnabled(false);
 
-        if (chart != null) {
-            chart.invalidate();
-        }
+        PieData data = new PieData();
+        data.addDataSet(set);
+
+        data.setValueTextSize(20);
+        data.setValueTextColor(R.color.black);
+        data.setValueFormatter(new PercentFormatter());
+
+        chart.setData(data);
+        chart.invalidate();
+
     }
 
     private void updateLineChart(Calendar date) {
@@ -412,12 +416,18 @@ public class StatsActivity extends AppCompatActivity {
         startTime.setTime(date.getTime());
         startTime.add(Calendar.DAY_OF_YEAR, - 6);
 
+        PackageManager packageManager = this.getPackageManager();
+        String packageName;
+        ApplicationInfo ai;
+
         Log.d("Range time weekly", complete.format(startTime.getTimeInMillis()) + " - " +
                 complete.format(date.getTimeInMillis()));
 
         List<UsageStats> usageStatsList;
 
         HashMap<String, Long> usageStatsHashMap = new HashMap<>();
+
+        int totallyRandomNumber = 1;
 
         for (int j = 1; j <= 7; j++) {
             usageStatsList = CustomUsageStats.getUsageStatsListByDate(this, startTime);
@@ -428,6 +438,11 @@ public class StatsActivity extends AppCompatActivity {
                         usageStatsHashMap.put(usageStatsList.get(i).getPackageName(),
                                 usageStatsList.get(i).getTotalTimeInForeground());
                     }
+                    else {
+                        usageStatsHashMap.put(usageStatsList.get(i).getPackageName(),
+                                usageStatsList.get(i).getTotalTimeInForeground() +
+                                        usageStatsHashMap.get(usageStatsList.get(i).getPackageName()));
+                    }
                 }
             }
 
@@ -437,13 +452,12 @@ public class StatsActivity extends AppCompatActivity {
         LineChart chart = (LineChart) findViewById(R.id.lineChart);
         List<Entry> entries = new ArrayList<>();
 
-        int day = 1;
-
         for (HashMap.Entry<String, Long> entry : usageStatsHashMap.entrySet()) {
+
             if (entry.getValue() > 0) {
-                entries.add(new Entry(day, entry.getValue()));
+                entries.add(new Entry(totallyRandomNumber, entry.getValue() / 60000));
             }
-            day++;
+            totallyRandomNumber++;
         }
 
         if (!entries.isEmpty()) {
@@ -451,9 +465,16 @@ public class StatsActivity extends AppCompatActivity {
 
             //Setting colors
 
-            set.setColors(new int[]{R.color.colorPrimaryDark, R.color.colorAccent}, this);
+            set.setColors(this.getResources().getIntArray(R.array.rainbow));
+            set.setLineWidth(3);
             LineData data = new LineData(set);
             data.setValueTextSize(20);
+
+            Legend legend = chart.getLegend();
+            legend.setEnabled(false);
+
+            Description description = new Description();
+            description.setText("Minutes");
 
             if (chart != null) {
                 chart.setData(data);
@@ -482,17 +503,16 @@ public class StatsActivity extends AppCompatActivity {
 
     private void fillListViewDaily(List<UsageStats> usageStatsList) {
 
-        ListView listView = (ListView) findViewById(R.id.appList);
-
-        CustomUsageStats.printOnListViewDaily(this, listView, usageStatsList);
+        ListView iconListView = (ListView) findViewById(R.id.app_list_view);
+        CustomUsageStats.printOnListViewDaily(StatsActivity.this ,this, iconListView, usageStatsList);
 
     }
 
     private void fillListViewWeekly(HashMap<String, Long> usageMap) {
 
-        ListView listView = (ListView) findViewById(R.id.appList);
+        ListView iconListView = (ListView) findViewById(R.id.app_list_view);
 
-        CustomUsageStats.printOnListViewWeekly(this, listView, usageMap);
+        CustomUsageStats.printOnListViewWeekly(StatsActivity.this ,this, iconListView, usageMap);
 
     }
 }

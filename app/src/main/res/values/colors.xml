@@ -4,4 +4,40 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="ProducitveGreen">#0f6c1d</color>
+
+    <color name="bright_pink">#9b4f75</color>
+    <color name="red">#8c1010</color>
+    <color name="orange">#b15800</color>
+    <color name="yellow">#9f9f52</color>
+    <color name="chartreuse">#4a6430</color>
+    <color name="green">#3a663a</color>
+    <color name="spring_green">#00FF7F</color>
+    <color name="cyan">#00dfdf</color>
+    <color name="azure">#0064c9</color>
+    <color name="blue">#0000FF</color>
+    <color name="violet">#7F00FF</color>
+    <color name="magenta">#b900b9</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+
+    <array name="rainbow">
+        <item>@color/green</item>
+        <item>@color/red</item>
+
+        <item>@color/azure</item>
+        <item>@color/yellow</item>
+        <item>@color/bright_pink</item>
+        <item>@color/orange</item>
+
+        <item>@color/chartreuse</item>
+
+        <item>@color/spring_green</item>
+        <item>@color/cyan</item>
+
+        <item>@color/blue</item>
+        <item>@color/violet</item>
+        <item>@color/magenta</item>
+        <item>@color/white</item>
+        <item>@color/black</item>
+    </array>
 </resources>
