@@ -202,6 +202,8 @@ public class Settings {
 
         Log.d(TAG, "Settings have been committed in Settings Class:" +
         settingsPref.getString(PREFS_NAME, json));
+
+
     }
 
 }
