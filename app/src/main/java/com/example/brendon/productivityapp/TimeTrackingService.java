@@ -43,7 +43,7 @@ public class TimeTrackingService extends IntentService {
     4. Put the JSON into an intent with putExtra() and then use startService() to inititate
     this service.
 
-     */
+    */
 
     public static final String PREFS_NAME = "savedSettings";
     public static final String GOAL_KEY = "goalKey";
