@@ -10,6 +10,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,7 +31,7 @@ public class TimeTrackingService extends IntentService {
     private static final String TAG = "TimeTrackingService";
     private static final String PREFS_UNPRODUCTIVE_TIME_FILE = "UnproductiveTimeFile";
     private static final String PREFS_APPS_FILE = "UnproductiveAppsFile";
-    private static final String JSON_LIST_KEY = "key";
+    private static final String JSON_LIST_KEY = "Unproductive Apps List";
     private static final String UNPRODUCTIVE_TIME_KEY = "UnproductiveTime";
 
     /*
@@ -138,6 +139,7 @@ public class TimeTrackingService extends IntentService {
         long tempUnproductiveTime = 0;
 
         // Update unproductiveTime
+        preferences = getSharedPreferences(PREFS_NAME, 0);
 
         // Create CustomUsageStats Object
         CustomUsageStats usageStatsAccessor = new CustomUsageStats();
@@ -151,18 +153,29 @@ public class TimeTrackingService extends IntentService {
         //SharedPreferences appsPreferences = getSharedPreferences(PREFS_APPS_FILE, 0);
 
         // We will retrieve the unproductiveAppsList by JSON
-        String jsonList = preferences.getString(JSON_LIST_KEY, null);
+        String jsonList = preferences.getString(JSON_LIST_KEY, "");
         /*
         List<UsageStats> unproductiveAppsList = new Gson().fromJson(jsonList,
                 new TypeToken<List<UsageStats>>() {
                 }.getType());
 */
 
+        Log.d(TAG, "jsonList == " + jsonList);
+
         // Going to try this way for the List
         Log.d(TAG, "About to deserialize List");
         Gson gson = new Gson();
-        List<UsageStats> unproductiveAppsList = gson
-                .fromJson(jsonList, new TypeToken<List<UsageStats>>(){}.getType());
+
+        // About to try a different way here
+        Type type = new TypeToken<List<UsageStats>>(){}.getType();
+        List<UsageStats> unproductiveAppsList = gson.fromJson(jsonList, type);
+
+        Log.d(TAG, "unprodList == " + unproductiveAppsList.isEmpty());
+
+
+
+        //List<UsageStats> unproductiveAppsList = gson
+        //        .fromJson(jsonList, new TypeToken<List<UsageStats>>(){}.getType());
 
         Log.d(TAG, "List deserialized");
 
