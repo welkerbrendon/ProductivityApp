@@ -15,31 +15,27 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:text="&lt;"
-                android:layout_marginLeft="10dp"
                 android:onClick="decreaseDate"
                 android:id="@+id/button2"
                 android:layout_alignBottom="@+id/textView"
                 android:layout_alignParentStart="true"
-                android:layout_marginStart="27dp"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginStart="27dp"/>
 
             <com.example.brendon.productivityapp.CustomSpinner
                 android:id="@+id/intervals_spinner"
                 android:layout_width="130dp"
                 android:layout_height="25dp"
-                android:layout_alignBottom="@+id/button"
+                android:layout_marginTop="80dp"
                 android:layout_centerHorizontal="true" />
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:text="&gt;"
-                android:layout_marginRight="10dp"
                 android:onClick="advanceDate"
                 android:id="@+id/button"
-                android:layout_marginTop="59dp"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignBottom="@+id/textView"
                 android:layout_marginEnd="27dp" />
 
             <com.github.mikephil.charting.charts.PieChart
@@ -65,23 +61,15 @@
                 android:text="Today"
                 android:textSize="22dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:layout_below="@+id/button"
+                android:layout_below="@+id/intervals_spinner"
                 android:layout_centerHorizontal="true" />
 
             <com.example.brendon.productivityapp.AdaptableListView
-                android:id="@+id/appList"
+                android:id="@+id/app_list_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/pieChart"
-                android:layout_marginTop="20dp" />
-
-            <ListView
-                android:id="@+id/list_view"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_below="@+id/appList"/>
+                android:layout_below="@+id/pieChart"/>
 
             <Button
                 android:id="@+id/pieButton"
@@ -97,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/pieButton"
-                android:layout_toStartOf="@+id/button"
+                android:layout_toEndOf="@+id/textView"
                 android:text="LINE"
                 android:onClick="showLineChart"/>
 

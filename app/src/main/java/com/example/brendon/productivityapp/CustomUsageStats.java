@@ -1,14 +1,18 @@
 package com.example.brendon.productivityapp;
 
+import android.app.Activity;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import com.github.mikephil.charting.charts.PieChart;
 
@@ -94,10 +98,14 @@ public class CustomUsageStats {
     }
 
     //Displaying the apps used on list view
-    public static void printOnListViewDaily(Context context, ListView listView,
+    public static void printOnListViewDaily(Activity activity, Context context, ListView iconListView,
                                             List<UsageStats> usageStatsList){
 
-        List<String> appNames = new ArrayList<String>();
+        // Array of strings for ListView Title
+        List<String> listviewTitle = new ArrayList<String>();
+
+        List<Drawable> listviewImage = new ArrayList<Drawable>();
+        Drawable icon = new ColorDrawable(Color.TRANSPARENT);;
 
             System.out.println("SIZE: " + usageStatsList.size());
 
@@ -107,6 +115,11 @@ public class CustomUsageStats {
 
                     String packageName = usageStatsList.get(i).getPackageName();
                     PackageManager packageManager = context.getPackageManager();
+                    try {
+                        icon = packageManager.getApplicationIcon(packageName);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     ApplicationInfo ai;
                     try {
                         ai = packageManager.getApplicationInfo(packageName, 0);
@@ -119,33 +132,43 @@ public class CustomUsageStats {
                         String appName = (String) packageManager.getApplicationLabel(ai);
 
                         System.out.println(appName);
-                        appNames.add(appName + " TIME SPENT: "
-                                + usageStatsList.get(i).getTotalTimeInForeground() / 1000 + "s");
+                        listviewTitle.add(appName + "         TIME SPENT: "
+                                + usageStatsList.get(i).getTotalTimeInForeground() / 60000 + "m");
+                        listviewImage.add(icon);
                     }
                 }
 
             }
 
 
-        ArrayAdapter<String> itemsAdapter =
-                new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, appNames);
+        CustomAppList adapterCustom = new CustomAppList(activity, listviewTitle, listviewImage);
 
-        listView.setAdapter(itemsAdapter);
+        iconListView.setAdapter(adapterCustom);
     }
 
-    public static void printOnListViewWeekly(Context context, ListView listView,
+    public static void printOnListViewWeekly(Activity activity, Context context, ListView iconListView,
                                              HashMap<String, Long> usageMap){
 
-        List<String> appNames = new ArrayList<String>();
+        // Array of strings for ListView Title
+        List<String> listviewTitle = new ArrayList<String>();
 
+        List<Drawable> listviewImage = new ArrayList<Drawable>();
+
+        Drawable icon = new ColorDrawable(Color.TRANSPARENT);;
         System.out.println("SIZE: " + usageMap.size());
 
+        int i = 0;
         for (HashMap.Entry<String, Long> entry : usageMap.entrySet())
         {
             if (entry.getValue() > 0) {
 
                 String packageName = entry.getKey();
                 PackageManager packageManager = context.getPackageManager();
+                try {
+                    icon = packageManager.getApplicationIcon(packageName);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
                 ApplicationInfo ai;
                 try {
                     ai = packageManager.getApplicationInfo(packageName, 0);
@@ -158,18 +181,18 @@ public class CustomUsageStats {
                     String appName = (String) packageManager.getApplicationLabel(ai);
 
                     System.out.println(appName);
-                    appNames.add(appName + " TIME SPENT: "
-                            + entry.getValue() / 1000 + "s");
+                    listviewTitle.add(appName + "         TIME SPENT: "
+                            + entry.getValue() / 60000 + "m");
+                    listviewImage.add(icon);
                 }
+                ++i;
             }
 
         }
 
+        CustomAppList adapterCustom = new CustomAppList(activity, listviewTitle, listviewImage);
 
-        ArrayAdapter<String> itemsAdapter =
-                new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, appNames);
-
-        listView.setAdapter(itemsAdapter);
+        iconListView.setAdapter(adapterCustom);
     }
 
 }
