@@ -30,7 +30,7 @@ public class TimeTrackingService extends IntentService {
     private static final String TAG = "TimeTrackingService";
     private static final String PREFS_UNPRODUCTIVE_TIME_FILE = "UnproductiveTimeFile";
     private static final String PREFS_APPS_FILE = "UnproductiveAppsFile";
-    private static final String JSON_LIST_KEY = "key";
+    private static final String JSON_LIST_KEY = "Unproductive Apps List";
     private static final String UNPRODUCTIVE_TIME_KEY = "UnproductiveTime";
 
     /*
@@ -45,7 +45,7 @@ public class TimeTrackingService extends IntentService {
 
     */
 
-    public static final String PREFS_NAME = "savedSettings";
+    public static final String PREFS_NAME = "Settings";
     public static final String GOAL_KEY = "goalKey";
     public static final String PREFS_GOAL_NAME = "savedGoal";
     public static final String SETTINGS_KEY = "settingsKey";
@@ -96,12 +96,14 @@ public class TimeTrackingService extends IntentService {
 
         // Call calculate method to start calculation of unproductive time spent
         calculateUnproductiveTimeSpent();
+        Log.d(TAG, "Past calculateUnproductiveTimeSpent");
 
         Time checkTime;
         checkTime = unprouctiveTime;
         saveUnproductiveTime();
 
         // Retrieve the Settings Class from SharedPreferences
+        Log.d(TAG, "About to grab settings");
         String jsonSettings = preferences.getString(SETTINGS_KEY, null);
         settings = gson.fromJson(jsonSettings, Settings.class);
 
@@ -139,6 +141,7 @@ public class TimeTrackingService extends IntentService {
         long tempUnproductiveTime = 0;
 
         // Update unproductiveTime
+        preferences = getSharedPreferences(PREFS_NAME, 0);
 
         // Create CustomUsageStats Object
         CustomUsageStats usageStatsAccessor = new CustomUsageStats();
@@ -159,21 +162,29 @@ public class TimeTrackingService extends IntentService {
                 }.getType());
 */
 
+        Log.d(TAG, "unproductiveList" + jsonList);
+
         // Going to try this way for the List
         Log.d(TAG, "About to deserialize List");
         Gson gson = new Gson();
-        List<UsageStats> unproductiveAppsList = gson
-                .fromJson(jsonList, new TypeToken<List<UsageStats>>(){}.getType());
+        List<UsageStats> unproductiveAppsList = gson.fromJson(jsonList, new TypeToken<List<UsageStats>>(){}.getType());
 
-        Log.d(TAG, "List deserialized");
+        Log.d(TAG, "is unproductive Apps List Empty? " + unproductiveAppsList.isEmpty());
+
+        Log.d(TAG, "List deserialized: " + unproductiveAppsList.get(0).getPackageName());
+        Log.d(TAG, "allAppsList(0)" + allAppsList.get(0).getPackageName());
 
 
         // For all apps that match the name, get their timeInMilli and += to unproductiveTime.
         for (int i = 0; i < allAppsList.size(); i++) {
+            Log.d(TAG, "Within FOR loop");
             if(unproductiveAppsList.contains(allAppsList.get(i))) {
+                Log.d(TAG, "Within IF statement");
                 tempUnproductiveTime += allAppsList.get(i).getTotalTimeInForeground();
             }
         }
+
+        Log.d(TAG, "Past for loop in calculate");
 
         // Now, update unproductiveTime
         unprouctiveTime.setMilliseconds(tempUnproductiveTime);

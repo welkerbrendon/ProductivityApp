@@ -122,7 +122,7 @@ public class FirstTimeActivity extends ActionBarActivity implements
         Gson gson = new Gson();
         String json = gson.toJson(unproductiveApps);
 
-        SharedPreferences appsPref = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences appsPref = getApplicationContext().getSharedPreferences("Settings", 0);
         SharedPreferences.Editor settingEditor = appsPref.edit();
         settingEditor.putString("Unproductive Apps List", json);
 
