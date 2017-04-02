@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Goal {
     // The following String must be the same for ALL usages of getSharedPreferences.
-    public static final String PREFS_NAME = "savedSettings";
+    public static final String PREFS_NAME = "Settings";
     public static final String GOAL_KEY = "goalKey";
 
     /**

@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 public class EditPlan extends AppCompatActivity {
     EditText textEditorPlan;
 
-    public static final String PREFS_NAME = "savedSettings";
+    public static final String PREFS_NAME = "Settings";
     public static final String PREFS_GOAL_NAME = "savedGoal";
     Settings settings;
     @Override
@@ -23,11 +23,11 @@ public class EditPlan extends AppCompatActivity {
 
     public void startMainActivity(View view) {
 
-        SharedPreferences settingPreferences = getSharedPreferences(PREFS_NAME, 0);
-        if(settingPreferences.contains(PREFS_NAME)) {
-            String json = settingPreferences.getString(PREFS_NAME, null);
-
+        SharedPreferences settingsPreferences = getSharedPreferences(PREFS_NAME, 0);
+        String json = settingsPreferences.getString(PREFS_NAME, null);
+        if(json != null) {
             Gson gson = new Gson();
+
             settings = gson.fromJson(json, Settings.class);
         }
         else
@@ -37,16 +37,20 @@ public class EditPlan extends AppCompatActivity {
 
         settings.saveToSharedPreferences(this);
 
+        // TEST - Pull from shared preferences right after pushing
+        // TEST - Pull from shared preferences right after pushing
+        // TEST - Pull from shared preferences right after pushing
+
+        String jsonTest = settingsPreferences.getString(PREFS_NAME, null);
+        Gson gson = new Gson();
+        Settings settingsTest = gson.fromJson(json, Settings.class);
+
+        // TEST - Pull from shared preferences right after pushing
+        // TEST - Pull from shared preferences right after pushing
+        // TEST - Pull from shared preferences right after pushing
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    public void loadPlan() {
-        SharedPreferences goalPreferences = getSharedPreferences(PREFS_GOAL_NAME, 0);
-        if(goalPreferences.contains(PREFS_GOAL_NAME)){
-            Goal goal = (Goal) goalPreferences;
-            String plan = goal.getPlan();
-            textEditorPlan.setText(plan);
-        }
-    }
 }
