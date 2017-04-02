@@ -34,7 +34,7 @@ public class FirstTimeActivity extends ActionBarActivity implements
         android.widget.CompoundButton.OnCheckedChangeListener{
 
     public static final String PREFS_NAME = "Unproductive Apps List";
-    public static final String PREFS_SETTINGS_NAME = "savedSettings";
+    public static final String PREFS_SETTINGS_NAME = "Settings";
 
     ListView lv;
     List<AppSelection> appSelectionList = new ArrayList<>();
@@ -122,18 +122,19 @@ public class FirstTimeActivity extends ActionBarActivity implements
         Gson gson = new Gson();
         String json = gson.toJson(unproductiveApps);
 
-        SharedPreferences settingsPref = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor settingEditor = settingsPref.edit();
-
+        SharedPreferences appsPref = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor settingEditor = appsPref.edit();
         settingEditor.putString("Unproductive Apps List", json);
 
         Toast.makeText(this, "List saved to shared preferences.", Toast.LENGTH_SHORT).show();
 
-        Intent intent;
-        SharedPreferences sharedPref = getSharedPreferences(PREFS_SETTINGS_NAME, 0);
-        if(settingsPref.contains(PREFS_SETTINGS_NAME))
-            settings = (Settings) getSharedPreferences(PREFS_SETTINGS_NAME, 0);
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_SETTINGS_NAME, MODE_PRIVATE);
+        String settingsJson = sharedPreferences.getString(PREFS_SETTINGS_NAME, null);
+        if(settingsJson != null) {
+            settings = gson.fromJson(settingsJson, Settings.class);
+        }
 
+        Intent intent;
         if(settings.isFirstTime()){
             intent = new Intent(this, EditGoalActivity.class);
         }

@@ -17,7 +17,7 @@ public class EditGoalActivity extends AppCompatActivity {
     EditText minutesEditor;
     Settings settings = new Settings();
 
-    public static final String PREFS_NAME = "savedSettings";
+    public static final String PREFS_NAME = "Settings";
     public static final String PREFS_GOAL_NAME = "savedGoal";
 
     @Override
@@ -47,22 +47,26 @@ public class EditGoalActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goNext(View view){
-        if(userGoal != null)
+    public void goNext(View view) {
+        if (userGoal != null)
             userGoal.saveToSharedPreferences(this);
 
-        SharedPreferences settingsPreferences = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String settingsJson = sharedPreferences.getString("Settings", null);
 
-        if(settingsPreferences.contains(PREFS_NAME))
-            settings = (Settings) getSharedPreferences(PREFS_NAME, 0);
-        Intent intent;
-        if(settings.isFirstTime()){
-            intent = new Intent(this, SettingsActivity.class);
+        if (settingsJson != null) {
+            Gson gson = new Gson();
+            settings = gson.fromJson(settingsJson, Settings.class);
         }
-        else{
+        else
+            settings = new Settings();
+
+        Intent intent;
+        if (settings.isFirstTime()) {
+            intent = new Intent(this, SettingsActivity.class);
+        } else {
             intent = new Intent(this, GoalView.class);
         }
-
         startActivity(intent);
     }
 }

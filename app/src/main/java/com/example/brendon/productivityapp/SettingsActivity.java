@@ -16,7 +16,7 @@ import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    public static final String PREFS_NAME = "savedSettings";
+    public static final String PREFS_NAME = "Settings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
