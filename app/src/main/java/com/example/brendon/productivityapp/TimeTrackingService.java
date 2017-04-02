@@ -45,10 +45,9 @@ public class TimeTrackingService extends IntentService {
 
     */
 
-    public static final String PREFS_NAME = "savedSettings";
+    public static final String PREFS_NAME = "Settings";
     public static final String GOAL_KEY = "goalKey";
     public static final String PREFS_GOAL_NAME = "savedGoal";
-    public static final String SETTINGS_KEY = "settingsKey";
 
     private boolean displayed25;
     private boolean displayed50;
@@ -102,7 +101,7 @@ public class TimeTrackingService extends IntentService {
         saveUnproductiveTime();
 
         // Retrieve the Settings Class from SharedPreferences
-        String jsonSettings = preferences.getString(SETTINGS_KEY, null);
+        String jsonSettings = preferences.getString(PREFS_NAME, null);
         settings = gson.fromJson(jsonSettings, Settings.class);
 
         /*
