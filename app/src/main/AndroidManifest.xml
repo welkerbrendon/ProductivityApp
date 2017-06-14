@@ -11,21 +11,19 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
-        <service android:name=".TimeTrackingService"
+        <service
+            android:name=".TimeTrackingService"
             android:exported="false" />
-
-        <service android:name=".BackgroundJobService"
+        <service
+            android:name=".BackgroundJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-        
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,13 +37,13 @@
         <activity
             android:name=".FirstTimeActivity"
             android:label="@string/app_name" />
-
         <activity android:name=".StatsActivity" />
         <activity android:name=".GoalView" />
         <activity android:name=".EditGoalActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".IntroductionMessageActivity" />
-        <activity android:name=".EditPlan"></activity>
+        <activity android:name=".EditPlan" />
+        <activity android:name=".Main2Activity"></activity>
     </application>
 
 </manifest>

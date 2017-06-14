@@ -7,9 +7,11 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 //import android.provider.Settings;
@@ -69,14 +71,7 @@ public class MainActivity extends AppCompatActivity {
         else
             settings = new Settings();
 
-        if(settings.isFirstTime()) {
-            Intent intent = new Intent(this, IntroductionMessageActivity.class);
-            startActivity(intent);
-        }
-
-
-
-        startBackgroundService();
+        //startBackgroundService();
     }
 
     public void startBackgroundService() {
@@ -129,13 +124,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestPermission() {
-        Toast.makeText(getApplicationContext(),
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setMessage("You must allow the app permission to access Usage Stats.")
+               .setPositiveButton("Open Settings", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivityForResult(
+                        new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS),
+                        MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
+            }
+        })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(),
+                                       "This app will not work without Usage Stats.",
+                                       Toast.LENGTH_SHORT).show();
+                    }
+                });
+        builder.create().show();
+        /*Toast.makeText(getApplicationContext(),
                 "You must allow the app permission to access Usage Stats./nOpening System Settings.",
                 Toast.LENGTH_LONG).show();
 
         startActivityForResult(
                 new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS),
-                MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
+                MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);*/
     }
 
     public void startMessageActivity(View view) {

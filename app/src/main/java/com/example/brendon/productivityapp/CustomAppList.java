@@ -17,23 +17,26 @@ public class CustomAppList extends ArrayAdapter<String>{
 
     private final Activity context;
     private final List<String> text;
+    private final List<String> _time;
     private final List<Drawable> image;
     public CustomAppList(Activity context,
-                      List<String> web, List<Drawable> imageId) {
+                      List<String> web, List<String> time, List<Drawable> imageId) {
         super(context, R.layout.custom_list_view, web);
         this.context = context;
         this.text = web;
         this.image = imageId;
-
+        this._time = time;
     }
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView= inflater.inflate(R.layout.custom_list_view, null, true);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.txt2);
+        TextView timeTitle = (TextView) rowView.findViewById(R.id.txt3);
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.img2);
         txtTitle.setText(text.get(position));
+        timeTitle.setText(_time.get(position));
 
         imageView.setImageDrawable(image.get(position));
         return rowView;

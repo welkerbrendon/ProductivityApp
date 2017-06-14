@@ -103,7 +103,7 @@ public class CustomUsageStats {
 
         // Array of strings for ListView Title
         List<String> listviewTitle = new ArrayList<String>();
-
+        List<String> listViewTime = new ArrayList<>();
         List<Drawable> listviewImage = new ArrayList<Drawable>();
         Drawable icon = new ColorDrawable(Color.TRANSPARENT);;
 
@@ -132,7 +132,8 @@ public class CustomUsageStats {
                         String appName = (String) packageManager.getApplicationLabel(ai);
 
                         System.out.println(appName);
-                        listviewTitle.add(appName + "         TIME SPENT: "
+                        listviewTitle.add(appName);
+                        listViewTime.add("Time Spent: "
                                 + usageStatsList.get(i).getTotalTimeInForeground() / 60000 + "m");
                         listviewImage.add(icon);
                     }
@@ -141,7 +142,7 @@ public class CustomUsageStats {
             }
 
 
-        CustomAppList adapterCustom = new CustomAppList(activity, listviewTitle, listviewImage);
+        CustomAppList adapterCustom = new CustomAppList(activity, listviewTitle, listViewTime, listviewImage);
 
         iconListView.setAdapter(adapterCustom);
     }
@@ -151,7 +152,7 @@ public class CustomUsageStats {
 
         // Array of strings for ListView Title
         List<String> listviewTitle = new ArrayList<String>();
-
+        List<String> listViewTime = new ArrayList<>();
         List<Drawable> listviewImage = new ArrayList<Drawable>();
 
         Drawable icon = new ColorDrawable(Color.TRANSPARENT);;
@@ -181,7 +182,8 @@ public class CustomUsageStats {
                     String appName = (String) packageManager.getApplicationLabel(ai);
 
                     System.out.println(appName);
-                    listviewTitle.add(appName + "         TIME SPENT: "
+                    listviewTitle.add(appName);
+                    listViewTime.add("Time Spent: "
                             + entry.getValue() / 60000 + "m");
                     listviewImage.add(icon);
                 }
@@ -190,7 +192,7 @@ public class CustomUsageStats {
 
         }
 
-        CustomAppList adapterCustom = new CustomAppList(activity, listviewTitle, listviewImage);
+        CustomAppList adapterCustom = new CustomAppList(activity, listviewTitle, listViewTime, listviewImage);
 
         iconListView.setAdapter(adapterCustom);
     }
