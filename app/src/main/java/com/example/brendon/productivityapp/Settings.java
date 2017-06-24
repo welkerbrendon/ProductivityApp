@@ -1,14 +1,28 @@
 package com.example.brendon.productivityapp;
 
+import android.app.Activity;
+import android.app.Notification;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.NumberPicker;
+
 import com.google.gson.Gson;
 
-import static android.content.Context.MODE_APPEND;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.brendon.productivityapp.MainActivity.PREFS_NAME;
-import static com.example.brendon.productivityapp.MainActivity.TAG;
 
 /**
  * This class is a collection of the different
@@ -19,6 +33,10 @@ import static com.example.brendon.productivityapp.MainActivity.TAG;
 public class Settings {
     public static final String PREFS_NAME = "Settings";
 
+    private static Settings instance;
+
+    private transient SettingsClient client;
+    private transient ProductivityMonitor monitor;
     private boolean notifications;
     private boolean weeklyGoalReminder;
     private boolean dailyPlanReminder;
@@ -27,17 +45,39 @@ public class Settings {
     private boolean autoDataSending;
     private boolean takeBreak;
     private boolean firstTime;
+    private int notificationType;
     private int timeUntilBreak;
-    private int breakLength;
+    private long snoozeEndTime;
     private int hourForGoalReminder;
     private int minutesForGoalReminder;
     private int hourForDailyPlan;
     private int minutesForDailyPlan;
     private int hourForWeeklyPlan;
     private int minutesForWeeklyPlan;
+    private long timeUsedWeekly;
+    private Set<String> unproductiveApps;
+    private Map<String, AppSelection> appCache;
 
-    public Settings() {
+    public Map<String, AppSelection> getAppCache() {
+        return appCache;
+    }
 
+    public void setAppCache(Map<String, AppSelection> appCache) {
+        this.appCache = appCache;
+    }
+
+    public int getNotificationType() {
+        return notificationType;
+    }
+
+    public void setNotificationType(int notificationType) {
+        this.notificationType = notificationType;
+    }
+
+    public long getTimeRemaining() {
+        return getMillisForWeeklyPlan() - timeUsedWeekly;
+    }
+    private Settings() {
         notifications = false;
         weeklyGoalReminder = false;
         dailyPlanReminder = false;
@@ -47,16 +87,91 @@ public class Settings {
         takeBreak = false;
         firstTime = true;
         timeUntilBreak = 0;
-        breakLength = 0;
+        snoozeEndTime = 0;
         hourForGoalReminder = 0;
         minutesForGoalReminder = 0;
         hourForDailyPlan = 0;
         minutesForDailyPlan = 0;
         hourForWeeklyPlan = 0;
         minutesForWeeklyPlan = 0;
+        timeUsedWeekly = 0;
+        unproductiveApps = new HashSet<>();
+        appCache = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        notificationType = Notification.PRIORITY_DEFAULT;
     }
 
+    public static Settings getNewInstance() {
+        if (instance == null) {
+            instance = new Settings();
+        }
+        return instance;
+    }
 
+    public static Settings getInstance(Context context) {
+        if (instance == null) {
+            Gson gson = new Gson();
+            SharedPreferences settingsPref = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            String json = settingsPref.getString(PREFS_NAME, "");
+            if (!json.equals("")) {
+                instance = gson.fromJson(json, Settings.class);
+            } else {
+                instance = new Settings();
+            }
+        }
+        return instance;
+    }
+
+    public long getTimeUsedWeekly() {
+        return timeUsedWeekly;
+    }
+
+    public void setTimeUsedWeekly(long timeUsedWeekly) {
+        this.timeUsedWeekly = timeUsedWeekly;
+        if (client != null) {
+            client.settingsChanged();
+        }
+    }
+
+    public List<String> getUnproductiveAppsList() {
+        if (unproductiveApps == null) {
+            unproductiveApps = new HashSet<>();
+            return new ArrayList<>(unproductiveApps);
+        } else {
+            return new ArrayList<>(unproductiveApps);
+        }
+    }
+
+    public void setUnproductiveAppsList(Set<String> unproductiveAppsList) {
+        this.unproductiveApps = new HashSet<>(unproductiveAppsList);
+        if (monitor != null) {
+            monitor.reloadAppList();
+        }
+    }
+
+    public Set<String> getUnproductiveApps() {
+        if (unproductiveApps == null) {
+            return new HashSet<>();
+        } else {
+            return new HashSet<>(unproductiveApps);
+        }
+    }
+
+    public void registerClient(SettingsClient client) {
+        this.client = client;
+        this.client.settingsChanged();
+    }
+
+    public void unregisterClient() {
+        client = null;
+    }
+
+    public void registerMonitor(ProductivityMonitor monitor) {
+        this.monitor = monitor;
+    }
+
+    public void unregisterMonitor() {
+        monitor = null;
+    }
 
     public boolean isWeeklyGoalReminder() {
         return weeklyGoalReminder;
@@ -99,7 +214,9 @@ public class Settings {
     }
 
     public boolean isTakeBreak() {
-        return takeBreak;
+        Calendar c = Calendar.getInstance();
+        //Log.d("DBG", Boolean.toString(c.getTimeInMillis() <= snoozeEndTime));
+        return (c.getTimeInMillis() <= snoozeEndTime);
     }
 
     public void setTakeBreak(boolean takeBreak) {
@@ -114,12 +231,12 @@ public class Settings {
         this.timeUntilBreak = timeUntilBreak;
     }
 
-    public int getBreakLength() {
-        return breakLength;
+    public long getSnoozeEndTime() {
+        return snoozeEndTime;
     }
 
-    public void setBreakLength(int breakLength) {
-        this.breakLength = breakLength;
+    public void setSnoozeEndTime(long snoozeEndTime) {
+        this.snoozeEndTime = snoozeEndTime;
     }
 
     public int getHourForGoalReminder() {
@@ -160,6 +277,9 @@ public class Settings {
 
     public void setHourForWeeklyPlan(int hourForWeeklyPlan) {
         this.hourForWeeklyPlan = hourForWeeklyPlan;
+        if (client != null) {
+            client.settingsChanged();
+        }
     }
 
     public int getMinutesForWeeklyPlan() {
@@ -168,6 +288,13 @@ public class Settings {
 
     public void setMinutesForWeeklyPlan(int minutesForWeeklyPlan) {
         this.minutesForWeeklyPlan = minutesForWeeklyPlan;
+        if (client != null) {
+            client.settingsChanged();
+        }
+    }
+
+    public long getMillisForWeeklyPlan() {
+        return (hourForWeeklyPlan * 3600000) + (minutesForWeeklyPlan * 60000);
     }
 
     public boolean isNotifications() {
@@ -187,7 +314,6 @@ public class Settings {
     }
 
     public void saveToSharedPreferences(Context context) {
-
         // Save settings as a json
         Gson gson = new Gson();
         String json = gson.toJson(this, Settings.class);
@@ -198,12 +324,56 @@ public class Settings {
         settingEditor.putString(PREFS_NAME, json);
 
         //Commit edits
-        settingEditor.commit();
-
-        Log.d(TAG, "Settings have been committed in Settings Class:" +
-        settingsPref.getString(PREFS_NAME, json));
-
-
+        settingEditor.apply();
     }
 
+    public void setAllowance(final Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+        LayoutInflater inflater = activity.getLayoutInflater();
+        final View spinners = inflater.inflate(R.layout.allowance_setter, null);
+        //builder.setView(inflater.inflate(R.layout.allowance_setter, null));
+        spinners.post(new Runnable() {
+            @Override
+            public void run() {
+                final NumberPicker npHours = (NumberPicker) spinners.findViewById(R.id.npHours);
+                final NumberPicker npMinutes = (NumberPicker) spinners.findViewById(R.id.npMinutes);
+                npHours.setMinValue(0);
+                npHours.setMaxValue(168);
+                npHours.setValue(hourForWeeklyPlan);
+                npMinutes.setMinValue(0);
+                npMinutes.setMaxValue(59);
+                npMinutes.setValue(minutesForWeeklyPlan);
+            }
+        });
+        builder.setView(spinners)
+                .setPositiveButton("Set", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final NumberPicker npHours = (NumberPicker) spinners.findViewById(R.id.npHours);
+                        final NumberPicker npMinutes = (NumberPicker) spinners.findViewById(R.id.npMinutes);
+                        setHourForWeeklyPlan(npHours.getValue());
+                        setMinutesForWeeklyPlan(npMinutes.getValue());
+                        saveToSharedPreferences(activity);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Don't do stuff
+                    }
+                })
+                .setTitle("Set Allowance");
+        builder.create().show();
+    }
+
+    public void loadIconCache(PackageManager pm) {
+        if (pm != null) {
+            for (AppSelection item : appCache.values()) {
+                item.loadIconAsync(pm);
+            }
+        } else {
+        }
+
+    }
 }

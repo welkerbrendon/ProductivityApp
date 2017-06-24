@@ -15,7 +15,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:lines="2"
-        android:text="Please select the settings you would like to use"
+        android:text="@string/unused_settings"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         tools:layout_editor_absoluteX="-32dp"
         tools:layout_editor_absoluteY="-5dp" />
@@ -24,7 +24,7 @@
         android:id="@+id/button4"
         android:layout_width="383dp"
         android:layout_height="50dp"
-        android:text="Done"
+        android:text="@string/done"
         android:layout_alignParentBottom="true"
         android:onClick="goNext"/>
 
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/editText"
-        android:text="Notifications" />
+        android:text="@string/u_notifications" />
 
     <CheckBox
         android:id="@+id/chk_weekly_goal_reminder"
@@ -42,13 +42,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/chk_notifications"
-        android:text="Weekly Goal Reminder" />
+        android:text="@string/u_weekly_goal_reminder" />
 
     <CheckBox
         android:id="@+id/chk_daily_plan_reminder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Daily Plan Reminder"
+        android:text="@string/u_daily_plan_reminder"
         android:layout_below="@+id/chk_weekly_goal_reminder"
         android:layout_alignParentStart="true" />
 
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/chk_daily_plan_reminder"
-        android:text="Weekly Plan Reminder" />
+        android:text="@string/u_weekly_plan_reminder" />
 
     <CheckBox
         android:id="@+id/chk_lock_out"
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/chk_weekly_plan_reminder"
-        android:text="Lock Out" />
+        android:text="@string/u_lock_out" />
 
     <CheckBox
         android:id="@+id/chk_auto_data_sending"
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/chk_lock_out"
-        android:text="Automatically Send Data" />
+        android:text="@string/u_automatically_send_data" />
 
     <EditText
         android:id="@+id/editText2"
@@ -83,7 +83,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/chk_auto_data_sending"
         android:ems="10"
-        android:hint="Break Length"
+        android:hint="@string/u_break_length"
         android:inputType="textPersonName|number" />
 
 </RelativeLayout>

@@ -13,10 +13,11 @@ public class IntroductionMessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introduction_message);
+
     }
 
     public void startFirstTimeActivity(View view) {
-        Intent intent = new Intent(this, FirstTimeActivity.class);
+        Intent intent = new Intent(this, AppSelectorActivity.class);
 
         startActivity(intent);
     }

@@ -58,8 +58,8 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Today"
-                android:textSize="22dp"
+                android:text="@string/u_today"
+                android:textSize="22sp"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_below="@+id/intervals_spinner"
                 android:layout_centerHorizontal="true" />
@@ -75,7 +75,7 @@
                 android:id="@+id/pieButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PIE"
+                android:text="@string/u_pie"
                 android:layout_above="@+id/button2"
                 android:layout_toStartOf="@+id/textView"
                 android:onClick="showPieChart"/>
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/pieButton"
                 android:layout_toEndOf="@+id/textView"
-                android:text="LINE"
+                android:text="@string/u_line"
                 android:onClick="showLineChart"/>
 
         </RelativeLayout>

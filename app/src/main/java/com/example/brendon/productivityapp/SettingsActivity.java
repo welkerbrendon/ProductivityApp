@@ -7,12 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -53,7 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void goNext(View view){
 
-        Settings settings = new Settings();
+        Settings settings = Settings.getInstance(this);
 
         CheckBox chk_notifications = (CheckBox) findViewById(R.id.chk_notifications);
         settings.setNotifications(chk_notifications.isChecked());
@@ -82,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
         else
             breakLength = Integer.parseInt(input);
 
-        settings.setBreakLength(breakLength);
+        settings.setSnoozeEndTime(breakLength);
 
         settings.saveToSharedPreferences(this);
 

@@ -23,7 +23,7 @@ public class EditPlan extends AppCompatActivity {
 
     public void startMainActivity(View view) {
 
-        SharedPreferences settingsPreferences = getSharedPreferences(PREFS_NAME, 0);
+        /*SharedPreferences settingsPreferences = getSharedPreferences(PREFS_NAME, 0);
         String json = settingsPreferences.getString(PREFS_NAME, null);
         if(json != null) {
             Gson gson = new Gson();
@@ -31,7 +31,8 @@ public class EditPlan extends AppCompatActivity {
             settings = gson.fromJson(json, Settings.class);
         }
         else
-            settings = new Settings();
+            settings = new Settings();*/
+        settings = Settings.getInstance(this);
 
         settings.setFirstTime(false);
 
@@ -41,9 +42,9 @@ public class EditPlan extends AppCompatActivity {
         // TEST - Pull from shared preferences right after pushing
         // TEST - Pull from shared preferences right after pushing
 
-        String jsonTest = settingsPreferences.getString(PREFS_NAME, null);
+        /*String jsonTest = settingsPreferences.getString(PREFS_NAME, null);
         Gson gson = new Gson();
-        Settings settingsTest = gson.fromJson(json, Settings.class);
+        Settings settingsTest = gson.fromJson(json, Settings.class);*/
 
         // TEST - Pull from shared preferences right after pushing
         // TEST - Pull from shared preferences right after pushing

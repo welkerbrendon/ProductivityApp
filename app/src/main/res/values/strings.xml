@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProductivityApp</string>
+    <string name="app_name">Productivity App</string>
     <string name="activity_messaging_name">Messaging</string>
     <string-array name="interval_array1">
         <item>Day View</item>
@@ -10,10 +10,54 @@
         <item>Week View</item>
         <item>Change Date</item>
     </string-array>
-    <string name="introduction_message">We will help you:
-Indicate which apps you would like to spend less time on
-Set a goal for how much maximum time you want to spend on all of those apps
-Edit settings related to your goal
-And set a plan for you to achieve your goal.</string>
-    <string name="plan_explanation_message">Enter your plan of how you will accomplish your goal</string>
+    <string name="title_activity_main3">Productivity App</string>
+    <string name="accessibilityservice_description">Monitors window changes.  This is needed to see if an unproductive app is opened.</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_snooze">Snooze</string>
+    <string name="snooze_time">Snooze time</string>
+    <string name="minutes">Minutes</string>
+    <string name="hours">Hours</string>
+    <string name="no_notifications">No notifications</string>
+    <string name="passive_notification">Status bar notification</string>
+    <string name="active_notification">Banner notification</string>
+    <string name="productivity_app">Productivity App</string>
+    <string name="done">Done</string>
+    <string name="unused_goal_text">Please enter goal for the amount of time you will seek to limit yourself on unproductive apps:</string>
+    <string name="unused_plan_text">This can be used as a note to yourself on the specifics on how you plan to accomplish your goal.</string>
+    <string name="enter_plan">Enter Plan</string>
+    <string name="update_goal">Update Goal</string>
+    <string name="unused_welcome_1">Welcome to the Productivity App!</string>
+    <string name="unused_welcome_2">We are very happy that you have decided to use this resource to better manage your time. Lets help you get started by setting things up. Click Start when you are ready to begin.</string>
+    <string name="start">Start</string>
+    <string name="send_data">Send Data</string>
+    <string name="my_plan">My Plan</string>
+    <string name="set_apps">Set Apps</string>
+    <string name="settings">Settings</string>
+    <string name="my_goal">My Goal</string>
+    <string name="usage_stats">Usage Stats</string>
+    <string name="test_service">Test Service</string>
+    <string name="allowance">allowance</string>
+    <string name="remaining">remaining</string>
+    <string name="app_usage">App Usage</string>
+    <string name="unused_phone_number">Enter Phone Number</string>
+    <string name="unused_enter_text">Enter Text</string>
+    <string name="unused_send_sms">Send SMS</string>
+    <string name="back">Back</string>
+    <string name="unused_your_goal">Your Goal:</string>
+    <string name="unused_unproductive_time">Unproductive Time:</string>
+    <string name="unused_thank_you">Thank You</string>
+    <string name="unused_settings">Please select the settings you would like to use</string>
+    <string name="u_notifications">Notifications</string>
+    <string name="u_weekly_goal_reminder">Weekly Goal Reminder</string>
+    <string name="u_daily_plan_reminder">Daily Plan Reminder</string>
+    <string name="u_weekly_plan_reminder">Weekly Plan Reminder</string>
+    <string name="u_lock_out">Lock Out</string>
+    <string name="u_automatically_send_data">Automatically Send Data</string>
+    <string name="u_break_length">Break Length</string>
+    <string name="u_today">Today</string>
+    <string name="u_pie">PIE</string>
+    <string name="u_line">LINE</string>
 </resources>

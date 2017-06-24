@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewGoal"
         android:layout_centerHorizontal="true"
-        android:text="Update Goal"
+        android:text="@string/update_goal"
         android:textAllCaps="false"/>
 
 </RelativeLayout>

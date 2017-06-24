@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.brendon.productivityapp.SnoozeDialog">
+
+    <NumberPicker
+        android:id="@+id/snoozeNP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_toLeftOf="@+id/anchor"/>
+
+    <View
+        android:id="@+id/anchor"
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"/>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/anchor"
+        android:layout_centerVertical="true"
+        android:id="@+id/radioGroup">
+
+        <RadioButton
+            android:id="@+id/snoozeMinutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="8dp"
+            android:checked="true"
+            android:text="@string/minutes" />
+
+        <RadioButton
+            android:id="@+id/snoozeHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/hours"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            tools:layout_editor_absoluteX="117dp"
+            tools:layout_editor_absoluteY="336dp" />
+    </RadioGroup>
+
+
+</RelativeLayout>

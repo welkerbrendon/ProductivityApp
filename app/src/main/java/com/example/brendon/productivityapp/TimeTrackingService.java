@@ -73,13 +73,11 @@ public class TimeTrackingService extends IntentService {
         //  means that in whatever function we call the workIntent,
         //  we must use setData() to put a JSON string of the Goal we want
         //  to modify.
-        Log.d(TAG, "In Service");
 
 
 
         // Get the current (old) unproductive Time from Shared Preferences
         preferences = getSharedPreferences(PREFS_NAME, 0);
-        Log.d(TAG, "Service: onHandle SharedPreferences Loaded");
 
         Gson gson = new Gson();
         String jsonGoal = preferences.getString(GOAL_KEY, null);
@@ -128,10 +126,7 @@ public class TimeTrackingService extends IntentService {
         SharedPreferences.Editor unproductiveTimeEditor = preferences.edit();
         unproductiveTimeEditor.putLong(UNPRODUCTIVE_TIME_KEY, unprouctiveTime.getMilliseconds());
 
-        Log.d(TAG, "Unproductive Time Saved.  New Time: " + unprouctiveTime.getMilliseconds());
         unproductiveTimeEditor.commit();
-        Log.d(TAG, "Unproductive Time Saved Value: " + preferences
-                .getLong(UNPRODUCTIVE_TIME_KEY, unprouctiveTime.getMilliseconds()));
     }
 
     public void calculateUnproductiveTimeSpent() {
@@ -160,24 +155,20 @@ public class TimeTrackingService extends IntentService {
                 }.getType());
 */
 
-        Log.d(TAG, "jsonList == " + jsonList);
 
         // Going to try this way for the List
-        Log.d(TAG, "About to deserialize List");
         Gson gson = new Gson();
 
         // About to try a different way here
         Type type = new TypeToken<List<UsageStats>>(){}.getType();
         List<UsageStats> unproductiveAppsList = gson.fromJson(jsonList, type);
 
-        Log.d(TAG, "unprodList == " + unproductiveAppsList.isEmpty());
 
 
 
         //List<UsageStats> unproductiveAppsList = gson
         //        .fromJson(jsonList, new TypeToken<List<UsageStats>>(){}.getType());
 
-        Log.d(TAG, "List deserialized");
 
 
         // For all apps that match the name, get their timeInMilli and += to unproductiveTime.

@@ -58,7 +58,6 @@ public class StatsActivity extends AppCompatActivity {
         //Setting time to 5:59:59 PM
         date.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH),
                 date.get(Calendar.DAY_OF_MONTH), 17, 59, 59);
-        Log.d("Current Time", complete.format(date.getTime()));
 
         //Setting spinner content
         final CustomSpinner spinner = (CustomSpinner) findViewById(R.id.intervals_spinner);
@@ -174,7 +173,6 @@ public class StatsActivity extends AppCompatActivity {
                     tv1.setText(formattedDate);
                 }
 
-                Log.d("DAILY INCREASE", formattedDate);
             }
         }
 
@@ -195,7 +193,6 @@ public class StatsActivity extends AppCompatActivity {
                 tv1.setText(formattedDateFirst + " - " + formattedDateLast);
             }
 
-            Log.d("WEEKLY INCREASE", formattedDateFirst + " - " + formattedDateLast);
         }
 
         updatePieChart(date);
@@ -215,7 +212,6 @@ public class StatsActivity extends AppCompatActivity {
                 tv1.setText(formattedDate);
             }
 
-            Log.d("DAILY DECREASE", formattedDate);
         }
         else if (intervalType == UsageStatsManager.INTERVAL_WEEKLY) {
 
@@ -229,7 +225,6 @@ public class StatsActivity extends AppCompatActivity {
                 tv1.setText(formattedDateFirst + " - " + formattedDateLast);
             }
 
-            Log.d("WEEKLY DECREASE", formattedDateFirst + " - " + formattedDateLast);
         }
 
         updatePieChart(date);
@@ -296,7 +291,6 @@ public class StatsActivity extends AppCompatActivity {
         PackageManager packageManager = this.getPackageManager();
         ApplicationInfo ai;
 
-        Log.d("Interval Type", String.valueOf(intervalType));
 
         if (intervalType == UsageStatsManager.INTERVAL_DAILY) {
             List<UsageStats> usageStatsList = CustomUsageStats.getUsageStatsListByDate(this, date);
@@ -324,8 +318,6 @@ public class StatsActivity extends AppCompatActivity {
             startTime.setTime(date.getTime());
             startTime.add(Calendar.DAY_OF_YEAR, - 6);
 
-            Log.d("Range time weekly", complete.format(startTime.getTimeInMillis()) + " - " +
-                    complete.format(date.getTimeInMillis()));
 
             List<UsageStats> usageStatsList;
 
@@ -420,8 +412,6 @@ public class StatsActivity extends AppCompatActivity {
         String packageName;
         ApplicationInfo ai;
 
-        Log.d("Range time weekly", complete.format(startTime.getTimeInMillis()) + " - " +
-                complete.format(date.getTimeInMillis()));
 
         List<UsageStats> usageStatsList;
 
@@ -504,7 +494,7 @@ public class StatsActivity extends AppCompatActivity {
     private void fillListViewDaily(List<UsageStats> usageStatsList) {
 
         ListView iconListView = (ListView) findViewById(R.id.app_list_view);
-        CustomUsageStats.printOnListViewDaily(StatsActivity.this ,this, iconListView, usageStatsList);
+        CustomUsageStats.printOnListViewDaily(this, usageStatsList);
 
     }
 
@@ -512,7 +502,7 @@ public class StatsActivity extends AppCompatActivity {
 
         ListView iconListView = (ListView) findViewById(R.id.app_list_view);
 
-        CustomUsageStats.printOnListViewWeekly(StatsActivity.this ,this, iconListView, usageMap);
+        //CustomUsageStats.printOnListViewWeekly(StatsActivity.this ,this, iconListView, usageMap);
 
     }
 }

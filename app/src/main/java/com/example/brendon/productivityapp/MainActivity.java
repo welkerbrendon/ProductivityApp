@@ -1,8 +1,6 @@
 package com.example.brendon.productivityapp;
 
-import android.app.AlarmManager;
 import android.app.AppOpsManager;
-import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
@@ -10,16 +8,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 //import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -57,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Check if the user has enabled Usage Stats. If not, request it
-        if (!hasPermission())
-            requestPermission();
+        /*if (!hasPermission())
+            requestPermission();*/
 
-
-        SharedPreferences settingsPreferences = getSharedPreferences(PREFS_NAME, 0);
+        settings = Settings.getInstance(this);
+        /*SharedPreferences settingsPreferences = getSharedPreferences(PREFS_NAME, 0);
         String json = settingsPreferences.getString(PREFS_NAME, null);
         if(json != null) {
             Gson gson = new Gson();
@@ -69,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             settings = gson.fromJson(json, Settings.class);
         }
         else
-            settings = new Settings();
+            settings = new Settings();*/
 
         //startBackgroundService();
     }
@@ -93,8 +87,9 @@ public class MainActivity extends AppCompatActivity {
            leave it here */
 
         //Serializing settings
-        Settings settings = new Settings();
-        Gson gson = new Gson();
+        Settings settings = Settings.getInstance(this);
+        settings.saveToSharedPreferences(this);
+        /*Gson gson = new Gson();
         String json = gson.toJson(settings);
 
         //Saving settings in shared preferences
@@ -102,14 +97,12 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor settingEditor = settingsPref.edit();
         settingEditor.putString("Settings", json);
 
-        Log.d(TAG, "JSON saved: " + json);
         String toGetJson = "";
 
 
         //Commit edits
         settingEditor.commit();
 
-        Log.d(TAG, settingsPref.getString("Settings", toGetJson));
     }
 
 
@@ -185,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startSetApps(View view) {
-        Intent intent = new Intent(this,FirstTimeActivity.class);
+        Intent intent = new Intent(this,AppSelectorActivity.class);
 
         startActivity(intent);
     }

@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 public class GoalView extends AppCompatActivity {
-    // !! Replace "goal" with actual filename set in FirstTimeActivity !!
+    // !! Replace "goal" with actual filename set in AppSelectorActivity !!
     public final static String GOAL_PREFS_FILE = "goal";
     public final static String GOAL_EXTRA = "goal";
 
@@ -32,7 +32,7 @@ public class GoalView extends AppCompatActivity {
 
         if (goalPreferences.contains("goal")) {
             // Convert json string to Goal Object
-            // !! Replace "goal" with actual value set in FirstTimeActivity !!
+            // !! Replace "goal" with actual value set in AppSelectorActivity !!
             Gson gson = new Gson();
             String jsonGoal = goalPreferences.getString(GOAL_PREFS_FILE, "goal");
 

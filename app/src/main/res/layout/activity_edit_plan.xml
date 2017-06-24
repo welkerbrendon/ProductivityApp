@@ -14,7 +14,7 @@
         android:textAlignment="center"
         android:textStyle="bold"
         android:textAllCaps="false"
-        android:text="This can be used as a note to yourself on the specifics on how you plan to accomplish your goal."
+        android:text="@string/unused_plan_text"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"/>
 
@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewPlanExplanation"
-        android:hint="Enter Plan" />
+        android:hint="@string/enter_plan" />
 
     <Button
         android:id="@+id/done"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textEditorPlan"
         android:onClick="startMainActivity"
-        android:text="Done"
+        android:text="@string/done"
         android:textAllCaps="false" />
 
 

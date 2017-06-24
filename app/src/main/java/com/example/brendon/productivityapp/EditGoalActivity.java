@@ -15,7 +15,7 @@ public class EditGoalActivity extends AppCompatActivity {
     TextView editGoalHeader;
     EditText hoursEditor;
     EditText minutesEditor;
-    Settings settings = new Settings();
+    Settings settings;
 
     public static final String PREFS_NAME = "Settings";
     public static final String PREFS_GOAL_NAME = "savedGoal";
@@ -24,7 +24,7 @@ public class EditGoalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_goal);
-
+        settings = Settings.getInstance(this);
         editGoalHeader = (TextView) findViewById(R.id.textViewPromptGoal);
         hoursEditor = (EditText) findViewById(R.id.editHours);
         minutesEditor = (EditText) findViewById(R.id.editMinutes);
@@ -51,7 +51,8 @@ public class EditGoalActivity extends AppCompatActivity {
         if (userGoal != null)
             userGoal.saveToSharedPreferences(this);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        settings = Settings.getInstance(this);
+        /*SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String settingsJson = sharedPreferences.getString("Settings", null);
 
         if (settingsJson != null) {
@@ -59,7 +60,7 @@ public class EditGoalActivity extends AppCompatActivity {
             settings = gson.fromJson(settingsJson, Settings.class);
         }
         else
-            settings = new Settings();
+            settings = new Settings();*/
 
         Intent intent;
         if (settings.isFirstTime()) {

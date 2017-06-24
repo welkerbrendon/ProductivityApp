@@ -19,9 +19,7 @@
             android:id="@+id/textViewPromptGoal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="Please enter goal for the amount of time you will seek to limit yourself on unproductive apps:"
+            android:text="@string/unused_goal_text"
             android:paddingRight="10dp"
             android:paddingLeft="10dp"/>
 
@@ -35,18 +33,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:layout_below="@+id/textViewPromptGoal"
-            android:layout_centerHorizontal="true"
-            android:hint="Hours" />
+            android:hint="@string/hours" />
 
         <EditText
             android:id="@+id/editMinutes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:layout_toRightOf="@+id/editHours"
-            android:layout_centerHorizontal="true"
-            android:hint="Minutes" />
+            android:hint="@string/minutes" />
 
         </LinearLayout>
 
@@ -54,7 +48,7 @@
             android:id="@+id/button7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Done"
+            android:text="@string/done"
             android:onClick="goNext"/>
 
 

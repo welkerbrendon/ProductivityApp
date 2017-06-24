@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:inputType="phone"
         android:layout_alignParentTop="true"
-        android:hint="Enter Phone Number"/>
+        android:hint="@string/unused_phone_number"/>
 
     <EditText
         android:id="@+id/textFieldMessage"
@@ -20,14 +20,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textFieldPhoneNumber"
         android:inputType="textMultiLine"
-        android:hint="Enter Text"/>
+        android:hint="@string/unused_enter_text"/>
 
     <Button
         android:id="@+id/buttonSendSMS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textFieldMessage"
-        android:text="Send SMS"/>
+        android:text="@string/unused_send_sms"/>
 
     <Button
         android:id="@+id/button3"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/buttonSendSMS"
         android:layout_below="@+id/buttonSendSMS"
-        android:text="Back"
+        android:text="@string/back"
         android:onClick="startMainActivity"/>
 
 </RelativeLayout>

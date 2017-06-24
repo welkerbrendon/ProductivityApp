@@ -3,6 +3,7 @@ package com.example.brendon.productivityapp;
  * Created by Frank on 4/1/2017.
  */
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,34 +12,39 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
-public class CustomAppList extends ArrayAdapter<String>{
+public class CustomAppList extends ArrayAdapter<AppUsageEntry>{
 
-    private final Activity context;
-    private final List<String> text;
-    private final List<String> _time;
-    private final List<Drawable> image;
-    public CustomAppList(Activity context,
-                      List<String> web, List<String> time, List<Drawable> imageId) {
-        super(context, R.layout.custom_list_view, web);
+    private final Context context;
+    private List<AppUsageEntry> _usageEntries = new ArrayList<>();
+    public CustomAppList(Context context,
+                      List<AppUsageEntry> usageEntries) {
+        super(context, R.layout.custom_list_view, usageEntries);
         this.context = context;
-        this.text = web;
-        this.image = imageId;
-        this._time = time;
+        this._usageEntries = usageEntries;
     }
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        LayoutInflater inflater = context.getLayoutInflater();
+        LayoutInflater inflater = LayoutInflater.from(context);
         View rowView= inflater.inflate(R.layout.custom_list_view, null, true);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.txt2);
         TextView timeTitle = (TextView) rowView.findViewById(R.id.txt3);
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.img2);
-        txtTitle.setText(text.get(position));
-        timeTitle.setText(_time.get(position));
+        txtTitle.setText(_usageEntries.get(position).getAppName());
+        Time time = new Time();
+        long millis = _usageEntries.get(position).getTimeInForeground();
+        String hms = String.format(Locale.US, "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
+                TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
+        timeTitle.setText("Time spent: " + hms);
 
-        imageView.setImageDrawable(image.get(position));
+        imageView.setImageDrawable(_usageEntries.get(position).getIcon());
         return rowView;
     }
+    public List<AppUsageEntry> getUsageEntries() { return _usageEntries; };
 }

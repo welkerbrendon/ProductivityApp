@@ -10,20 +10,17 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-
-import com.github.mikephil.charting.charts.PieChart;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * This class enables the app to gather UsageStats from
@@ -32,20 +29,69 @@ import java.util.Map;
  * @author Frank
  */
 
-public class CustomUsageStats {
+class AppUsageEntry {
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
+
+    public long getTimeInForeground() {
+        return timeInForeground;
+    }
+
+    public void setTimeInForeground(long timeInForeground) {
+        this.timeInForeground = timeInForeground;
+    }
+
+    public void addTimeInForeground(long timeInForeground) {
+        this.timeInForeground += timeInForeground;
+    }
+
+    public Drawable getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Drawable icon) {
+        this.icon = icon;
+    }
+
+    public String toString() {
+        return appName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof AppUsageEntry) {
+            return appName == ((AppUsageEntry) o).appName;
+        }
+        return false;
+        //return super.equals(o);
+    }
+
+    private String appName;
+    private long timeInForeground;
+    private Drawable icon;
+}
+
+class CustomUsageStats {
     private static final String TAG = "CustomUsageStats";
     static SimpleDateFormat complete = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.US);
+    private static final String PREFS_NAME = "appList";
+    private static final String PREFS_SETTINGS_NAME = "Settings";
 
     @SuppressWarnings("ResourceType")
     //Creating the userstats manager
-    public static UsageStatsManager getUsageStatsManager(Context context){
+    public static UsageStatsManager getUsageStatsManager(Context context) {
 
         UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
         return usm;
     }
 
     //Getting data usage
-    public static List<UsageStats> getUsageStatsList(Context context){
+    public static List<UsageStats> getUsageStatsList(Context context) {
         UsageStatsManager usm = getUsageStatsManager(context);
 
         Calendar calendar = Calendar.getInstance();
@@ -56,27 +102,47 @@ public class CustomUsageStats {
         // For testing purposes
         List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
         if (usageStatsList.isEmpty()) {
-            Log.d(TAG, "Nothing in usageStatsList");
-        }
-        else {
-            Log.d(TAG, "Loaded queryUsageStats correctly");
+        } else {
         }
 
         return usageStatsList;
     }
 
     //Getting data usage by date
-    public static List<UsageStats> getUsageStatsListByDate(Context context, Calendar date){
+    public static List<UsageStats> getUsageStatsListByDate(Context context, Calendar date) {
         UsageStatsManager usm = getUsageStatsManager(context);
 
         Calendar startTime = Calendar.getInstance();
 
         startTime.setTime(date.getTime());
-        startTime.add(Calendar.DAY_OF_YEAR, - 1);
+        startTime.add(Calendar.DAY_OF_YEAR, -1);
         startTime.add(Calendar.SECOND, 1);
 
         List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
                 startTime.getTimeInMillis(), date.getTimeInMillis());
+
+        return usageStatsList;
+    }
+
+    public static CustomAppList getWeeklyUsage(Context context) {
+        return printOnListViewDaily(context,
+                getUsageStatsListThisWeek(context));
+    }
+
+    public static List<UsageStats> getUsageStatsListThisWeek(Context context) {
+        UsageStatsManager usm = getUsageStatsManager(context);
+
+        Calendar cal = Calendar.getInstance();
+        long endTime = cal.getTimeInMillis();
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
+        long startTime = cal.getTimeInMillis();
+
+        List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_BEST,
+                startTime, endTime);
 
         int debug = 0;
         //Just debugging stuff
@@ -84,77 +150,87 @@ public class CustomUsageStats {
             debug = 1;
         }
 
-        if (usageStatsList.isEmpty()) {
-            Log.d(TAG, "Nothing in usageStatsList");
-        }
-        else {
-            Log.d(TAG, "Loaded queryUsageStats correctly");
-        }
-
-        Log.d("Range time", complete.format(startTime.getTimeInMillis()) + " - " +
-                complete.format(date.getTimeInMillis()));
-
         return usageStatsList;
     }
 
     //Displaying the apps used on list view
-    public static void printOnListViewDaily(Activity activity, Context context, ListView iconListView,
-                                            List<UsageStats> usageStatsList){
+    public static CustomAppList printOnListViewDaily(Context context,
+                                                     List<UsageStats> usageStatsList) {
 
         // Array of strings for ListView Title
-        List<String> listviewTitle = new ArrayList<String>();
+        /*List<String> listViewTitle = new ArrayList<String>();
         List<String> listViewTime = new ArrayList<>();
-        List<Drawable> listviewImage = new ArrayList<Drawable>();
-        Drawable icon = new ColorDrawable(Color.TRANSPARENT);;
+        List<Drawable> listViewImage = new ArrayList<Drawable>();*/
+        List<AppUsageEntry> listViewEntries = new ArrayList<>();
+        Drawable icon = new ColorDrawable(Color.TRANSPARENT);
+        ;
+        /*Gson gson = new Gson();
+        SharedPreferences sharedPrefs = context.getSharedPreferences(PREFS_SETTINGS_NAME, 0);
+        String appList = sharedPrefs.getString(PREFS_NAME, "");
+        List<String> unproductiveApps = new ArrayList<>();
+        if (!appList.isEmpty()) {
+            unproductiveApps = gson.fromJson(appList,
+                    new TypeToken<ArrayList<String>>() {
+                    }.getType());
+        }*/
+        Set<String> unproductiveApps = Settings.getInstance(context).getUnproductiveApps();
 
-            System.out.println("SIZE: " + usageStatsList.size());
+        PackageManager packageManager = context.getPackageManager();
+        for (int i = 0; i < usageStatsList.size(); i++) {
+            String packageName = usageStatsList.get(i).getPackageName();
+            if (unproductiveApps.contains(packageName)) {
+                if (packageManager.getLaunchIntentForPackage(packageName) != null) {
+                    if ((usageStatsList.get(i).getTotalTimeInForeground() / 60000) != 0) {
 
-            for (int i = 0; i < usageStatsList.size(); i++)
-            {
-                if (usageStatsList.get(i).getTotalTimeInForeground() != 0) {
+                        try {
+                            icon = packageManager.getApplicationIcon(packageName);
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        ApplicationInfo ai;
+                        try {
+                            ai = packageManager.getApplicationInfo(packageName, 0);
+                        } catch (final PackageManager.NameNotFoundException e) {
+                            ai = null;
+                        }
 
-                    String packageName = usageStatsList.get(i).getPackageName();
-                    PackageManager packageManager = context.getPackageManager();
-                    try {
-                        icon = packageManager.getApplicationIcon(packageName);
-                    } catch (PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    ApplicationInfo ai;
-                    try {
-                        ai = packageManager.getApplicationInfo(packageName, 0);
-                    }
-                    catch(final PackageManager.NameNotFoundException e) {
-                        ai = null;
-                    }
-
-                    if (ai != null) {
-                        String appName = (String) packageManager.getApplicationLabel(ai);
-
-                        System.out.println(appName);
-                        listviewTitle.add(appName);
-                        listViewTime.add("Time Spent: "
-                                + usageStatsList.get(i).getTotalTimeInForeground() / 60000 + "m");
-                        listviewImage.add(icon);
+                        if (ai != null) {
+                            String appName = (String) packageManager.getApplicationLabel(ai);
+                            AppUsageEntry entry = new AppUsageEntry();
+                            //System.out.println(appName);
+                            entry.setAppName(appName);
+                            if (listViewEntries.contains(entry)) {
+                                listViewEntries.get(listViewEntries.indexOf(entry))
+                                        .addTimeInForeground(usageStatsList.get(i).getTotalTimeInForeground());
+                                continue;
+                            }
+                            entry.setTimeInForeground(usageStatsList.get(i).getTotalTimeInForeground());
+                            entry.setIcon(icon);
+                            listViewEntries.add(entry);
+                        }
                     }
                 }
-
             }
-
-
-        CustomAppList adapterCustom = new CustomAppList(activity, listviewTitle, listViewTime, listviewImage);
-
-        iconListView.setAdapter(adapterCustom);
+        }
+        Collections.sort(listViewEntries, new Comparator<AppUsageEntry>() {
+            @Override
+            public int compare(AppUsageEntry appUsageEntry, AppUsageEntry t1) {
+                return (int) (t1.getTimeInForeground() - appUsageEntry.getTimeInForeground());
+            }
+        });
+        //Collections.reverse(listViewEntries);
+        return new CustomAppList(context, listViewEntries);
     }
+}
 
-    public static void printOnListViewWeekly(Activity activity, Context context, ListView iconListView,
+    /*public static void printOnListViewWeekly(Activity activity, Context context, ListView iconListView,
                                              HashMap<String, Long> usageMap){
 
         // Array of strings for ListView Title
-        List<String> listviewTitle = new ArrayList<String>();
-        List<String> listViewTime = new ArrayList<>();
-        List<Drawable> listviewImage = new ArrayList<Drawable>();
-
+        //List<String> listviewTitle = new ArrayList<String>();
+        //List<String> listViewTime = new ArrayList<>();
+        //List<Drawable> listviewImage = new ArrayList<Drawable>();
+        List<AppUsageEntry> listViewEntries = new ArrayList<>();
         Drawable icon = new ColorDrawable(Color.TRANSPARENT);;
         System.out.println("SIZE: " + usageMap.size());
 
@@ -163,16 +239,16 @@ public class CustomUsageStats {
         {
             if (entry.getValue() > 0) {
 
-                String packageName = entry.getKey();
+                String appName = entry.getKey();
                 PackageManager packageManager = context.getPackageManager();
                 try {
-                    icon = packageManager.getApplicationIcon(packageName);
+                    icon = packageManager.getApplicationIcon(appName);
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
                 ApplicationInfo ai;
                 try {
-                    ai = packageManager.getApplicationInfo(packageName, 0);
+                    ai = packageManager.getApplicationInfo(appName, 0);
                 }
                 catch(final PackageManager.NameNotFoundException e) {
                     ai = null;
@@ -180,21 +256,22 @@ public class CustomUsageStats {
 
                 if (ai != null) {
                     String appName = (String) packageManager.getApplicationLabel(ai);
-
-                    System.out.println(appName);
-                    listviewTitle.add(appName);
-                    listViewTime.add("Time Spent: "
-                            + entry.getValue() / 60000 + "m");
-                    listviewImage.add(icon);
+                    AppUsageEntry appEntry = new AppUsageEntry();
+                    //System.out.println(appName);
+                    appEntry.setAppName(appName);
+                    appEntry.setTimeInForeground(entry.getValue());
+                    appEntry.setIcon(icon);
+                    listViewEntries.add(appEntry);
                 }
                 ++i;
             }
 
         }
 
-        CustomAppList adapterCustom = new CustomAppList(activity, listviewTitle, listViewTime, listviewImage);
+        CustomAppList adapterCustom = new CustomAppList(activity, listViewEntries);
 
         iconListView.setAdapter(adapterCustom);
     }
 
 }
+*/
