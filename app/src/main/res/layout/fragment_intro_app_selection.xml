@@ -42,7 +42,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/white"
             android:text="You'll need to specify which apps you consider unproductive.  You can do
- this now, or later on from the dashboard."/>
+this now, or later on from the dashboard."/>
 
     </LinearLayout>
 

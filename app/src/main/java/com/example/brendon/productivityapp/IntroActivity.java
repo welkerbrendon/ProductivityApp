@@ -21,7 +21,7 @@ public class IntroActivity extends AppIntro {
 
         addSlide(IntroBasicSlide.newInstance(R.layout.fragment_intro));
         addSlide(IntroAllowanceSlide.newInstance(R.layout.fragment_intro_allowance));
-        addSlide(IntroBasicSlide.newInstance(R.layout.fragment_intro_app_selection));
+        addSlide(IntroAppSelectSlide.newInstance(R.layout.fragment_intro_app_selection));
         addSlide(IntroBasicSlide.newInstance(R.layout.fragment_intro_progressbar));
         addSlide(IntroBasicSlide.newInstance(R.layout.fragment_intro_usage_access));
         addSlide(IntroBasicSlide.newInstance(R.layout.fragment_intro_notifications));
@@ -48,7 +48,9 @@ public class IntroActivity extends AppIntro {
                             MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
                 }
             }
-        } else if (oldFragment instanceof IntroAllowanceSlide) {
+        }
+        if (oldFragment instanceof IntroAllowanceSlide) {
+            Log.d("PASettings", "Left allowance slide");
             Settings settings = Settings.getInstance(this);
             View v = oldFragment.getView();
             if (v != null) {

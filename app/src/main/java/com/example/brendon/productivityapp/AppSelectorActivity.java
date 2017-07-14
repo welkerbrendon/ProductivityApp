@@ -53,8 +53,12 @@ public class AppSelectorActivity extends Fragment implements
     CustomList appSelectionAdapter;
     Settings settings;
     Gson gson = new Gson();
+    private boolean isFirstRun;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Bundle args = getArguments();
+        if (args == null) args = new Bundle();
+        isFirstRun = args.getBoolean("IS_FIRST_RUN", false);
         return inflater.inflate(R.layout.fragment_app_selector, container, false);
     }
     @Override
@@ -63,14 +67,19 @@ public class AppSelectorActivity extends Fragment implements
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Unproductive Apps");
         settings = Settings.getInstance(getActivity());
         unproductiveApps = settings.getUnproductiveApps();
+
         Button done = (Button) getView().findViewById(R.id.done);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 settings.setUnproductiveAppsList(unproductiveApps);
                 settings.saveToSharedPreferences(getActivity());
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.content_view, new DashboardFragment()).commit();
+                if (isFirstRun) {
+                    getActivity().finish();
+                } else {
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.content_view, new DashboardFragment()).commit();
+                }
             }
         });
 
