@@ -38,6 +38,7 @@
             android:text="@string/active_notification" />
 
     </RadioGroup>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -45,40 +46,40 @@
         <Button
             android:id="@+id/notificationTest"
             style="@android:style/Widget.Material.ButtonBar.AlertDialog"
-            android:minWidth="64dp"
-            android:minHeight="64dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:gravity="center_horizontal|center_vertical"
-            android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Borderless.Colored"
-            android:text="Test"/>
+            android:minHeight="64dp"
+            android:minWidth="64dp"
+            android:text="Test"
+            android:textAppearance="@style/MaterialButton" />
 
         <Button
             android:id="@+id/notificationConfirm"
             style="@android:style/Widget.Material.ButtonBar.AlertDialog"
-            android:minWidth="64dp"
-            android:minHeight="64dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:text="OK" />
+            android:gravity="center_horizontal|center_vertical"
+            android:minHeight="64dp"
+            android:minWidth="64dp"
+            android:text="OK"
+            android:textAppearance="@style/MaterialButton" />
 
         <Button
             android:id="@+id/notificationCancel"
             style="@android:style/Widget.Material.ButtonBar.AlertDialog"
-            android:minWidth="64dp"
-            android:minHeight="64dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/notificationConfirm"
-            android:text="Cancel" />
+            android:gravity="center_horizontal|center_vertical"
+            android:minHeight="64dp"
+            android:minWidth="64dp"
+            android:text="Cancel"
+            android:textAppearance="@style/MaterialButton" />
     </RelativeLayout>
 
 </LinearLayout>
