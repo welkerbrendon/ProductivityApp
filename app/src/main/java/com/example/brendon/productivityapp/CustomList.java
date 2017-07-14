@@ -58,9 +58,15 @@ class AppSelection implements Runnable {
     //  this.appInfo = appInfo;
     //}
 
-    public void loadIconAsync(PackageManager pm) {
+    public boolean loadIconAsync(PackageManager pm) {
         this.pm = pm;
+        try {
+            pm.getApplicationLabel(pm.getApplicationInfo(packageName, 0));
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
         AsyncTask.execute(this);
+        return true;
     }
 
     public String getPackageName() {
@@ -140,6 +146,7 @@ public class CustomList extends ArrayAdapter<AppSelection> {
             holder.appIcon = (ImageView) v.findViewById(R.id.img);
             holder.chkBox = (CheckBox) v.findViewById(R.id.checkBox);
             holder.packageName = (TextView) v.findViewById(R.id.pkgName);
+            holder.chkBox.setTag(position);
 
             holder.chkBox.setOnCheckedChangeListener(listener);
         } else {
@@ -147,6 +154,8 @@ public class CustomList extends ArrayAdapter<AppSelection> {
         }
 
         AppSelection a = appSelectionList.get(position);
+
+
         holder.appName.setText(a.getAppName());
         if (position < 11) {
             if (a.getAppIcon() == null)

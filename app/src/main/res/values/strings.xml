@@ -21,8 +21,8 @@
     <string name="minutes">Minutes</string>
     <string name="hours">Hours</string>
     <string name="no_notifications">No notifications</string>
-    <string name="passive_notification">Status bar notification</string>
-    <string name="active_notification">Banner notification</string>
+    <string name="passive_notification">Status bar icon</string>
+    <string name="active_notification">Pop-in notification</string>
     <string name="productivity_app">Productivity App</string>
     <string name="done">Done</string>
     <string name="unused_goal_text">Please enter goal for the amount of time you will seek to limit yourself on unproductive apps:</string>

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <RadioButton
             android:id="@+id/noNotification"
             android:layout_marginLeft="20dp"
@@ -32,4 +37,48 @@
             android:layout_weight="1"
             android:text="@string/active_notification" />
 
-</RadioGroup>
+    </RadioGroup>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/notificationTest"
+            style="@android:style/Widget.Material.ButtonBar.AlertDialog"
+            android:minWidth="64dp"
+            android:minHeight="64dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal|center_vertical"
+            android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Borderless.Colored"
+            android:text="Test"/>
+
+        <Button
+            android:id="@+id/notificationConfirm"
+            style="@android:style/Widget.Material.ButtonBar.AlertDialog"
+            android:minWidth="64dp"
+            android:minHeight="64dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="OK" />
+
+        <Button
+            android:id="@+id/notificationCancel"
+            style="@android:style/Widget.Material.ButtonBar.AlertDialog"
+            android:minWidth="64dp"
+            android:minHeight="64dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/notificationConfirm"
+            android:text="Cancel" />
+    </RelativeLayout>
+
+</LinearLayout>

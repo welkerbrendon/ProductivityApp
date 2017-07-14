@@ -2,9 +2,7 @@ package com.example.brendon.productivityapp;
 /**
  * Created by Frank on 4/1/2017.
  */
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,20 +21,20 @@ public class CustomAppList extends ArrayAdapter<AppUsageEntry>{
     private List<AppUsageEntry> _usageEntries = new ArrayList<>();
     public CustomAppList(Context context,
                       List<AppUsageEntry> usageEntries) {
-        super(context, R.layout.custom_list_view, usageEntries);
+        super(context, R.layout.app_usage_view, usageEntries);
         this.context = context;
         this._usageEntries = usageEntries;
     }
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View rowView= inflater.inflate(R.layout.custom_list_view, null, true);
+        View rowView= inflater.inflate(R.layout.app_usage_view, null, true);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.txt2);
         TextView timeTitle = (TextView) rowView.findViewById(R.id.txt3);
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.img2);
         txtTitle.setText(_usageEntries.get(position).getAppName());
-        Time time = new Time();
+        //Time time = new Time();
         long millis = _usageEntries.get(position).getTimeInForeground();
         String hms = String.format(Locale.US, "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
                 TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),

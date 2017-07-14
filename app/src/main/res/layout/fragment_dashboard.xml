@@ -15,18 +15,18 @@
             android:id="@+id/allowance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="16dp"
             android:textAppearance="@android:style/TextAppearance.Material.Title"
-            android:textSize="80sp" />
+            android:textSize="70sp" />
 
         <TextView
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/allowance"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="10dp"
             android:layout_toEndOf="@id/allowance"
             android:text="@string/allowance"
             android:textColor="@color/black"
@@ -37,16 +37,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/allowance"
-            android:layout_marginStart="16dp"
+            android:layout_marginLeft="5dp"
             android:textAppearance="@android:style/TextAppearance.Material.Title"
-            android:textSize="80sp" />
+            android:textSize="70sp" />
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/remaining"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="10dp"
             android:layout_toEndOf="@id/remaining"
             android:text="@string/remaining"
             android:textColor="@color/black"
@@ -58,7 +58,7 @@
             android:layout_height="1dp"
             android:layout_below="@id/remaining"
             android:layout_marginBottom="16dp"
-            android:background="#6c6c6c" />
+            android:background="@color/gray"/>
 
         <TextView
             android:id="@+id/textView10"
@@ -83,9 +83,7 @@
             <com.example.brendon.productivityapp.AdaptableListView
                 android:id="@+id/appUsage"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp" />
+                android:layout_height="wrap_content" />
         </ScrollView>
 
         <View

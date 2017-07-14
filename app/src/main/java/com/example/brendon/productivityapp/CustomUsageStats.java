@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -18,6 +20,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -157,30 +160,50 @@ class CustomUsageStats {
     public static CustomAppList printOnListViewDaily(Context context,
                                                      List<UsageStats> usageStatsList) {
 
-        // Array of strings for ListView Title
-        /*List<String> listViewTitle = new ArrayList<String>();
-        List<String> listViewTime = new ArrayList<>();
-        List<Drawable> listViewImage = new ArrayList<Drawable>();*/
         List<AppUsageEntry> listViewEntries = new ArrayList<>();
         Drawable icon = new ColorDrawable(Color.TRANSPARENT);
-        ;
-        /*Gson gson = new Gson();
-        SharedPreferences sharedPrefs = context.getSharedPreferences(PREFS_SETTINGS_NAME, 0);
-        String appList = sharedPrefs.getString(PREFS_NAME, "");
-        List<String> unproductiveApps = new ArrayList<>();
-        if (!appList.isEmpty()) {
-            unproductiveApps = gson.fromJson(appList,
-                    new TypeToken<ArrayList<String>>() {
-                    }.getType());
-        }*/
+        Set<String> usagePackageNames = new HashSet<>();
+        for (UsageStats entry : usageStatsList) {
+            usagePackageNames.add(entry.getPackageName());
+        }
+
         Set<String> unproductiveApps = Settings.getInstance(context).getUnproductiveApps();
+        Log.d("DBG", "Unproductive Apps: " + unproductiveApps.toString());
 
         PackageManager packageManager = context.getPackageManager();
+        for (String packageName : unproductiveApps) {
+            if (!usagePackageNames.contains(packageName)) {
+                try {
+                    icon = packageManager.getApplicationIcon(packageName);
+                    icon = convertToGrayscale(icon);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                ApplicationInfo ai;
+                try {
+                    ai = packageManager.getApplicationInfo(packageName, 0);
+                } catch (final PackageManager.NameNotFoundException e) {
+                    ai = null;
+                }
+
+                if (ai != null) {
+                    String appName = (String) packageManager.getApplicationLabel(ai);
+                    AppUsageEntry entry = new AppUsageEntry();
+                    entry.setAppName(appName);
+
+                    entry.setTimeInForeground(0);
+                    entry.setIcon(icon);
+                    listViewEntries.add(entry);
+                }
+            }
+        }
         for (int i = 0; i < usageStatsList.size(); i++) {
             String packageName = usageStatsList.get(i).getPackageName();
+            Log.d("DBG", "Checking " + packageName);
             if (unproductiveApps.contains(packageName)) {
+                Log.d("DBG", "LaunchIntent = " + packageManager.getLaunchIntentForPackage(packageName));
                 if (packageManager.getLaunchIntentForPackage(packageName) != null) {
-                    if ((usageStatsList.get(i).getTotalTimeInForeground() / 60000) != 0) {
+                    //if ((usageStatsList.get(i).getTotalTimeInForeground() / 60000) != 0) {
 
                         try {
                             icon = packageManager.getApplicationIcon(packageName);
@@ -205,13 +228,23 @@ class CustomUsageStats {
                                 continue;
                             }
                             entry.setTimeInForeground(usageStatsList.get(i).getTotalTimeInForeground());
+                            if (entry.getTimeInForeground() == 0) {
+                                icon = convertToGrayscale(icon);
+                            }
                             entry.setIcon(icon);
                             listViewEntries.add(entry);
                         }
-                    }
+                    //}
                 }
             }
         }
+        Collections.sort(listViewEntries, new Comparator<AppUsageEntry>() {
+            @Override
+            public int compare(AppUsageEntry o1, AppUsageEntry o2) {
+                int res = String.CASE_INSENSITIVE_ORDER.compare(o1.getAppName(), o2.getAppName());
+                return (res != 0) ? res : o1.getAppName().compareTo(o2.getAppName());
+            }
+        });
         Collections.sort(listViewEntries, new Comparator<AppUsageEntry>() {
             @Override
             public int compare(AppUsageEntry appUsageEntry, AppUsageEntry t1) {
@@ -220,6 +253,18 @@ class CustomUsageStats {
         });
         //Collections.reverse(listViewEntries);
         return new CustomAppList(context, listViewEntries);
+    }
+
+    private static Drawable convertToGrayscale(Drawable drawable)
+    {
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+
+        drawable.setColorFilter(filter);
+
+        return drawable;
     }
 }
 

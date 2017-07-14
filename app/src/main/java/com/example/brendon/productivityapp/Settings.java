@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
@@ -44,6 +43,8 @@ public class Settings {
     private boolean lockOut;
     private boolean autoDataSending;
     private boolean takeBreak;
+    private boolean shownAppTarget;
+    private boolean shownSnoozeTarget;
     private boolean firstTime;
     private int notificationType;
     private int timeUntilBreak;
@@ -77,6 +78,15 @@ public class Settings {
     public long getTimeRemaining() {
         return getMillisForWeeklyPlan() - timeUsedWeekly;
     }
+
+    public boolean hasShownAppTarget() {
+        return shownAppTarget;
+    }
+
+    public void setShownAppTarget(boolean shownAppTarget) {
+        this.shownAppTarget = shownAppTarget;
+    }
+
     private Settings() {
         notifications = false;
         weeklyGoalReminder = false;
@@ -86,18 +96,29 @@ public class Settings {
         autoDataSending = false;
         takeBreak = false;
         firstTime = true;
+        shownAppTarget = false;
+        shownSnoozeTarget = false;
         timeUntilBreak = 0;
         snoozeEndTime = 0;
         hourForGoalReminder = 0;
         minutesForGoalReminder = 0;
         hourForDailyPlan = 0;
         minutesForDailyPlan = 0;
-        hourForWeeklyPlan = 0;
+        hourForWeeklyPlan = 5;
         minutesForWeeklyPlan = 0;
         timeUsedWeekly = 0;
         unproductiveApps = new HashSet<>();
         appCache = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         notificationType = Notification.PRIORITY_DEFAULT;
+    }
+
+    public void setShownSnoozeTarget(boolean shownSnoozeTarget) {
+        this.shownSnoozeTarget = shownSnoozeTarget;
+    }
+
+    public boolean hasShownSnoozeTarget() {
+
+        return shownSnoozeTarget;
     }
 
     public static Settings getNewInstance() {
@@ -357,12 +378,7 @@ public class Settings {
                         saveToSharedPreferences(activity);
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Don't do stuff
-                    }
-                })
+                .setNegativeButton("Cancel", null)
                 .setTitle("Set Allowance");
         builder.create().show();
     }
@@ -370,10 +386,10 @@ public class Settings {
     public void loadIconCache(PackageManager pm) {
         if (pm != null) {
             for (AppSelection item : appCache.values()) {
-                item.loadIconAsync(pm);
+                if(!item.loadIconAsync(pm)) {
+                    //appCache.remove(item.getAppName());
+                }
             }
-        } else {
         }
-
     }
 }

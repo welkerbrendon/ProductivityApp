@@ -30,7 +30,7 @@ public class SnoozeDialog extends AppCompatActivity {
                 np.setMaxValue(59);
             }
         });
-        builder.setTitle("Snooze time")
+        builder.setTitle("Snooze notifications for")
                 .setView(view)
                 .setPositiveButton("Snooze", new DialogInterface.OnClickListener() {
                     @Override

@@ -24,6 +24,11 @@
 
     <Button
         android:id="@+id/done"
+        style="@android:style/Widget.Material.ButtonBar.AlertDialog"
+        android:minWidth="64dp"
+        android:minHeight="64dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Borderless.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

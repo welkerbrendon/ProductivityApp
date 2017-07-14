@@ -1,9 +1,6 @@
 package com.example.brendon.productivityapp;
 
 import android.app.Fragment;
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -24,8 +21,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -60,20 +55,20 @@ public class AppSelectorActivity extends Fragment implements
     Gson gson = new Gson();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_app_selector, container, false);
+        return inflater.inflate(R.layout.fragment_app_selector, container, false);
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Unproductive Apps");
-        settings = Settings.getInstance(getContext());
+        settings = Settings.getInstance(getActivity());
         unproductiveApps = settings.getUnproductiveApps();
         Button done = (Button) getView().findViewById(R.id.done);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 settings.setUnproductiveAppsList(unproductiveApps);
-                settings.saveToSharedPreferences(getContext());
+                settings.saveToSharedPreferences(getActivity());
                 getFragmentManager().beginTransaction()
                         .replace(R.id.content_view, new DashboardFragment()).commit();
             }
@@ -92,12 +87,12 @@ public class AppSelectorActivity extends Fragment implements
     @Override
     public void onDestroy() {
         settings.setUnproductiveAppsList(unproductiveApps);
-        settings.saveToSharedPreferences(getContext());
+        settings.saveToSharedPreferences(getActivity());
         super.onDestroy();
     }
 
     public void startEditGoalActivity(View view) {
-        Intent intent = new Intent(getContext(), EditGoalActivity.class);
+        Intent intent = new Intent(getActivity(), EditGoalActivity.class);
 
         startActivity(intent);
     }
@@ -105,10 +100,19 @@ public class AppSelectorActivity extends Fragment implements
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        int pos = lv.getPositionForView(compoundButton);
+        int pos;
+        boolean validItem;
+        if (compoundButton.getTag() instanceof AppSelection) {
+            pos = 0;
+            validItem = true;
+        } else {
+            pos = (int) compoundButton.getTag();
+            validItem = (pos != ListView.INVALID_POSITION);
+        }
+        //int pos = (int) compoundButton.getTag();
         RelativeLayout view = (RelativeLayout) compoundButton.getParent();
         TextView label = (TextView) view.findViewById(R.id.txt);
-        if (pos != ListView.INVALID_POSITION) {
+        if (validItem) {
             AppSelection a = appSelectionList.get(label.getText().toString());
             a.setChecked(b);
 
@@ -130,7 +134,7 @@ public class AppSelectorActivity extends Fragment implements
         ProgressBar spinner = (ProgressBar) getView().findViewById(R.id.appListSpinner);
         spinner.setVisibility(View.INVISIBLE);
         View v = getView();
-        PackageManager pm = getContext().getPackageManager();
+        PackageManager pm = getActivity().getPackageManager();
         for (String name : settings.getUnproductiveAppsList()) {
             String appName;
             try {
@@ -157,7 +161,7 @@ public class AppSelectorActivity extends Fragment implements
         @Override
         protected Void doInBackground(Void... voids) {
 
-            final PackageManager pm = getContext().getPackageManager();
+            final PackageManager pm = getActivity().getPackageManager();
 
             List<ApplicationInfo> apps = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
@@ -165,10 +169,9 @@ public class AppSelectorActivity extends Fragment implements
                 if (pm.getLaunchIntentForPackage(app.packageName) != null) {
                     if ((app.flags & ApplicationInfo.FLAG_SYSTEM) == 0 ||
                             (app.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
-                        if (appSelectionMap.containsKey(pm.getApplicationLabel(app).toString())) {
-                        } else {
+                        if (!appSelectionMap.containsKey(pm.getApplicationLabel(app).toString())) {
                             String packageName = app.packageName;
-                            AppSelection appSelection = new AppSelection(packageName, getContext());
+                            AppSelection appSelection = new AppSelection(packageName, getActivity());
                             appSelectionMap.put(appSelection.getAppName(), appSelection);
                         }
                     }
@@ -187,10 +190,11 @@ public class AppSelectorActivity extends Fragment implements
                     spinner.setVisibility(View.VISIBLE);
                 }
             }
-            appSelectionMap = settings.getAppCache();
-            if (appSelectionMap.isEmpty()) {
+            Log.d("DBG", "Starting list creation");
+            //appSelectionMap = settings.getAppCache();
+            //if (appSelectionMap.isEmpty()) {
                 appSelectionMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-            }
+            //}
             //super.onPreExecute();
         }
 
@@ -198,6 +202,7 @@ public class AppSelectorActivity extends Fragment implements
         protected void onPostExecute(Void aVoid) {
             settings.setAppCache(appSelectionMap);
             delegate.processFinish(appSelectionMap);
+            Log.d("DBG", "Signaling delegate");
             //super.onPostExecute(o);
         }
     }
