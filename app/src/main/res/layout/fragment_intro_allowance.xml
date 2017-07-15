@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="@dimen/appIntroBottomBarHeight"
-    android:background="@color/ProductiveGreen">
+    android:background="#0f5f6c">
 
     <TextView
         android:id="@+id/title"

@@ -36,10 +36,14 @@ public class CustomAppList extends ArrayAdapter<AppUsageEntry>{
         txtTitle.setText(_usageEntries.get(position).getAppName());
         //Time time = new Time();
         long millis = _usageEntries.get(position).getTimeInForeground();
-        String hms = String.format(Locale.US, "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-                TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
-                TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
-        timeTitle.setText("Time spent: " + hms);
+        if (millis != 0) {
+            String hms = String.format(Locale.US, "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                    TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
+                    TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
+            timeTitle.setText("Time spent: " + hms);
+        } else {
+            timeTitle.setText(R.string.not_used);
+        }
 
         imageView.setImageDrawable(_usageEntries.get(position).getIcon());
         return rowView;

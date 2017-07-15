@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="@dimen/appIntroBottomBarHeight"
-    android:background="@color/ProductiveGreen">
+    android:background="#366c0f">
 
     <TextView
         android:id="@+id/title"
@@ -65,7 +65,7 @@ this now, or later on from the dashboard."/>
         android:layout_gravity="center"
         android:layout_weight="0.5"
         android:buttonTint="@android:color/white"
-        android:backgroundTint="#2d863b"
+        android:backgroundTint="#52862d"
         android:text="Set Apps Now"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"

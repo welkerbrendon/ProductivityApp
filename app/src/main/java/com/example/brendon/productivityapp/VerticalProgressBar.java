@@ -132,11 +132,15 @@ public class VerticalProgressBar extends RelativeLayout {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 long millis = entry.getTimeInForeground();
-                String hms = String.format(Locale.US, "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-                        TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
-                        TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
-                builder.setMessage("Time spent: " + hms)
-                .setTitle(entry.getAppName())
+                if (millis != 0) {
+                    String hms = String.format(Locale.US, "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                            TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
+                            TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
+                    builder.setMessage("Time spent: " + hms);
+                } else {
+                    builder.setMessage("Not used");
+                }
+                builder.setTitle(entry.getAppName())
                 .setIcon(entry.getIcon())
                 .create().show();
             }

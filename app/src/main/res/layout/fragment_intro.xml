@@ -40,7 +40,8 @@
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            android:text="This app will help you track your usage of unproductive apps."/>
+            android:text="This app will help you determine how much time you spend in unproductive
+apps.  We've got some stuff for you to set up first."/>
 
     </LinearLayout>
 

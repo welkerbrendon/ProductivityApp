@@ -168,7 +168,6 @@ class CustomUsageStats {
         }
 
         Set<String> unproductiveApps = Settings.getInstance(context).getUnproductiveApps();
-        Log.d("DBG", "Unproductive Apps: " + unproductiveApps.toString());
 
         PackageManager packageManager = context.getPackageManager();
         for (String packageName : unproductiveApps) {
@@ -199,9 +198,7 @@ class CustomUsageStats {
         }
         for (int i = 0; i < usageStatsList.size(); i++) {
             String packageName = usageStatsList.get(i).getPackageName();
-            Log.d("DBG", "Checking " + packageName);
             if (unproductiveApps.contains(packageName)) {
-                Log.d("DBG", "LaunchIntent = " + packageManager.getLaunchIntentForPackage(packageName));
                 if (packageManager.getLaunchIntentForPackage(packageName) != null) {
                     //if ((usageStatsList.get(i).getTotalTimeInForeground() / 60000) != 0) {
 
