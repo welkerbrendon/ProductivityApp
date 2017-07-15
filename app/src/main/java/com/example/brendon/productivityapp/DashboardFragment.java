@@ -141,21 +141,20 @@ public class DashboardFragment extends Fragment implements UsageBuilderResponse,
         settings.saveToSharedPreferences(getActivity());
         updateTimes();
         Collections.reverse(entries);
+
         if (!settings.hasShownAppTarget()) {
             new MaterialTapTargetPrompt.Builder(this)
                     .setTarget(getView().findViewById(R.id.appSettings))
                     .setPrimaryText("Set unproductive apps")
                     .setSecondaryText("You can select which apps you consider unproductive here")
-                    .setAutoDismiss(false)
-                    .setAutoFinish(false)
                     .setBackgroundColour(ContextCompat.getColor(getActivity(), R.color.ProductiveGreen))
                     .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
                         @Override
                         public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
                             if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED) {
                                 prompt.dismiss();
-                                settings.setShownAppTarget(true);
                             }
+                            settings.setShownAppTarget(true);
                         }
                     })
                     .show();
@@ -181,8 +180,6 @@ public class DashboardFragment extends Fragment implements UsageBuilderResponse,
                         })
                         .show();
                 }
-            } else {
-                Log.d("DBG", "Couldn't get parent");
             }
         }
     }

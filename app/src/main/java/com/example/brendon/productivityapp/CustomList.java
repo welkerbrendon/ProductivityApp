@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -107,12 +108,12 @@ class AppSelection implements Runnable {
     @Override
     public void run() {
         if (pm != null) {
+            appIcon = null;
             try {
                 appIcon = pm.getApplicationIcon(packageName);
             } catch (PackageManager.NameNotFoundException e) {
                 appIcon = pm.getDefaultActivityIcon();
             }
-        } else {
         }
     }
 }
@@ -149,6 +150,7 @@ public class CustomList extends ArrayAdapter<AppSelection> {
             holder.chkBox.setTag(position);
 
             holder.chkBox.setOnCheckedChangeListener(listener);
+
         } else {
             holder = (AppSelectionHolder) v.getTag();
         }

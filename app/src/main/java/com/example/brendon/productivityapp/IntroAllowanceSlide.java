@@ -65,8 +65,6 @@ public class IntroAllowanceSlide extends Fragment implements IntroSlide {
         if (view != null) {
             LinearLayout center = (LinearLayout) view.findViewById(R.id.centerPane);
             center.addView(allowanceView);
-        } else {
-            Log.e("ERR", "View not found");
         }
     }
 

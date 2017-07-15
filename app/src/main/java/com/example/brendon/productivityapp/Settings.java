@@ -1,6 +1,8 @@
 package com.example.brendon.productivityapp;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
+import android.app.AppOpsManager;
 import android.app.Notification;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.NumberPicker;
 
 import com.google.gson.Gson;
@@ -31,6 +35,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Settings {
     public static final String PREFS_NAME = "Settings";
+    private static final String MY_ACCESSIBILITY_SERVICE =
+            "com.example.brendon.productivityapp/.ProductivityMonitor";
 
     private static Settings instance;
 
@@ -383,13 +389,24 @@ public class Settings {
         builder.create().show();
     }
 
-    public void loadIconCache(PackageManager pm) {
-        if (pm != null) {
-            for (AppSelection item : appCache.values()) {
-                if(!item.loadIconAsync(pm)) {
-                    //appCache.remove(item.getAppName());
-                }
+    public static boolean hasUsageAccess(Context context) {
+        AppOpsManager appOps = (AppOpsManager)
+                context.getSystemService(Context.APP_OPS_SERVICE);
+        int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                android.os.Process.myUid(), context.getPackageName());
+        return mode == AppOpsManager.MODE_ALLOWED;
+    }
+
+    public static boolean isAccessibilityServiceEnabled(Context context) {
+        AccessibilityManager am = (AccessibilityManager) context
+                .getSystemService(Context.ACCESSIBILITY_SERVICE);
+        List<AccessibilityServiceInfo> runningServices = am
+                .getEnabledAccessibilityServiceList(AccessibilityEvent.TYPES_ALL_MASK);
+        for (AccessibilityServiceInfo service : runningServices) {
+            if (MY_ACCESSIBILITY_SERVICE.equals(service.getId())) {
+                return true;
             }
         }
+        return false;
     }
 }

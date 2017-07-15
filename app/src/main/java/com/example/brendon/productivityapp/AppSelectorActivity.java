@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -39,10 +40,9 @@ interface ListBuilderResponse {
     void processFinish(Map<String, AppSelection> builtList);
 }
 
-
-
 public class AppSelectorActivity extends Fragment implements
         android.widget.CompoundButton.OnCheckedChangeListener,
+        android.widget.ListView.OnItemClickListener,
         ListBuilderResponse {
 
     public static final String PREFS_SETTINGS_NAME = "Settings";
@@ -106,6 +106,13 @@ public class AppSelectorActivity extends Fragment implements
         startActivity(intent);
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (position != ListView.INVALID_POSITION) {
+            CompoundButton checkbox = (CompoundButton) view.findViewById(R.id.checkBox);
+            checkbox.toggle();
+        }
+    }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -160,7 +167,10 @@ public class AppSelectorActivity extends Fragment implements
         appSelectionAdapter = new CustomList(new ArrayList<>(builtList.values()),
                 getActivity(), this);
         lv.setAdapter(appSelectionAdapter);
+        lv.setOnItemClickListener(this);
     }
+
+
 
     private class AppListBuilder extends AsyncTask<Void, Void, Void> {
         ListBuilderResponse delegate = null;
@@ -182,6 +192,8 @@ public class AppSelectorActivity extends Fragment implements
                             String packageName = app.packageName;
                             AppSelection appSelection = new AppSelection(packageName, getActivity());
                             appSelectionMap.put(appSelection.getAppName(), appSelection);
+                        } else {
+                            appSelectionMap.get(pm.getApplicationLabel(app).toString()).loadIconAsync(pm);
                         }
                     }
                 }
@@ -199,7 +211,6 @@ public class AppSelectorActivity extends Fragment implements
                     spinner.setVisibility(View.VISIBLE);
                 }
             }
-            Log.d("DBG", "Starting list creation");
             //appSelectionMap = settings.getAppCache();
             //if (appSelectionMap.isEmpty()) {
                 appSelectionMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -211,7 +222,6 @@ public class AppSelectorActivity extends Fragment implements
         protected void onPostExecute(Void aVoid) {
             settings.setAppCache(appSelectionMap);
             delegate.processFinish(appSelectionMap);
-            Log.d("DBG", "Signaling delegate");
             //super.onPostExecute(o);
         }
     }

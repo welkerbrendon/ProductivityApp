@@ -74,17 +74,17 @@ public class Main3Activity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         settings = Settings.getInstance(this);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         if (settings.isFirstTime()) {
             Intent intent = new Intent(this, IntroActivity.class);
             startActivity(intent);
         } else {
-            if (!hasPermission())
+            if (!Settings.hasUsageAccess(this))
                 requestPermission();
         }
     }
@@ -160,7 +160,7 @@ public class Main3Activity extends AppCompatActivity
             //toolbar.setTitle("Set Unproductive Apps");
             manager.beginTransaction().replace(R.id.content_view, new AppSelectorActivity(), "APPS").commit();
         } else if (id == R.id.nav_notify) {
-            if (accessibilityServiceEnabled()) {
+            if (Settings.isAccessibilityServiceEnabled(this)) {
                 showNotificationSettings();
             } else {
                 requestAccessibility();
@@ -267,26 +267,6 @@ public class Main3Activity extends AppCompatActivity
         nm.cancel(6548);
         nm.notify(6548, nBuilder.build());
     }
-    private boolean hasPermission() {
-        AppOpsManager appOps = (AppOpsManager)
-                getSystemService(Context.APP_OPS_SERVICE);
-        int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
-                android.os.Process.myUid(), getPackageName());
-        return mode == AppOpsManager.MODE_ALLOWED;
-    }
-
-    private boolean accessibilityServiceEnabled() {
-        AccessibilityManager am = (AccessibilityManager) getApplicationContext()
-                .getSystemService(Context.ACCESSIBILITY_SERVICE);
-        List<AccessibilityServiceInfo> runningServices = am
-                .getEnabledAccessibilityServiceList(AccessibilityEvent.TYPES_ALL_MASK);
-        for (AccessibilityServiceInfo service : runningServices) {
-            if (MY_ACCESSIBILITY_SERVICE.equals(service.getId())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -314,14 +294,14 @@ public class Main3Activity extends AppCompatActivity
     }
     private void requestPermission() {
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme_NoActionBar));
-        builder.setMessage("You must allow the app permission to access Usage Stats.")
+        builder.setMessage("You must allow the app permission to access Usage Stats.\nIn settings, click Productivity App, then turn on Allow Usage Access.")
                 .setPositiveButton("Open Settings", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         startActivityForResult(
                                 new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS),
                                 MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
-                        if (!accessibilityServiceEnabled()) {
+                        if (!Settings.isAccessibilityServiceEnabled(getApplicationContext())) {
                             requestAccessibility();
                         }
                     }
@@ -330,17 +310,11 @@ public class Main3Activity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getApplicationContext(),
-                                "This app will not work without Usage Stats.",
+                                "This app does not work without Usage Stats.",
                                 Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
         builder.create().show();
-        /*Toast.makeText(getApplicationContext(),
-                "You must allow the app permission to access Usage Stats./nOpening System Settings.",
-                Toast.LENGTH_LONG).show();
-
-        startActivityForResult(
-                new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS),
-                MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);*/
     }
 }

@@ -14,8 +14,12 @@ android {
     }
     buildTypes {
         release {
+            resValue "bool", "DEBUG", "false"
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            resValue "bool", "DEBUG", "true"
         }
     }
     productFlavors {

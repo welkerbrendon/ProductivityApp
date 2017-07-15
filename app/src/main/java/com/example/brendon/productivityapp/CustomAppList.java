@@ -28,7 +28,7 @@ public class CustomAppList extends ArrayAdapter<AppUsageEntry>{
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View rowView= inflater.inflate(R.layout.app_usage_view, null, true);
+        View rowView= inflater.inflate(R.layout.app_usage_view, parent, false);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.txt2);
         TextView timeTitle = (TextView) rowView.findViewById(R.id.txt3);
 
