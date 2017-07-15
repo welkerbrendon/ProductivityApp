@@ -101,9 +101,9 @@ public class AppSelectorActivity extends Fragment implements
     }
 
     public void startEditGoalActivity(View view) {
-        Intent intent = new Intent(getActivity(), EditGoalActivity.class);
+        //Intent intent = new Intent(getActivity(), EditGoalActivity.class);
 
-        startActivity(intent);
+        //startActivity(intent);
     }
 
     @Override

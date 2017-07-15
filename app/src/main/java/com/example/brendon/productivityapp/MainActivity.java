@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "Settings";
     public static final String EXTRA_GOAL = "GOAL";
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 100;
-    BackgroundJobService backgroundService;
+    //BackgroundJobService backgroundService;
     private static int jobId = 0;
     Settings settings;
 
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         //startBackgroundService();
     }
 
-    public void startBackgroundService() {
+    /*public void startBackgroundService() {
         ComponentName mServiceComponent = new ComponentName(this, BackgroundJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(jobId++, mServiceComponent);
         builder.setMinimumLatency(60 * 1000);
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setRequiresCharging(false);
         JobScheduler jobScheduler = (JobScheduler) getApplication().getSystemService(Context.JOB_SCHEDULER_SERVICE);
         jobScheduler.schedule(builder.build());
-    }
+    }*/
 
     protected void onPause() {
         super.onPause();
@@ -147,10 +147,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void startMessageActivity(View view) {
         // We delcare an intent to start a new Activity
-        Intent intent = new Intent(this, MessagingActivity.class);
+        //Intent intent = new Intent(this, MessagingActivity.class);
 
         // Now, we start a new Activity
-        startActivity(intent);
+        //startActivity(intent);
     }
 
     public void startFirstTime(View view) {
@@ -184,15 +184,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void testTimeTracking(View view) {
-        Intent intent = new Intent(this, TimeTrackingService.class);
+        //Intent intent = new Intent(this, TimeTrackingService.class);
 
-        startActivity(intent);
+        //startActivity(intent);
     }
 
     public void startViewGoalActivity(View view) {
-        Intent intent = new Intent(this, GoalView.class);
+        //Intent intent = new Intent(this, GoalView.class);
 
-        startActivity(intent);
+        //startActivity(intent);
     }
 
 
